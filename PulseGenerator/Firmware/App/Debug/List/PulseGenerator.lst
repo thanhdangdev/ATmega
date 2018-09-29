@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.30  D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm Sat Sep 29 19:09:50 2018
+AVRASM ver. 2.1.30  D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm Sat Sep 29 21:14:23 2018
 
 D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1090): warning: Register r4 already defined by the .DEF directive
 D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1091): warning: Register r3 already defined by the .DEF directive
@@ -1132,9 +1132,9 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1095)
 00001e 940c 0000 	JMP  0x00
 000020 940c 0000 	JMP  0x00
 000022 940c 0000 	JMP  0x00
-000024 940c 0279 	JMP  _usart_rx_isr
+000024 940c 0296 	JMP  _usart_rx_isr
 000026 940c 0000 	JMP  0x00
-000028 940c 02cb 	JMP  _usart_tx_isr
+000028 940c 02e8 	JMP  _usart_tx_isr
 00002a 940c 0000 	JMP  0x00
 00002c 940c 0000 	JMP  0x00
 00002e 940c 0000 	JMP  0x00
@@ -1163,7 +1163,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1095)
 000040 2e31
 000041 2e30
 D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146): warning: .cseg .db misalignment - padding zero byte
-000042 0030      	.DB  0x31,0x2E,0x30,0x2E,0x30
+000042 0031      	.DB  0x31,0x2E,0x30,0x2E,0x31
                  
                  __GLOBAL_INI_TBL:
 000043 0006      	.DW  0x06
@@ -1295,7 +1295,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ;// Declare your global variables here
                  ;
                  ;char hw_version = 0;
-                 ;char fw_version[] = "1.0.0";
+                 ;char fw_version[] = "1.0.1";
                  
                  	.DSEG
                  ;
@@ -1317,7 +1317,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0000 002B    // Declare your local variables here
                  ; 0000 002C 
                  ; 0000 002D    system_init();
-000079 940e 021c 	CALL _system_init
+000079 940e 0239 	CALL _system_init
                  ; 0000 002E 
                  ; 0000 002F    // Global enable interrupts
                  ; 0000 0030    #asm("sei")
@@ -1335,7 +1335,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0000 0036          #asm("cli")
 000080 94f8      	cli
                  ; 0000 0037          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-000081 940e 0328 	CALL SUBOPT_0x0
+000081 940e 0345 	CALL SUBOPT_0x0
                  ; 0000 0038          #asm("sei")
 000083 9478      	sei
                  ; 0000 0039       }
@@ -1365,15 +1365,15 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 00008c c01a      	RJMP _0x9
                  _0xB:
                  ; 0000 0043          if(getchar() == 0xFF){
-00008d 940e 02ab 	CALL _getchar
+00008d 940e 02c8 	CALL _getchar
 00008f 3fef      	CPI  R30,LOW(0xFF)
 000090 f491      	BRNE _0xC
                  ; 0000 0044             if(getchar() == 0x55){
-000091 940e 02ab 	CALL _getchar
+000091 940e 02c8 	CALL _getchar
 000093 35e5      	CPI  R30,LOW(0x55)
 000094 f449      	BRNE _0xD
                  ; 0000 0045                len = getchar();
-000095 940e 02ab 	CALL _getchar
+000095 940e 02c8 	CALL _getchar
 000097 2e6e      	MOV  R6,R30
                  ; 0000 0046                if(len <= 135){
 000098 e8e7      	LDI  R30,LOW(135)
@@ -1391,7 +1391,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0000 004B                #asm("cli")
 00009e 94f8      	cli
                  ; 0000 004C                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-00009f 940e 0328 	CALL SUBOPT_0x0
+00009f 940e 0345 	CALL SUBOPT_0x0
                  ; 0000 004D                #asm("sei")
 0000a1 9478      	sei
                  ; 0000 004E             }
@@ -1402,7 +1402,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0000 0050             #asm("cli")
 0000a3 94f8      	cli
                  ; 0000 0051             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-0000a4 940e 0328 	CALL SUBOPT_0x0
+0000a4 940e 0345 	CALL SUBOPT_0x0
                  ; 0000 0052             #asm("sei")
 0000a6 9478      	sei
                  ; 0000 0053          }
@@ -1436,7 +1436,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000bc e0f0      	LDI  R31,0
 0000bd 9632      	ADIW R30,2
 0000be 01df      	MOVW R26,R30
-0000bf 940e 0301 	CALL _memcpy
+0000bf 940e 031e 	CALL _memcpy
                  ; 0000 0059             get_status =  GET_STATUS_COMPLETE;
 0000c1 2433      	CLR  R3
                  ; 0000 005A 
@@ -1487,7 +1487,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0000 0069    }
                  _0x14:
                  ; 0000 006A }
-0000d5 940c 02c9 	JMP  _0x2060001
+0000d5 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;unsigned char checksum(unsigned char *dat, unsigned char len){
@@ -1551,11 +1551,11 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000f5 93ea      	ST   -Y,R30
 0000f6 932f      	PUSH R18
 0000f7 931f      	PUSH R17
-0000f8 940e 0330 	CALL SUBOPT_0x1
+0000f8 940e 034d 	CALL SUBOPT_0x1
 0000fa 911f      	POP  R17
 0000fb 912f      	POP  R18
                  ; 0000 007A }
-0000fc 940c 02c9 	JMP  _0x2060001
+0000fc 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void execute_cmd(){
@@ -1576,9 +1576,9 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000104 07fa      	CPC  R31,R26
 000105 f411      	BRNE _0x1B
                  ; 0000 0080         process_read_version();
-000106 d04e      	RCALL _process_read_version
+000106 d06b      	RCALL _process_read_version
                  ; 0000 0081         break;
-000107 c018      	RJMP _0x1A
+000107 c01e      	RJMP _0x1A
                  ; 0000 0082     case CMD_TEST_TRANSFER:
                  _0x1B:
 000108 30e2      	CPI  R30,LOW(0x2)
@@ -1586,388 +1586,436 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 00010a 07fa      	CPC  R31,R26
 00010b f411      	BRNE _0x1C
                  ; 0000 0083         process_test_transfer();
-00010c d015      	RCALL _process_test_transfer
+00010c d01b      	RCALL _process_test_transfer
                  ; 0000 0084         break;
-00010d c012      	RJMP _0x1A
+00010d c018      	RJMP _0x1A
                  ; 0000 0085     case CMD_WRITE_REGISTER:
                  _0x1C:
 00010e 30e3      	CPI  R30,LOW(0x3)
 00010f e0a0      	LDI  R26,HIGH(0x3)
 000110 07fa      	CPC  R31,R26
-000111 f411      	BRNE _0x1E
+000111 f411      	BRNE _0x1D
                  ; 0000 0086         process_write_register();
-000112 d084      	RCALL _process_write_register
+000112 d0a1      	RCALL _process_write_register
                  ; 0000 0087         break;
-000113 c00c      	RJMP _0x1A
-                 ; 0000 0088     default:
-                 _0x1E:
-                 ; 0000 0089         status = STATUS_UNSUPPORT;
-000114 e013      	LDI  R17,LOW(3)
-                 ; 0000 008A         send_respond((char *)&status, sizeof(status));
-000115 b7ed      	IN   R30,SPL
-000116 b7fe      	IN   R31,SPH
-000117 9731      	SBIW R30,1
-000118 93fa      	ST   -Y,R31
-000119 93ea      	ST   -Y,R30
-00011a 932f      	PUSH R18
-00011b 931f      	PUSH R17
-00011c 940e 0330 	CALL SUBOPT_0x1
-00011e 911f      	POP  R17
-00011f 912f      	POP  R18
-                 ; 0000 008B         break;
-                 ; 0000 008C     }
+000113 c012      	RJMP _0x1A
+                 ; 0000 0088     case CMD_UPGRADE_START:
+                 _0x1D:
+000114 30e4      	CPI  R30,LOW(0x4)
+000115 e0a0      	LDI  R26,HIGH(0x4)
+000116 07fa      	CPC  R31,R26
+000117 f411      	BRNE _0x1F
+                 ; 0000 0089         process_upgrade_start();
+000118 d042      	RCALL _process_upgrade_start
+                 ; 0000 008A         break;
+000119 c00c      	RJMP _0x1A
+                 ; 0000 008B     default:
+                 _0x1F:
+                 ; 0000 008C         status = STATUS_UNSUPPORT;
+00011a e013      	LDI  R17,LOW(3)
+                 ; 0000 008D         send_respond((char *)&status, sizeof(status));
+00011b b7ed      	IN   R30,SPL
+00011c b7fe      	IN   R31,SPH
+00011d 9731      	SBIW R30,1
+00011e 93fa      	ST   -Y,R31
+00011f 93ea      	ST   -Y,R30
+000120 932f      	PUSH R18
+000121 931f      	PUSH R17
+000122 940e 034d 	CALL SUBOPT_0x1
+000124 911f      	POP  R17
+000125 912f      	POP  R18
+                 ; 0000 008E         break;
+                 ; 0000 008F     }
                  _0x1A:
-                 ; 0000 008D }
-000120 940c 02c9 	JMP  _0x2060001
+                 ; 0000 0090 }
+000126 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void process_test_transfer(){
-                 ; 0000 008F void process_test_transfer(){
+                 ; 0000 0092 void process_test_transfer(){
                  _process_test_transfer:
                  ; .FSTART _process_test_transfer
-                 ; 0000 0090     test_transfer_respond_t respond;
-                 ; 0000 0091 
-                 ; 0000 0092     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
-000122 97ef      	SBIW R28,63
-000123 97ef      	SBIW R28,63
-000124 9724      	SBIW R28,4
+                 ; 0000 0093     test_transfer_respond_t respond;
+                 ; 0000 0094 
+                 ; 0000 0095     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
+000128 97ef      	SBIW R28,63
+000129 97ef      	SBIW R28,63
+00012a 9724      	SBIW R28,4
                  ;	respond -> Y+0
-000125 eded      	LDI  R30,LOW(_test_transfer_request)
-000126 e0f4      	LDI  R31,HIGH(_test_transfer_request)
-000127 940e 0334 	CALL SUBOPT_0x2
-000129 e8a1      	LDI  R26,LOW(129)
-00012a e0b0      	LDI  R27,0
-00012b 940e 0301 	CALL _memcpy
-                 ; 0000 0093     respond.status = STATUS_SUCCESS;
-00012d e0e0      	LDI  R30,LOW(0)
-00012e 83e8      	ST   Y,R30
-                 ; 0000 0094     respond.len = test_transfer_request.len;
-00012f 91e0 04dd 	LDS  R30,_test_transfer_request
-000131 83e9      	STD  Y+1,R30
-                 ; 0000 0095     if(respond.len > 128){
-000132 81a9      	LDD  R26,Y+1
-000133 38a1      	CPI  R26,LOW(0x81)
-000134 f040      	BRLO _0x1F
-                 ; 0000 0096         respond.status = STATUS_FAIL;
-000135 e0e1      	LDI  R30,LOW(1)
-000136 83e8      	ST   Y,R30
-                 ; 0000 0097         send_respond((char*)&respond.status, sizeof(respond.status));
-000137 01fe      	MOVW R30,R28
-000138 93fa      	ST   -Y,R31
-000139 93ea      	ST   -Y,R30
-00013a e0a1      	LDI  R26,LOW(1)
-00013b e0b0      	LDI  R27,0
-00013c c013      	RJMP _0x27
-                 ; 0000 0098     }else{
-                 _0x1F:
-                 ; 0000 0099         memcpy(&respond.data, test_transfer_request.data, respond.len);
+00012b eded      	LDI  R30,LOW(_test_transfer_request)
+00012c e0f4      	LDI  R31,HIGH(_test_transfer_request)
+00012d 940e 0351 	CALL SUBOPT_0x2
+00012f e8a1      	LDI  R26,LOW(129)
+000130 e0b0      	LDI  R27,0
+000131 940e 031e 	CALL _memcpy
+                 ; 0000 0096     respond.status = STATUS_SUCCESS;
+000133 e0e0      	LDI  R30,LOW(0)
+000134 83e8      	ST   Y,R30
+                 ; 0000 0097     respond.len = test_transfer_request.len;
+000135 91e0 04dd 	LDS  R30,_test_transfer_request
+000137 83e9      	STD  Y+1,R30
+                 ; 0000 0098     if(respond.len > 128){
+000138 81a9      	LDD  R26,Y+1
+000139 38a1      	CPI  R26,LOW(0x81)
+00013a f040      	BRLO _0x20
+                 ; 0000 0099         respond.status = STATUS_FAIL;
+00013b e0e1      	LDI  R30,LOW(1)
+00013c 83e8      	ST   Y,R30
+                 ; 0000 009A         send_respond((char*)&respond.status, sizeof(respond.status));
 00013d 01fe      	MOVW R30,R28
-00013e 9632      	ADIW R30,2
-00013f 93fa      	ST   -Y,R31
-000140 93ea      	ST   -Y,R30
+00013e 93fa      	ST   -Y,R31
+00013f 93ea      	ST   -Y,R30
+000140 e0a1      	LDI  R26,LOW(1)
+000141 e0b0      	LDI  R27,0
+000142 c013      	RJMP _0x28
+                 ; 0000 009B     }else{
+                 _0x20:
+                 ; 0000 009C         memcpy(&respond.data, test_transfer_request.data, respond.len);
+000143 01fe      	MOVW R30,R28
+000144 9632      	ADIW R30,2
+000145 93fa      	ST   -Y,R31
+000146 93ea      	ST   -Y,R30
                 +
-000141 edee     +LDI R30 , LOW ( _test_transfer_request + ( 1 ) )
-000142 e0f4     +LDI R31 , HIGH ( _test_transfer_request + ( 1 ) )
+000147 edee     +LDI R30 , LOW ( _test_transfer_request + ( 1 ) )
+000148 e0f4     +LDI R31 , HIGH ( _test_transfer_request + ( 1 ) )
                  	__POINTW1MN _test_transfer_request,1
-000143 93fa      	ST   -Y,R31
-000144 93ea      	ST   -Y,R30
-000145 81ad      	LDD  R26,Y+5
-000146 27bb      	CLR  R27
-000147 940e 0301 	CALL _memcpy
-                 ; 0000 009A         send_respond((char*)&respond, respond.len + 2);
-000149 01fe      	MOVW R30,R28
-00014a 93fa      	ST   -Y,R31
-00014b 93ea      	ST   -Y,R30
-00014c 81eb      	LDD  R30,Y+3
-00014d e0f0      	LDI  R31,0
-00014e 9632      	ADIW R30,2
-00014f 01df      	MOVW R26,R30
-                 _0x27:
-000150 d075      	RCALL _send_respond
-                 ; 0000 009B     }
-                 ; 0000 009C }
-000151 96ef      	ADIW R28,63
-000152 96ef      	ADIW R28,63
-000153 9624      	ADIW R28,4
-000154 9508      	RET
+000149 93fa      	ST   -Y,R31
+00014a 93ea      	ST   -Y,R30
+00014b 81ad      	LDD  R26,Y+5
+00014c 27bb      	CLR  R27
+00014d 940e 031e 	CALL _memcpy
+                 ; 0000 009D         send_respond((char*)&respond, respond.len + 2);
+00014f 01fe      	MOVW R30,R28
+000150 93fa      	ST   -Y,R31
+000151 93ea      	ST   -Y,R30
+000152 81eb      	LDD  R30,Y+3
+000153 e0f0      	LDI  R31,0
+000154 9632      	ADIW R30,2
+000155 01df      	MOVW R26,R30
+                 _0x28:
+000156 d08c      	RCALL _send_respond
+                 ; 0000 009E     }
+                 ; 0000 009F }
+000157 96ef      	ADIW R28,63
+000158 96ef      	ADIW R28,63
+000159 9624      	ADIW R28,4
+00015a 9508      	RET
+                 ; .FEND
+                 ;
+                 ;void process_upgrade_start(){
+                 ; 0000 00A1 void process_upgrade_start(){
+                 _process_upgrade_start:
+                 ; .FSTART _process_upgrade_start
+                 ; 0000 00A2     unsigned char status = STATUS_SUCCESS;
+                 ; 0000 00A3     send_respond((char*)&status, sizeof(status));
+00015b 931a      	ST   -Y,R17
+                 ;	status -> R17
+00015c e010      	LDI  R17,0
+00015d b7ed      	IN   R30,SPL
+00015e b7fe      	IN   R31,SPH
+00015f 9731      	SBIW R30,1
+000160 93fa      	ST   -Y,R31
+000161 93ea      	ST   -Y,R30
+000162 932f      	PUSH R18
+000163 931f      	PUSH R17
+000164 940e 034d 	CALL SUBOPT_0x1
+000166 911f      	POP  R17
+000167 912f      	POP  R18
+                 ; 0000 00A4 
+                 ; 0000 00A5     delay_ms(10);
+000168 e0aa      	LDI  R26,LOW(10)
+000169 e0b0      	LDI  R27,0
+00016a 940e 0358 	CALL _delay_ms
+                 ; 0000 00A6     #asm("cli")
+00016c 94f8      	cli
+                 ; 0000 00A7     #asm
+                 ; 0000 00A8         LDI     R31, 0x38
+00016d e3f8              LDI     R31, 0x38
+                 ; 0000 00A9         LDI     R30, 0x00
+00016e e0e0              LDI     R30, 0x00
+                 ; 0000 00AA         IJMP              ;Jump to address 0x3800
+00016f 9409              IJMP              ;Jump to address 0x3800
+                 ; 0000 00AB     #endasm
+                 ; 0000 00AC }
+000170 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void process_read_version(){
-                 ; 0000 009E void process_read_version(){
+                 ; 0000 00AE void process_read_version(){
                  _process_read_version:
                  ; .FSTART _process_read_version
-                 ; 0000 009F     char *c;
-                 ; 0000 00A0     char str[] = "0.0.0";
-                 ; 0000 00A1     respond_read_version_t res;
-                 ; 0000 00A2     unsigned char hw0 = PIND.6;
-                 ; 0000 00A3     unsigned char hw1 = PIND.7;
-                 ; 0000 00A4     //hw_version = (hw1 << 1) | (hw0 << 0);
-                 ; 0000 00A5 
-                 ; 0000 00A6     res.status = STATUS_SUCCESS;
-000155 9761      	SBIW R28,17
-000156 e3e0      	LDI  R30,LOW(48)
-000157 87eb      	STD  Y+11,R30
-000158 e2ee      	LDI  R30,LOW(46)
-000159 87ec      	STD  Y+12,R30
-00015a e3e0      	LDI  R30,LOW(48)
-00015b 87ed      	STD  Y+13,R30
-00015c e2ee      	LDI  R30,LOW(46)
-00015d 87ee      	STD  Y+14,R30
-00015e e3e0      	LDI  R30,LOW(48)
-00015f 87ef      	STD  Y+15,R30
-000160 e0e0      	LDI  R30,LOW(0)
-000161 8be8      	STD  Y+16,R30
-000162 940e 033b 	CALL __SAVELOCR4
+                 ; 0000 00AF     char *c;
+                 ; 0000 00B0     char str[] = "0.0.0";
+                 ; 0000 00B1     respond_read_version_t res;
+                 ; 0000 00B2     unsigned char hw0 = PIND.6;
+                 ; 0000 00B3     unsigned char hw1 = PIND.7;
+                 ; 0000 00B4     //hw_version = (hw1 << 1) | (hw0 << 0);
+                 ; 0000 00B5 
+                 ; 0000 00B6     res.status = STATUS_SUCCESS;
+000172 9761      	SBIW R28,17
+000173 e3e0      	LDI  R30,LOW(48)
+000174 87eb      	STD  Y+11,R30
+000175 e2ee      	LDI  R30,LOW(46)
+000176 87ec      	STD  Y+12,R30
+000177 e3e0      	LDI  R30,LOW(48)
+000178 87ed      	STD  Y+13,R30
+000179 e2ee      	LDI  R30,LOW(46)
+00017a 87ee      	STD  Y+14,R30
+00017b e3e0      	LDI  R30,LOW(48)
+00017c 87ef      	STD  Y+15,R30
+00017d e0e0      	LDI  R30,LOW(0)
+00017e 8be8      	STD  Y+16,R30
+00017f 940e 0362 	CALL __SAVELOCR4
                  ;	*c -> R16,R17
                  ;	str -> Y+15
                  ;	res -> Y+4
                  ;	hw0 -> R19
                  ;	hw1 -> R18
-000164 e0e0      	LDI  R30,0
-000165 994e      	SBIC 0x9,6
-000166 e0e1      	LDI  R30,1
-000167 2f3e      	MOV  R19,R30
-000168 e0e0      	LDI  R30,0
-000169 994f      	SBIC 0x9,7
-00016a e0e1      	LDI  R30,1
-00016b 2f2e      	MOV  R18,R30
-00016c e0e0      	LDI  R30,LOW(0)
-00016d 83ec      	STD  Y+4,R30
-                 ; 0000 00A7     hw_version = hw1 * 2 + hw0 + 1;
-00016e 2fe2      	MOV  R30,R18
-00016f 0fee      	LSL  R30
-000170 0fe3      	ADD  R30,R19
-000171 5fef      	SUBI R30,-LOW(1)
-000172 2e4e      	MOV  R4,R30
-                 ; 0000 00A8     strncpy(res.hw_version, str, 5);
-000173 01fe      	MOVW R30,R28
-000174 9635      	ADIW R30,5
-000175 93fa      	ST   -Y,R31
-000176 93ea      	ST   -Y,R30
-000177 01fe      	MOVW R30,R28
-000178 9671      	ADIW R30,17
-000179 93fa      	ST   -Y,R31
-00017a 93ea      	ST   -Y,R30
-00017b e0a5      	LDI  R26,LOW(5)
-00017c 940e 0313 	CALL _strncpy
-                 ; 0000 00A9     res.hw_version[0] = hw_version + 0x30;
-00017e 2de4      	MOV  R30,R4
-00017f 5de0      	SUBI R30,-LOW(48)
-000180 83ed      	STD  Y+5,R30
-                 ; 0000 00AA     strncpy(res.fw_version, fw_version, 5);
-000181 01fe      	MOVW R30,R28
-000182 963a      	ADIW R30,10
-000183 93fa      	ST   -Y,R31
-000184 93ea      	ST   -Y,R30
-000185 e9e9      	LDI  R30,LOW(_fw_version)
-000186 e0f3      	LDI  R31,HIGH(_fw_version)
-000187 93fa      	ST   -Y,R31
-000188 93ea      	ST   -Y,R30
-000189 e0a5      	LDI  R26,LOW(5)
-00018a 940e 0313 	CALL _strncpy
-                 ; 0000 00AB     send_respond((char *)&res, sizeof(res));
-00018c 01fe      	MOVW R30,R28
-00018d 9634      	ADIW R30,4
-00018e 93fa      	ST   -Y,R31
-00018f 93ea      	ST   -Y,R30
-000190 e0ab      	LDI  R26,LOW(11)
-000191 e0b0      	LDI  R27,0
-000192 d033      	RCALL _send_respond
-                 ; 0000 00AC }
-000193 940e 0340 	CALL __LOADLOCR4
-000195 9665      	ADIW R28,21
-000196 9508      	RET
+000181 e0e0      	LDI  R30,0
+000182 994e      	SBIC 0x9,6
+000183 e0e1      	LDI  R30,1
+000184 2f3e      	MOV  R19,R30
+000185 e0e0      	LDI  R30,0
+000186 994f      	SBIC 0x9,7
+000187 e0e1      	LDI  R30,1
+000188 2f2e      	MOV  R18,R30
+000189 e0e0      	LDI  R30,LOW(0)
+00018a 83ec      	STD  Y+4,R30
+                 ; 0000 00B7     hw_version = hw1 * 2 + hw0 + 1;
+00018b 2fe2      	MOV  R30,R18
+00018c 0fee      	LSL  R30
+00018d 0fe3      	ADD  R30,R19
+00018e 5fef      	SUBI R30,-LOW(1)
+00018f 2e4e      	MOV  R4,R30
+                 ; 0000 00B8     strncpy(res.hw_version, str, 5);
+000190 01fe      	MOVW R30,R28
+000191 9635      	ADIW R30,5
+000192 93fa      	ST   -Y,R31
+000193 93ea      	ST   -Y,R30
+000194 01fe      	MOVW R30,R28
+000195 9671      	ADIW R30,17
+000196 93fa      	ST   -Y,R31
+000197 93ea      	ST   -Y,R30
+000198 e0a5      	LDI  R26,LOW(5)
+000199 940e 0330 	CALL _strncpy
+                 ; 0000 00B9     res.hw_version[0] = hw_version + 0x30;
+00019b 2de4      	MOV  R30,R4
+00019c 5de0      	SUBI R30,-LOW(48)
+00019d 83ed      	STD  Y+5,R30
+                 ; 0000 00BA     strncpy(res.fw_version, fw_version, 5);
+00019e 01fe      	MOVW R30,R28
+00019f 963a      	ADIW R30,10
+0001a0 93fa      	ST   -Y,R31
+0001a1 93ea      	ST   -Y,R30
+0001a2 e9e9      	LDI  R30,LOW(_fw_version)
+0001a3 e0f3      	LDI  R31,HIGH(_fw_version)
+0001a4 93fa      	ST   -Y,R31
+0001a5 93ea      	ST   -Y,R30
+0001a6 e0a5      	LDI  R26,LOW(5)
+0001a7 940e 0330 	CALL _strncpy
+                 ; 0000 00BB     send_respond((char *)&res, sizeof(res));
+0001a9 01fe      	MOVW R30,R28
+0001aa 9634      	ADIW R30,4
+0001ab 93fa      	ST   -Y,R31
+0001ac 93ea      	ST   -Y,R30
+0001ad e0ab      	LDI  R26,LOW(11)
+0001ae e0b0      	LDI  R27,0
+0001af d033      	RCALL _send_respond
+                 ; 0000 00BC }
+0001b0 940e 0367 	CALL __LOADLOCR4
+0001b2 9665      	ADIW R28,21
+0001b3 9508      	RET
                  ; .FEND
                  ;
                  ;void process_write_register(){
-                 ; 0000 00AE void process_write_register(){
+                 ; 0000 00BE void process_write_register(){
                  _process_write_register:
                  ; .FSTART _process_write_register
-                 ; 0000 00AF     unsigned char status = STATUS_SUCCESS;
-                 ; 0000 00B0     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
-000197 931a      	ST   -Y,R17
+                 ; 0000 00BF     unsigned char status = STATUS_SUCCESS;
+                 ; 0000 00C0     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
+0001b4 931a      	ST   -Y,R17
                  ;	status -> R17
-000198 e010      	LDI  R17,0
-000199 ede7      	LDI  R30,LOW(_pl_write_register)
-00019a e0f4      	LDI  R31,HIGH(_pl_write_register)
-00019b 940e 0334 	CALL SUBOPT_0x2
-00019d e0a6      	LDI  R26,LOW(6)
-00019e e0b0      	LDI  R27,0
-00019f 940e 0301 	CALL _memcpy
-                 ; 0000 00B1 
-                 ; 0000 00B2     TCCR1A = pl_write_register.reg_TCCR1A;
-0001a1 91e0 04d7 	LDS  R30,_pl_write_register
-0001a3 93e0 0080 	STS  128,R30
-                 ; 0000 00B3     TCCR1B = pl_write_register.reg_TCCR1B;
+0001b5 e010      	LDI  R17,0
+0001b6 ede7      	LDI  R30,LOW(_pl_write_register)
+0001b7 e0f4      	LDI  R31,HIGH(_pl_write_register)
+0001b8 940e 0351 	CALL SUBOPT_0x2
+0001ba e0a6      	LDI  R26,LOW(6)
+0001bb e0b0      	LDI  R27,0
+0001bc 940e 031e 	CALL _memcpy
+                 ; 0000 00C1 
+                 ; 0000 00C2     TCCR1A = pl_write_register.reg_TCCR1A;
+0001be 91e0 04d7 	LDS  R30,_pl_write_register
+0001c0 93e0 0080 	STS  128,R30
+                 ; 0000 00C3     TCCR1B = pl_write_register.reg_TCCR1B;
                 +
-0001a5 91e0 04d8+LDS R30 , _pl_write_register + ( 1 )
+0001c2 91e0 04d8+LDS R30 , _pl_write_register + ( 1 )
                  	__GETB1MN _pl_write_register,1
-0001a7 93e0 0081 	STS  129,R30
-                 ; 0000 00B4     ICR1H = pl_write_register.reg_ICR1H;
+0001c4 93e0 0081 	STS  129,R30
+                 ; 0000 00C4     ICR1H = pl_write_register.reg_ICR1H;
                 +
-0001a9 91e0 04d9+LDS R30 , _pl_write_register + ( 2 )
+0001c6 91e0 04d9+LDS R30 , _pl_write_register + ( 2 )
                  	__GETB1MN _pl_write_register,2
-0001ab 93e0 0087 	STS  135,R30
-                 ; 0000 00B5     ICR1L = pl_write_register.reg_ICR1L;
+0001c8 93e0 0087 	STS  135,R30
+                 ; 0000 00C5     ICR1L = pl_write_register.reg_ICR1L;
                 +
-0001ad 91e0 04da+LDS R30 , _pl_write_register + ( 3 )
+0001ca 91e0 04da+LDS R30 , _pl_write_register + ( 3 )
                  	__GETB1MN _pl_write_register,3
-0001af 93e0 0086 	STS  134,R30
-                 ; 0000 00B6     OCR1AH= pl_write_register.reg_OCR1AH;
+0001cc 93e0 0086 	STS  134,R30
+                 ; 0000 00C6     OCR1AH= pl_write_register.reg_OCR1AH;
                 +
-0001b1 91e0 04db+LDS R30 , _pl_write_register + ( 4 )
+0001ce 91e0 04db+LDS R30 , _pl_write_register + ( 4 )
                  	__GETB1MN _pl_write_register,4
-0001b3 93e0 0089 	STS  137,R30
-                 ; 0000 00B7     OCR1AL=pl_write_register.reg_OCR1AL;
+0001d0 93e0 0089 	STS  137,R30
+                 ; 0000 00C7     OCR1AL=pl_write_register.reg_OCR1AL;
                 +
-0001b5 91e0 04dc+LDS R30 , _pl_write_register + ( 5 )
+0001d2 91e0 04dc+LDS R30 , _pl_write_register + ( 5 )
                  	__GETB1MN _pl_write_register,5
-0001b7 93e0 0088 	STS  136,R30
-                 ; 0000 00B8 
-                 ; 0000 00B9     send_respond((char*)&status, sizeof(status));
-0001b9 b7ed      	IN   R30,SPL
-0001ba b7fe      	IN   R31,SPH
-0001bb 9731      	SBIW R30,1
-0001bc 93fa      	ST   -Y,R31
-0001bd 93ea      	ST   -Y,R30
-0001be 932f      	PUSH R18
-0001bf 931f      	PUSH R17
-0001c0 940e 0330 	CALL SUBOPT_0x1
-0001c2 911f      	POP  R17
-0001c3 912f      	POP  R18
-                 ; 0000 00BA }
-0001c4 940c 02c9 	JMP  _0x2060001
+0001d4 93e0 0088 	STS  136,R30
+                 ; 0000 00C8 
+                 ; 0000 00C9     send_respond((char*)&status, sizeof(status));
+0001d6 b7ed      	IN   R30,SPL
+0001d7 b7fe      	IN   R31,SPH
+0001d8 9731      	SBIW R30,1
+0001d9 93fa      	ST   -Y,R31
+0001da 93ea      	ST   -Y,R30
+0001db 932f      	PUSH R18
+0001dc 931f      	PUSH R17
+0001dd 940e 034d 	CALL SUBOPT_0x1
+0001df 911f      	POP  R17
+0001e0 912f      	POP  R18
+                 ; 0000 00CA }
+0001e1 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void send_respond(char * payload, unsigned short len){
-                 ; 0000 00BC void send_respond(char * payload, unsigned short len){
+                 ; 0000 00CC void send_respond(char * payload, unsigned short len){
                  _send_respond:
                  ; .FSTART _send_respond
-                 ; 0000 00BD     unsigned char i;
-                 ; 0000 00BE     unsigned char checksum = 0;
-                 ; 0000 00BF     unsigned char *c;
-                 ; 0000 00C0     respond.header = 0x55FF;
-0001c6 93ba      	ST   -Y,R27
-0001c7 93aa      	ST   -Y,R26
-0001c8 940e 033b 	CALL __SAVELOCR4
+                 ; 0000 00CD     unsigned char i;
+                 ; 0000 00CE     unsigned char checksum = 0;
+                 ; 0000 00CF     unsigned char *c;
+                 ; 0000 00D0     respond.header = 0x55FF;
+0001e3 93ba      	ST   -Y,R27
+0001e4 93aa      	ST   -Y,R26
+0001e5 940e 0362 	CALL __SAVELOCR4
                  ;	*payload -> Y+6
                  ;	len -> Y+4
                  ;	i -> R17
                  ;	checksum -> R16
                  ;	*c -> R18,R19
-0001ca e000      	LDI  R16,0
-0001cb efef      	LDI  R30,LOW(22015)
-0001cc e5f5      	LDI  R31,HIGH(22015)
-0001cd 93e0 043b 	STS  _respond,R30
-0001cf 93f0 043c 	STS  _respond+1,R31
-                 ; 0000 00C1     respond.len = 5 + len;
-0001d1 81ec      	LDD  R30,Y+4
-0001d2 5feb      	SUBI R30,-LOW(5)
+0001e7 e000      	LDI  R16,0
+0001e8 efef      	LDI  R30,LOW(22015)
+0001e9 e5f5      	LDI  R31,HIGH(22015)
+0001ea 93e0 043b 	STS  _respond,R30
+0001ec 93f0 043c 	STS  _respond+1,R31
+                 ; 0000 00D1     respond.len = 5 + len;
+0001ee 81ec      	LDD  R30,Y+4
+0001ef 5feb      	SUBI R30,-LOW(5)
                 +
-0001d3 93e0 043d+STS _respond + ( 2 ) , R30
+0001f0 93e0 043d+STS _respond + ( 2 ) , R30
                  	__PUTB1MN _respond,2
-                 ; 0000 00C2     respond.tranId = request.tranId;
+                 ; 0000 00D2     respond.tranId = request.tranId;
                 +
-0001d5 91e0 03a3+LDS R30 , _request + ( 4 )
+0001f2 91e0 03a3+LDS R30 , _request + ( 4 )
                  	__GETB1MN _request,4
                 +
-0001d7 93e0 043f+STS _respond + ( 4 ) , R30
+0001f4 93e0 043f+STS _respond + ( 4 ) , R30
                  	__PUTB1MN _respond,4
-                 ; 0000 00C3     respond.opcode = request.opcode;
+                 ; 0000 00D3     respond.opcode = request.opcode;
                 +
-0001d9 91e0 03a4+LDS R30 , _request + ( 5 )
+0001f6 91e0 03a4+LDS R30 , _request + ( 5 )
                  	__GETB1MN _request,5
                 +
-0001db 93e0 0440+STS _respond + ( 5 ) , R30
+0001f8 93e0 0440+STS _respond + ( 5 ) , R30
                  	__PUTB1MN _respond,5
-                 ; 0000 00C4     respond.type = TYPE_RESPOND;
-0001dd e0e2      	LDI  R30,LOW(2)
+                 ; 0000 00D4     respond.type = TYPE_RESPOND;
+0001fa e0e2      	LDI  R30,LOW(2)
                 +
-0001de 93e0 043e+STS _respond + ( 3 ) , R30
+0001fb 93e0 043e+STS _respond + ( 3 ) , R30
                  	__PUTB1MN _respond,3
-                 ; 0000 00C5 
-                 ; 0000 00C6     memcpy(respond.payload, payload, len);
+                 ; 0000 00D5 
+                 ; 0000 00D6     memcpy(respond.payload, payload, len);
                 +
-0001e0 e4e1     +LDI R30 , LOW ( _respond + ( 6 ) )
-0001e1 e0f4     +LDI R31 , HIGH ( _respond + ( 6 ) )
+0001fd e4e1     +LDI R30 , LOW ( _respond + ( 6 ) )
+0001fe e0f4     +LDI R31 , HIGH ( _respond + ( 6 ) )
                  	__POINTW1MN _respond,6
-0001e2 93fa      	ST   -Y,R31
-0001e3 93ea      	ST   -Y,R30
-0001e4 85e8      	LDD  R30,Y+8
-0001e5 85f9      	LDD  R31,Y+8+1
-0001e6 93fa      	ST   -Y,R31
-0001e7 93ea      	ST   -Y,R30
-0001e8 85a8      	LDD  R26,Y+8
-0001e9 85b9      	LDD  R27,Y+8+1
-0001ea 940e 0301 	CALL _memcpy
-                 ; 0000 00C7 
-                 ; 0000 00C8     for(i = 0; i< respond.len - 1; i++){
-0001ec e010      	LDI  R17,LOW(0)
-                 _0x22:
-                +
-0001ed 91e0 043d+LDS R30 , _respond + ( 2 )
-                 	__GETB1MN _respond,2
-0001ef e0f0      	LDI  R31,0
-0001f0 9731      	SBIW R30,1
-0001f1 2fa1      	MOV  R26,R17
-0001f2 e0b0      	LDI  R27,0
-0001f3 17ae      	CP   R26,R30
-0001f4 07bf      	CPC  R27,R31
-0001f5 f44c      	BRGE _0x23
-                 ; 0000 00C9         checksum += *(&respond.len + i);
-                +
-0001f6 e3ad     +LDI R26 , LOW ( _respond + ( 2 ) )
-0001f7 e0b4     +LDI R27 , HIGH ( _respond + ( 2 ) )
-                 	__POINTW2MN _respond,2
-0001f8 27ee      	CLR  R30
-0001f9 0fa1      	ADD  R26,R17
-0001fa 1fbe      	ADC  R27,R30
-0001fb 91ec      	LD   R30,X
-0001fc 0f0e      	ADD  R16,R30
-                 ; 0000 00CA     }
-0001fd 5f1f      	SUBI R17,-1
-0001fe cfee      	RJMP _0x22
+0001ff 93fa      	ST   -Y,R31
+000200 93ea      	ST   -Y,R30
+000201 85e8      	LDD  R30,Y+8
+000202 85f9      	LDD  R31,Y+8+1
+000203 93fa      	ST   -Y,R31
+000204 93ea      	ST   -Y,R30
+000205 85a8      	LDD  R26,Y+8
+000206 85b9      	LDD  R27,Y+8+1
+000207 940e 031e 	CALL _memcpy
+                 ; 0000 00D7 
+                 ; 0000 00D8     for(i = 0; i< respond.len - 1; i++){
+000209 e010      	LDI  R17,LOW(0)
                  _0x23:
-                 ; 0000 00CB 
-                 ; 0000 00CC     checksum = ~checksum + 1;
-0001ff 9501      	NEG  R16
-                 ; 0000 00CD 
-                 ; 0000 00CE     c = (char*)&respond;
                 +
-000200 e32b     +LDI R18 , LOW ( _respond )
-000201 e034     +LDI R19 , HIGH ( _respond )
-                 	__POINTWRM 18,19,_respond
-                 ; 0000 00CF     for(i = 0; i<respond.len + 2; i++){
-000202 e010      	LDI  R17,LOW(0)
-                 _0x25:
-                +
-000203 91e0 043d+LDS R30 , _respond + ( 2 )
+00020a 91e0 043d+LDS R30 , _respond + ( 2 )
                  	__GETB1MN _respond,2
-000205 e0f0      	LDI  R31,0
-000206 9632      	ADIW R30,2
-000207 2fa1      	MOV  R26,R17
-000208 e0b0      	LDI  R27,0
-000209 17ae      	CP   R26,R30
-00020a 07bf      	CPC  R27,R31
-00020b f44c      	BRGE _0x26
-                 ; 0000 00D0         putchar(c[i]);
-00020c 01d9      	MOVW R26,R18
-00020d 27ee      	CLR  R30
-00020e 0fa1      	ADD  R26,R17
-00020f 1fbe      	ADC  R27,R30
-000210 91ac      	LD   R26,X
-000211 940e 02e3 	CALL _putchar
-                 ; 0000 00D1     }
-000213 5f1f      	SUBI R17,-1
-000214 cfee      	RJMP _0x25
+00020c e0f0      	LDI  R31,0
+00020d 9731      	SBIW R30,1
+00020e 2fa1      	MOV  R26,R17
+00020f e0b0      	LDI  R27,0
+000210 17ae      	CP   R26,R30
+000211 07bf      	CPC  R27,R31
+000212 f44c      	BRGE _0x24
+                 ; 0000 00D9         checksum += *(&respond.len + i);
+                +
+000213 e3ad     +LDI R26 , LOW ( _respond + ( 2 ) )
+000214 e0b4     +LDI R27 , HIGH ( _respond + ( 2 ) )
+                 	__POINTW2MN _respond,2
+000215 27ee      	CLR  R30
+000216 0fa1      	ADD  R26,R17
+000217 1fbe      	ADC  R27,R30
+000218 91ec      	LD   R30,X
+000219 0f0e      	ADD  R16,R30
+                 ; 0000 00DA     }
+00021a 5f1f      	SUBI R17,-1
+00021b cfee      	RJMP _0x23
+                 _0x24:
+                 ; 0000 00DB 
+                 ; 0000 00DC     checksum = ~checksum + 1;
+00021c 9501      	NEG  R16
+                 ; 0000 00DD 
+                 ; 0000 00DE     c = (char*)&respond;
+                +
+00021d e32b     +LDI R18 , LOW ( _respond )
+00021e e034     +LDI R19 , HIGH ( _respond )
+                 	__POINTWRM 18,19,_respond
+                 ; 0000 00DF     for(i = 0; i<respond.len + 2; i++){
+00021f e010      	LDI  R17,LOW(0)
                  _0x26:
-                 ; 0000 00D2     putchar(checksum);
-000215 2fa0      	MOV  R26,R16
-000216 940e 02e3 	CALL _putchar
-                 ; 0000 00D3 }
-000218 940e 0340 	CALL __LOADLOCR4
-00021a 9628      	ADIW R28,8
-00021b 9508      	RET
+                +
+000220 91e0 043d+LDS R30 , _respond + ( 2 )
+                 	__GETB1MN _respond,2
+000222 e0f0      	LDI  R31,0
+000223 9632      	ADIW R30,2
+000224 2fa1      	MOV  R26,R17
+000225 e0b0      	LDI  R27,0
+000226 17ae      	CP   R26,R30
+000227 07bf      	CPC  R27,R31
+000228 f44c      	BRGE _0x27
+                 ; 0000 00E0         putchar(c[i]);
+000229 01d9      	MOVW R26,R18
+00022a 27ee      	CLR  R30
+00022b 0fa1      	ADD  R26,R17
+00022c 1fbe      	ADC  R27,R30
+00022d 91ac      	LD   R26,X
+00022e 940e 0300 	CALL _putchar
+                 ; 0000 00E1     }
+000230 5f1f      	SUBI R17,-1
+000231 cfee      	RJMP _0x26
+                 _0x27:
+                 ; 0000 00E2     putchar(checksum);
+000232 2fa0      	MOV  R26,R16
+000233 940e 0300 	CALL _putchar
+                 ; 0000 00E3 }
+000235 940e 0367 	CALL __LOADLOCR4
+000237 9628      	ADIW R28,8
+000238 9508      	RET
                  ; .FEND
                  ;#include "main.h"
                  	#ifndef __SLEEP_DEFINED__
@@ -1983,11 +2031,11 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 0005    // Crystal Oscillator division factor: 1
                  ; 0001 0006    #pragma optsize-
                  ; 0001 0007    CLKPR=(1<<CLKPCE);
-00021c e8e0      	LDI  R30,LOW(128)
-00021d 93e0 0061 	STS  97,R30
+000239 e8e0      	LDI  R30,LOW(128)
+00023a 93e0 0061 	STS  97,R30
                  ; 0001 0008    CLKPR=(0<<CLKPCE) | (0<<CLKPS3) | (0<<CLKPS2) | (0<<CLKPS1) | (0<<CLKPS0);
-00021f e0e0      	LDI  R30,LOW(0)
-000220 93e0 0061 	STS  97,R30
+00023c e0e0      	LDI  R30,LOW(0)
+00023d 93e0 0061 	STS  97,R30
                  ; 0001 0009    #ifdef _OPTIMIZE_SIZE_
                  ; 0001 000A    #pragma optsize+
                  ; 0001 000B    #endif
@@ -1996,28 +2044,28 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 000E    // Port B initialization
                  ; 0001 000F    // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=Out Bit0=In
                  ; 0001 0010    DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (1<<DDB1) | (0<<DDB0);
-000222 e0e2      	LDI  R30,LOW(2)
-000223 b9e4      	OUT  0x4,R30
+00023f e0e2      	LDI  R30,LOW(2)
+000240 b9e4      	OUT  0x4,R30
                  ; 0001 0011    // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=0 Bit0=T
                  ; 0001 0012    PORTB=(0<<PORTB7) | (0<<PORTB6) | (0<<PORTB5) | (0<<PORTB4) | (0<<PORTB3) | (0<<PORTB2) | (0<<PORTB1) | (0<<PORTB0);
-000224 e0e0      	LDI  R30,LOW(0)
-000225 b9e5      	OUT  0x5,R30
+000241 e0e0      	LDI  R30,LOW(0)
+000242 b9e5      	OUT  0x5,R30
                  ; 0001 0013 
                  ; 0001 0014    // Port C initialization
                  ; 0001 0015    // Function: Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
                  ; 0001 0016    DDRC=(0<<DDC6) | (0<<DDC5) | (0<<DDC4) | (0<<DDC3) | (0<<DDC2) | (0<<DDC1) | (0<<DDC0);
-000226 b9e7      	OUT  0x7,R30
+000243 b9e7      	OUT  0x7,R30
                  ; 0001 0017    // State: Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
                  ; 0001 0018    PORTC=(0<<PORTC6) | (0<<PORTC5) | (0<<PORTC4) | (0<<PORTC3) | (0<<PORTC2) | (0<<PORTC1) | (0<<PORTC0);
-000227 b9e8      	OUT  0x8,R30
+000244 b9e8      	OUT  0x8,R30
                  ; 0001 0019 
                  ; 0001 001A    // Port D initialization
                  ; 0001 001B    // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
                  ; 0001 001C    DDRD=(0<<DDD7) | (0<<DDD6) | (0<<DDD5) | (0<<DDD4) | (0<<DDD3) | (0<<DDD2) | (0<<DDD1) | (0<<DDD0);
-000228 b9ea      	OUT  0xA,R30
+000245 b9ea      	OUT  0xA,R30
                  ; 0001 001D    // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
                  ; 0001 001E    PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<PORTD2) | (0<<PORTD1) | (0<<PORTD0);
-000229 b9eb      	OUT  0xB,R30
+000246 b9eb      	OUT  0xB,R30
                  ; 0001 001F 
                  ; 0001 0020    // Timer/Counter 0 initialization
                  ; 0001 0021    // Clock source: System Clock
@@ -2026,15 +2074,15 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 0024    // OC0A output: Disconnected
                  ; 0001 0025    // OC0B output: Disconnected
                  ; 0001 0026    TCCR0A=(0<<COM0A1) | (0<<COM0A0) | (0<<COM0B1) | (0<<COM0B0) | (0<<WGM01) | (0<<WGM00);
-00022a bde4      	OUT  0x24,R30
+000247 bde4      	OUT  0x24,R30
                  ; 0001 0027    TCCR0B=(0<<WGM02) | (0<<CS02) | (0<<CS01) | (0<<CS00);
-00022b bde5      	OUT  0x25,R30
+000248 bde5      	OUT  0x25,R30
                  ; 0001 0028    TCNT0=0x00;
-00022c bde6      	OUT  0x26,R30
+000249 bde6      	OUT  0x26,R30
                  ; 0001 0029    OCR0A=0x00;
-00022d bde7      	OUT  0x27,R30
+00024a bde7      	OUT  0x27,R30
                  ; 0001 002A    OCR0B=0x00;
-00022e bde8      	OUT  0x28,R30
+00024b bde8      	OUT  0x28,R30
                  ; 0001 002B 
                  ; 0001 002C    // Timer/Counter 1 initialization
                  ; 0001 002D    // Clock source: System Clock
@@ -2052,28 +2100,28 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 0039    // Compare A Match Interrupt: Off
                  ; 0001 003A    // Compare B Match Interrupt: Off
                  ; 0001 003B    TCCR1A=(1<<COM1A1) | (0<<COM1A0) | (0<<COM1B1) | (0<<COM1B0) | (1<<WGM11) | (0<<WGM10);
-00022f e8e2      	LDI  R30,LOW(130)
-000230 93e0 0080 	STS  128,R30
+00024c e8e2      	LDI  R30,LOW(130)
+00024d 93e0 0080 	STS  128,R30
                  ; 0001 003C    TCCR1B=(0<<ICNC1) | (0<<ICES1) | (1<<WGM13) | (1<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10);
-000232 e1e9      	LDI  R30,LOW(25)
-000233 93e0 0081 	STS  129,R30
+00024f e1e9      	LDI  R30,LOW(25)
+000250 93e0 0081 	STS  129,R30
                  ; 0001 003D    TCNT1H=0;
-000235 e0e0      	LDI  R30,LOW(0)
-000236 93e0 0085 	STS  133,R30
+000252 e0e0      	LDI  R30,LOW(0)
+000253 93e0 0085 	STS  133,R30
                  ; 0001 003E    TCNT1L=0;
-000238 93e0 0084 	STS  132,R30
+000255 93e0 0084 	STS  132,R30
                  ; 0001 003F    ICR1H=0x00;
-00023a 93e0 0087 	STS  135,R30
+000257 93e0 0087 	STS  135,R30
                  ; 0001 0040    ICR1L=0x00;
-00023c 93e0 0086 	STS  134,R30
+000259 93e0 0086 	STS  134,R30
                  ; 0001 0041    OCR1AH=0x00;
-00023e 93e0 0089 	STS  137,R30
+00025b 93e0 0089 	STS  137,R30
                  ; 0001 0042    OCR1AL=0x00;
-000240 93e0 0088 	STS  136,R30
+00025d 93e0 0088 	STS  136,R30
                  ; 0001 0043    OCR1BH=0x00;
-000242 93e0 008b 	STS  139,R30
+00025f 93e0 008b 	STS  139,R30
                  ; 0001 0044    OCR1BL=0x00;
-000244 93e0 008a 	STS  138,R30
+000261 93e0 008a 	STS  138,R30
                  ; 0001 0045 
                  ; 0001 0046    // Timer/Counter 2 initialization
                  ; 0001 0047    // Clock source: System Clock
@@ -2082,29 +2130,29 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 004A    // OC2A output: Disconnected
                  ; 0001 004B    // OC2B output: Disconnected
                  ; 0001 004C    ASSR=(0<<EXCLK) | (0<<AS2);
-000246 93e0 00b6 	STS  182,R30
+000263 93e0 00b6 	STS  182,R30
                  ; 0001 004D    TCCR2A=(0<<COM2A1) | (0<<COM2A0) | (0<<COM2B1) | (0<<COM2B0) | (0<<WGM21) | (0<<WGM20);
-000248 93e0 00b0 	STS  176,R30
+000265 93e0 00b0 	STS  176,R30
                  ; 0001 004E    TCCR2B=(0<<WGM22) | (0<<CS22) | (0<<CS21) | (0<<CS20);
-00024a 93e0 00b1 	STS  177,R30
+000267 93e0 00b1 	STS  177,R30
                  ; 0001 004F    TCNT2=0x00;
-00024c 93e0 00b2 	STS  178,R30
+000269 93e0 00b2 	STS  178,R30
                  ; 0001 0050    OCR2A=0x00;
-00024e 93e0 00b3 	STS  179,R30
+00026b 93e0 00b3 	STS  179,R30
                  ; 0001 0051    OCR2B=0x00;
-000250 93e0 00b4 	STS  180,R30
+00026d 93e0 00b4 	STS  180,R30
                  ; 0001 0052 
                  ; 0001 0053    // Timer/Counter 0 Interrupt(s) initialization
                  ; 0001 0054    TIMSK0=(0<<OCIE0B) | (0<<OCIE0A) | (0<<TOIE0);
-000252 93e0 006e 	STS  110,R30
+00026f 93e0 006e 	STS  110,R30
                  ; 0001 0055 
                  ; 0001 0056    // Timer/Counter 1 Interrupt(s) initialization
                  ; 0001 0057    TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (0<<OCIE1A) | (0<<TOIE1);
-000254 93e0 006f 	STS  111,R30
+000271 93e0 006f 	STS  111,R30
                  ; 0001 0058 
                  ; 0001 0059    // Timer/Counter 2 Interrupt(s) initialization
                  ; 0001 005A    TIMSK2=(0<<OCIE2B) | (0<<OCIE2A) | (0<<TOIE2);
-000256 93e0 0070 	STS  112,R30
+000273 93e0 0070 	STS  112,R30
                  ; 0001 005B 
                  ; 0001 005C    // External Interrupt(s) initialization
                  ; 0001 005D    // INT0: Off
@@ -2113,11 +2161,11 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 0060    // Interrupt on any change on pins PCINT8-14: Off
                  ; 0001 0061    // Interrupt on any change on pins PCINT16-23: Off
                  ; 0001 0062    EICRA=(0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
-000258 93e0 0069 	STS  105,R30
+000275 93e0 0069 	STS  105,R30
                  ; 0001 0063    EIMSK=(0<<INT1) | (0<<INT0);
-00025a bbed      	OUT  0x1D,R30
+000277 bbed      	OUT  0x1D,R30
                  ; 0001 0064    PCICR=(0<<PCIE2) | (0<<PCIE1) | (0<<PCIE0);
-00025b 93e0 0068 	STS  104,R30
+000278 93e0 0068 	STS  104,R30
                  ; 0001 0065 
                  ; 0001 0066    // USART initialization
                  ; 0001 0067    // Communication Parameters: 8 Data, 1 Stop, No Parity
@@ -2132,20 +2180,20 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 0070    //UBRR0L=0x22;
                  ; 0001 0071 
                  ; 0001 0072    UCSR0A=(0<<RXC0) | (0<<TXC0) | (0<<UDRE0) | (0<<FE0) | (0<<DOR0) | (0<<UPE0) | (1<<U2X0) | (0<<MPCM0);
-00025d e0e2      	LDI  R30,LOW(2)
-00025e 93e0 00c0 	STS  192,R30
+00027a e0e2      	LDI  R30,LOW(2)
+00027b 93e0 00c0 	STS  192,R30
                  ; 0001 0073    UCSR0B=(1<<RXCIE0) | (1<<TXCIE0) | (0<<UDRIE0) | (1<<RXEN0) | (1<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
-000260 ede8      	LDI  R30,LOW(216)
-000261 93e0 00c1 	STS  193,R30
+00027d ede8      	LDI  R30,LOW(216)
+00027e 93e0 00c1 	STS  193,R30
                  ; 0001 0074    UCSR0C=(0<<UMSEL01) | (0<<UMSEL00) | (0<<UPM01) | (0<<UPM00) | (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00) | (0<<UCPOL0);
-000263 e0e6      	LDI  R30,LOW(6)
-000264 93e0 00c2 	STS  194,R30
+000280 e0e6      	LDI  R30,LOW(6)
+000281 93e0 00c2 	STS  194,R30
                  ; 0001 0075    UBRR0H=0x00;
-000266 e0e0      	LDI  R30,LOW(0)
-000267 93e0 00c5 	STS  197,R30
+000283 e0e0      	LDI  R30,LOW(0)
+000284 93e0 00c5 	STS  197,R30
                  ; 0001 0076    UBRR0L=0x22;
-000269 e2e2      	LDI  R30,LOW(34)
-00026a 93e0 00c4 	STS  196,R30
+000286 e2e2      	LDI  R30,LOW(34)
+000287 93e0 00c4 	STS  196,R30
                  ; 0001 0077 
                  ; 0001 0078    // Analog Comparator initialization
                  ; 0001 0079    // Analog Comparator: Off
@@ -2154,32 +2202,32 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 007C    // The Analog Comparator's negative input is
                  ; 0001 007D    // connected to the AIN1 pin
                  ; 0001 007E    ACSR=(1<<ACD) | (0<<ACBG) | (0<<ACO) | (0<<ACI) | (0<<ACIE) | (0<<ACIC) | (0<<ACIS1) | (0<<ACIS0);
-00026c e8e0      	LDI  R30,LOW(128)
-00026d bfe0      	OUT  0x30,R30
+000289 e8e0      	LDI  R30,LOW(128)
+00028a bfe0      	OUT  0x30,R30
                  ; 0001 007F    ADCSRB=(0<<ACME);
-00026e e0e0      	LDI  R30,LOW(0)
-00026f 93e0 007b 	STS  123,R30
+00028b e0e0      	LDI  R30,LOW(0)
+00028c 93e0 007b 	STS  123,R30
                  ; 0001 0080    // Digital input buffer on AIN0: On
                  ; 0001 0081    // Digital input buffer on AIN1: On
                  ; 0001 0082    DIDR1=(0<<AIN0D) | (0<<AIN1D);
-000271 93e0 007f 	STS  127,R30
+00028e 93e0 007f 	STS  127,R30
                  ; 0001 0083 
                  ; 0001 0084    // ADC initialization
                  ; 0001 0085    // ADC disabled
                  ; 0001 0086    ADCSRA=(0<<ADEN) | (0<<ADSC) | (0<<ADATE) | (0<<ADIF) | (0<<ADIE) | (0<<ADPS2) | (0<<ADPS1) | (0<<ADPS0);
-000273 93e0 007a 	STS  122,R30
+000290 93e0 007a 	STS  122,R30
                  ; 0001 0087 
                  ; 0001 0088    // SPI initialization
                  ; 0001 0089    // SPI disabled
                  ; 0001 008A    SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0);
-000275 bdec      	OUT  0x2C,R30
+000292 bdec      	OUT  0x2C,R30
                  ; 0001 008B 
                  ; 0001 008C    // TWI initialization
                  ; 0001 008D    // TWI disabled
                  ; 0001 008E    TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
-000276 93e0 00bc 	STS  188,R30
+000293 93e0 00bc 	STS  188,R30
                  ; 0001 008F }
-000278 9508      	RET
+000295 9508      	RET
                  ; .FEND
                  ;#include "main.h"
                  	#ifndef __SLEEP_DEFINED__
@@ -2217,71 +2265,71 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  	.CSEG
                  _usart_rx_isr:
                  ; .FSTART _usart_rx_isr
-000279 93aa      	ST   -Y,R26
-00027a 93ea      	ST   -Y,R30
-00027b 93fa      	ST   -Y,R31
-00027c b7ef      	IN   R30,SREG
-00027d 93ea      	ST   -Y,R30
+000296 93aa      	ST   -Y,R26
+000297 93ea      	ST   -Y,R30
+000298 93fa      	ST   -Y,R31
+000299 b7ef      	IN   R30,SREG
+00029a 93ea      	ST   -Y,R30
                  ; 0002 001F    char status,data;
                  ; 0002 0020    status=UCSR0A;
-00027e 931a      	ST   -Y,R17
-00027f 930a      	ST   -Y,R16
+00029b 931a      	ST   -Y,R17
+00029c 930a      	ST   -Y,R16
                  ;	status -> R17
                  ;	data -> R16
-000280 9110 00c0 	LDS  R17,192
+00029d 9110 00c0 	LDS  R17,192
                  ; 0002 0021    data=UDR0;
-000282 9100 00c6 	LDS  R16,198
+00029f 9100 00c6 	LDS  R16,198
                  ; 0002 0022    if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
-000284 2fe1      	MOV  R30,R17
-000285 71ec      	ANDI R30,LOW(0x1C)
-000286 f4e1      	BRNE _0x40003
+0002a1 2fe1      	MOV  R30,R17
+0002a2 71ec      	ANDI R30,LOW(0x1C)
+0002a3 f4e1      	BRNE _0x40003
                  ; 0002 0023       {
                  ; 0002 0024       rx_buffer0[rx_wr_index0++]=data;
-000287 91e0 0300 	LDS  R30,_rx_wr_index0
-000289 5fef      	SUBI R30,-LOW(1)
-00028a 93e0 0300 	STS  _rx_wr_index0,R30
-00028c 50e1      	SUBI R30,LOW(1)
-00028d e0f0      	LDI  R31,0
-00028e 5fed      	SUBI R30,LOW(-_rx_buffer0)
-00028f 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
-000290 8300      	ST   Z,R16
+0002a4 91e0 0300 	LDS  R30,_rx_wr_index0
+0002a6 5fef      	SUBI R30,-LOW(1)
+0002a7 93e0 0300 	STS  _rx_wr_index0,R30
+0002a9 50e1      	SUBI R30,LOW(1)
+0002aa e0f0      	LDI  R31,0
+0002ab 5fed      	SUBI R30,LOW(-_rx_buffer0)
+0002ac 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
+0002ad 8300      	ST   Z,R16
                  ; 0002 0025    #if RX_BUFFER_SIZE0 == 256
                  ; 0002 0026       // special case for receiver buffer size=256
                  ; 0002 0027       if (++rx_counter0 == 0) rx_buffer_overflow0=1;
                  ; 0002 0028    #else
                  ; 0002 0029       if (rx_wr_index0 == RX_BUFFER_SIZE0) rx_wr_index0=0;
-000291 91a0 0300 	LDS  R26,_rx_wr_index0
-000293 39a6      	CPI  R26,LOW(0x96)
-000294 f419      	BRNE _0x40004
-000295 e0e0      	LDI  R30,LOW(0)
-000296 93e0 0300 	STS  _rx_wr_index0,R30
+0002ae 91a0 0300 	LDS  R26,_rx_wr_index0
+0002b0 39a6      	CPI  R26,LOW(0x96)
+0002b1 f419      	BRNE _0x40004
+0002b2 e0e0      	LDI  R30,LOW(0)
+0002b3 93e0 0300 	STS  _rx_wr_index0,R30
                  ; 0002 002A       if (++rx_counter0 == RX_BUFFER_SIZE0)
                  _0x40004:
-000298 91a0 0302 	LDS  R26,_rx_counter0
-00029a 5faf      	SUBI R26,-LOW(1)
-00029b 93a0 0302 	STS  _rx_counter0,R26
-00029d 39a6      	CPI  R26,LOW(0x96)
-00029e f421      	BRNE _0x40005
+0002b5 91a0 0302 	LDS  R26,_rx_counter0
+0002b7 5faf      	SUBI R26,-LOW(1)
+0002b8 93a0 0302 	STS  _rx_counter0,R26
+0002ba 39a6      	CPI  R26,LOW(0x96)
+0002bb f421      	BRNE _0x40005
                  ; 0002 002B          {
                  ; 0002 002C          rx_counter0=0;
-00029f e0e0      	LDI  R30,LOW(0)
-0002a0 93e0 0302 	STS  _rx_counter0,R30
+0002bc e0e0      	LDI  R30,LOW(0)
+0002bd 93e0 0302 	STS  _rx_counter0,R30
                  ; 0002 002D          rx_buffer_overflow0=1;
-0002a2 9af0      	SBI  0x1E,0
+0002bf 9af0      	SBI  0x1E,0
                  ; 0002 002E          }
                  ; 0002 002F    #endif
                  ; 0002 0030       }
                  _0x40005:
                  ; 0002 0031 }
                  _0x40003:
-0002a3 9109      	LD   R16,Y+
-0002a4 9119      	LD   R17,Y+
-0002a5 91e9      	LD   R30,Y+
-0002a6 bfef      	OUT  SREG,R30
-0002a7 91f9      	LD   R31,Y+
-0002a8 91e9      	LD   R30,Y+
-0002a9 91a9      	LD   R26,Y+
-0002aa 9518      	RETI
+0002c0 9109      	LD   R16,Y+
+0002c1 9119      	LD   R17,Y+
+0002c2 91e9      	LD   R30,Y+
+0002c3 bfef      	OUT  SREG,R30
+0002c4 91f9      	LD   R31,Y+
+0002c5 91e9      	LD   R30,Y+
+0002c6 91a9      	LD   R26,Y+
+0002c7 9518      	RETI
                  ; .FEND
                  ;
                  ;#ifndef _DEBUG_TERMINAL_IO_
@@ -2294,43 +2342,43 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; .FSTART _getchar
                  ; 0002 0039    char data;
                  ; 0002 003A    while (rx_counter0==0);
-0002ab 931a      	ST   -Y,R17
+0002c8 931a      	ST   -Y,R17
                  ;	data -> R17
                  _0x40008:
-0002ac 91e0 0302 	LDS  R30,_rx_counter0
-0002ae 30e0      	CPI  R30,0
-0002af f3e1      	BREQ _0x40008
+0002c9 91e0 0302 	LDS  R30,_rx_counter0
+0002cb 30e0      	CPI  R30,0
+0002cc f3e1      	BREQ _0x40008
                  ; 0002 003B    data=rx_buffer0[rx_rd_index0++];
-0002b0 91e0 0301 	LDS  R30,_rx_rd_index0
-0002b2 5fef      	SUBI R30,-LOW(1)
-0002b3 93e0 0301 	STS  _rx_rd_index0,R30
-0002b5 50e1      	SUBI R30,LOW(1)
-0002b6 e0f0      	LDI  R31,0
-0002b7 5fed      	SUBI R30,LOW(-_rx_buffer0)
-0002b8 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
-0002b9 8110      	LD   R17,Z
+0002cd 91e0 0301 	LDS  R30,_rx_rd_index0
+0002cf 5fef      	SUBI R30,-LOW(1)
+0002d0 93e0 0301 	STS  _rx_rd_index0,R30
+0002d2 50e1      	SUBI R30,LOW(1)
+0002d3 e0f0      	LDI  R31,0
+0002d4 5fed      	SUBI R30,LOW(-_rx_buffer0)
+0002d5 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
+0002d6 8110      	LD   R17,Z
                  ; 0002 003C    #if RX_BUFFER_SIZE0 != 256
                  ; 0002 003D    if (rx_rd_index0 == RX_BUFFER_SIZE0) rx_rd_index0=0;
-0002ba 91a0 0301 	LDS  R26,_rx_rd_index0
-0002bc 39a6      	CPI  R26,LOW(0x96)
-0002bd f419      	BRNE _0x4000B
-0002be e0e0      	LDI  R30,LOW(0)
-0002bf 93e0 0301 	STS  _rx_rd_index0,R30
+0002d7 91a0 0301 	LDS  R26,_rx_rd_index0
+0002d9 39a6      	CPI  R26,LOW(0x96)
+0002da f419      	BRNE _0x4000B
+0002db e0e0      	LDI  R30,LOW(0)
+0002dc 93e0 0301 	STS  _rx_rd_index0,R30
                  ; 0002 003E    #endif
                  ; 0002 003F    #asm("cli")
                  _0x4000B:
-0002c1 94f8      	cli
+0002de 94f8      	cli
                  ; 0002 0040    --rx_counter0;
-0002c2 91e0 0302 	LDS  R30,_rx_counter0
-0002c4 50e1      	SUBI R30,LOW(1)
-0002c5 93e0 0302 	STS  _rx_counter0,R30
+0002df 91e0 0302 	LDS  R30,_rx_counter0
+0002e1 50e1      	SUBI R30,LOW(1)
+0002e2 93e0 0302 	STS  _rx_counter0,R30
                  ; 0002 0041    #asm("sei")
-0002c7 9478      	sei
+0002e4 9478      	sei
                  ; 0002 0042    return data;
-0002c8 2fe1      	MOV  R30,R17
+0002e5 2fe1      	MOV  R30,R17
                  _0x2060001:
-0002c9 9119      	LD   R17,Y+
-0002ca 9508      	RET
+0002e6 9119      	LD   R17,Y+
+0002e7 9508      	RET
                  ; 0002 0043 }
                  ; .FEND
                  ;#pragma used-
@@ -2357,40 +2405,40 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0002 0059 {
                  _usart_tx_isr:
                  ; .FSTART _usart_tx_isr
-0002cb 93ea      	ST   -Y,R30
-0002cc 93fa      	ST   -Y,R31
-0002cd b7ef      	IN   R30,SREG
-0002ce 93ea      	ST   -Y,R30
+0002e8 93ea      	ST   -Y,R30
+0002e9 93fa      	ST   -Y,R31
+0002ea b7ef      	IN   R30,SREG
+0002eb 93ea      	ST   -Y,R30
                  ; 0002 005A    if (tx_counter0)
-0002cf 2077      	TST  R7
-0002d0 f069      	BREQ _0x4000C
+0002ec 2077      	TST  R7
+0002ed f069      	BREQ _0x4000C
                  ; 0002 005B       {
                  ; 0002 005C       --tx_counter0;
-0002d1 947a      	DEC  R7
+0002ee 947a      	DEC  R7
                  ; 0002 005D       UDR0=tx_buffer0[tx_rd_index0++];
-0002d2 2de8      	MOV  R30,R8
-0002d3 9483      	INC  R8
-0002d4 e0f0      	LDI  R31,0
-0002d5 5ae2      	SUBI R30,LOW(-_tx_buffer0)
-0002d6 4ffa      	SBCI R31,HIGH(-_tx_buffer0)
-0002d7 81e0      	LD   R30,Z
-0002d8 93e0 00c6 	STS  198,R30
+0002ef 2de8      	MOV  R30,R8
+0002f0 9483      	INC  R8
+0002f1 e0f0      	LDI  R31,0
+0002f2 5ae2      	SUBI R30,LOW(-_tx_buffer0)
+0002f3 4ffa      	SBCI R31,HIGH(-_tx_buffer0)
+0002f4 81e0      	LD   R30,Z
+0002f5 93e0 00c6 	STS  198,R30
                  ; 0002 005E    #if TX_BUFFER_SIZE0 != 256
                  ; 0002 005F       if (tx_rd_index0 == TX_BUFFER_SIZE0) tx_rd_index0=0;
-0002da e0e8      	LDI  R30,LOW(8)
-0002db 15e8      	CP   R30,R8
-0002dc f409      	BRNE _0x4000D
-0002dd 2488      	CLR  R8
+0002f7 e0e8      	LDI  R30,LOW(8)
+0002f8 15e8      	CP   R30,R8
+0002f9 f409      	BRNE _0x4000D
+0002fa 2488      	CLR  R8
                  ; 0002 0060    #endif
                  ; 0002 0061       }
                  _0x4000D:
                  ; 0002 0062 }
                  _0x4000C:
-0002de 91e9      	LD   R30,Y+
-0002df bfef      	OUT  SREG,R30
-0002e0 91f9      	LD   R31,Y+
-0002e1 91e9      	LD   R30,Y+
-0002e2 9518      	RETI
+0002fb 91e9      	LD   R30,Y+
+0002fc bfef      	OUT  SREG,R30
+0002fd 91f9      	LD   R31,Y+
+0002fe 91e9      	LD   R30,Y+
+0002ff 9518      	RETI
                  ; .FEND
                  ;
                  ;#ifndef _DEBUG_TERMINAL_IO_
@@ -2402,53 +2450,53 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  _putchar:
                  ; .FSTART _putchar
                  ; 0002 006A    while (tx_counter0 == TX_BUFFER_SIZE0);
-0002e3 93aa      	ST   -Y,R26
+000300 93aa      	ST   -Y,R26
                  ;	c -> Y+0
                  _0x4000E:
-0002e4 e0e8      	LDI  R30,LOW(8)
-0002e5 15e7      	CP   R30,R7
-0002e6 f3e9      	BREQ _0x4000E
+000301 e0e8      	LDI  R30,LOW(8)
+000302 15e7      	CP   R30,R7
+000303 f3e9      	BREQ _0x4000E
                  ; 0002 006B    #asm("cli")
-0002e7 94f8      	cli
+000304 94f8      	cli
                  ; 0002 006C    if (tx_counter0 || ((UCSR0A & DATA_REGISTER_EMPTY)==0))
-0002e8 2077      	TST  R7
-0002e9 f421      	BRNE _0x40012
-0002ea 91e0 00c0 	LDS  R30,192
-0002ec 72e0      	ANDI R30,LOW(0x20)
-0002ed f469      	BRNE _0x40011
+000305 2077      	TST  R7
+000306 f421      	BRNE _0x40012
+000307 91e0 00c0 	LDS  R30,192
+000309 72e0      	ANDI R30,LOW(0x20)
+00030a f469      	BRNE _0x40011
                  _0x40012:
                  ; 0002 006D       {
                  ; 0002 006E       tx_buffer0[tx_wr_index0++]=c;
-0002ee 2de5      	MOV  R30,R5
-0002ef 9453      	INC  R5
-0002f0 e0f0      	LDI  R31,0
-0002f1 5ae2      	SUBI R30,LOW(-_tx_buffer0)
-0002f2 4ffa      	SBCI R31,HIGH(-_tx_buffer0)
-0002f3 81a8      	LD   R26,Y
-0002f4 83a0      	STD  Z+0,R26
+00030b 2de5      	MOV  R30,R5
+00030c 9453      	INC  R5
+00030d e0f0      	LDI  R31,0
+00030e 5ae2      	SUBI R30,LOW(-_tx_buffer0)
+00030f 4ffa      	SBCI R31,HIGH(-_tx_buffer0)
+000310 81a8      	LD   R26,Y
+000311 83a0      	STD  Z+0,R26
                  ; 0002 006F    #if TX_BUFFER_SIZE0 != 256
                  ; 0002 0070       if (tx_wr_index0 == TX_BUFFER_SIZE0) tx_wr_index0=0;
-0002f5 e0e8      	LDI  R30,LOW(8)
-0002f6 15e5      	CP   R30,R5
-0002f7 f409      	BRNE _0x40014
-0002f8 2455      	CLR  R5
+000312 e0e8      	LDI  R30,LOW(8)
+000313 15e5      	CP   R30,R5
+000314 f409      	BRNE _0x40014
+000315 2455      	CLR  R5
                  ; 0002 0071    #endif
                  ; 0002 0072       ++tx_counter0;
                  _0x40014:
-0002f9 9473      	INC  R7
+000316 9473      	INC  R7
                  ; 0002 0073       }
                  ; 0002 0074    else
-0002fa c003      	RJMP _0x40015
+000317 c003      	RJMP _0x40015
                  _0x40011:
                  ; 0002 0075       UDR0=c;
-0002fb 81e8      	LD   R30,Y
-0002fc 93e0 00c6 	STS  198,R30
+000318 81e8      	LD   R30,Y
+000319 93e0 00c6 	STS  198,R30
                  ; 0002 0076    #asm("sei")
                  _0x40015:
-0002fe 9478      	sei
+00031b 9478      	sei
                  ; 0002 0077 }
-0002ff 9621      	ADIW R28,1
-000300 9508      	RET
+00031c 9621      	ADIW R28,1
+00031d 9508      	RET
                  ; .FEND
                  ;#pragma used-
                  ;#endif
@@ -2456,53 +2504,53 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  	.CSEG
                  _memcpy:
                  ; .FSTART _memcpy
-000301 93ba      	ST   -Y,R27
-000302 93aa      	ST   -Y,R26
-000303 8199          ldd  r25,y+1
-000304 8188          ld   r24,y
-000305 9600          adiw r24,0
-000306 f041          breq memcpy1
-000307 81bd          ldd  r27,y+5
-000308 81ac          ldd  r26,y+4
-000309 81fb          ldd  r31,y+3
-00030a 81ea          ldd  r30,y+2
+00031e 93ba      	ST   -Y,R27
+00031f 93aa      	ST   -Y,R26
+000320 8199          ldd  r25,y+1
+000321 8188          ld   r24,y
+000322 9600          adiw r24,0
+000323 f041          breq memcpy1
+000324 81bd          ldd  r27,y+5
+000325 81ac          ldd  r26,y+4
+000326 81fb          ldd  r31,y+3
+000327 81ea          ldd  r30,y+2
                  memcpy0:
-00030b 9161          ld   r22,z+
-00030c 936d          st   x+,r22
-00030d 9701          sbiw r24,1
-00030e f7e1          brne memcpy0
+000328 9161          ld   r22,z+
+000329 936d          st   x+,r22
+00032a 9701          sbiw r24,1
+00032b f7e1          brne memcpy0
                  memcpy1:
-00030f 81fd          ldd  r31,y+5
-000310 81ec          ldd  r30,y+4
-000311 9626      	ADIW R28,6
-000312 9508      	RET
+00032c 81fd          ldd  r31,y+5
+00032d 81ec          ldd  r30,y+4
+00032e 9626      	ADIW R28,6
+00032f 9508      	RET
                  ; .FEND
                  _strncpy:
                  ; .FSTART _strncpy
-000313 93aa      	ST   -Y,R26
-000314 9179          ld   r23,y+
-000315 91e9          ld   r30,y+
-000316 91f9          ld   r31,y+
-000317 91a9          ld   r26,y+
-000318 91b9          ld   r27,y+
-000319 01cd          movw r24,r26
+000330 93aa      	ST   -Y,R26
+000331 9179          ld   r23,y+
+000332 91e9          ld   r30,y+
+000333 91f9          ld   r31,y+
+000334 91a9          ld   r26,y+
+000335 91b9          ld   r27,y+
+000336 01cd          movw r24,r26
                  strncpy0:
-00031a 2377          tst  r23
-00031b f051          breq strncpy1
-00031c 957a          dec  r23
-00031d 9161          ld   r22,z+
-00031e 936d          st   x+,r22
-00031f 2366          tst  r22
-000320 f7c9          brne strncpy0
+000337 2377          tst  r23
+000338 f051          breq strncpy1
+000339 957a          dec  r23
+00033a 9161          ld   r22,z+
+00033b 936d          st   x+,r22
+00033c 2366          tst  r22
+00033d f7c9          brne strncpy0
                  strncpy2:
-000321 2377          tst  r23
-000322 f019          breq strncpy1
-000323 957a          dec  r23
-000324 936d          st   x+,r22
-000325 cffb          rjmp strncpy2
+00033e 2377          tst  r23
+00033f f019          breq strncpy1
+000340 957a          dec  r23
+000341 936d          st   x+,r22
+000342 cffb          rjmp strncpy2
                  strncpy1:
-000326 01fc          movw r30,r24
-000327 9508          ret
+000343 01fc          movw r30,r24
+000344 9508          ret
                  ; .FEND
                  	#ifndef __SLEEP_DEFINED__
                  	#endif
@@ -2536,49 +2584,66 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  	.CSEG
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:7 WORDS
                  SUBOPT_0x0:
-000328 e0e0      	LDI  R30,LOW(0)
-000329 93e0 0301 	STS  _rx_rd_index0,R30
-00032b 93e0 0300 	STS  _rx_wr_index0,R30
-00032d 93e0 0302 	STS  _rx_counter0,R30
-00032f 9508      	RET
+000345 e0e0      	LDI  R30,LOW(0)
+000346 93e0 0301 	STS  _rx_rd_index0,R30
+000348 93e0 0300 	STS  _rx_wr_index0,R30
+00034a 93e0 0302 	STS  _rx_counter0,R30
+00034c 9508      	RET
                  
-                 ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:1 WORDS
+                 ;OPTIMIZER ADDED SUBROUTINE, CALLED 4 TIMES, CODE SIZE REDUCTION:3 WORDS
                  SUBOPT_0x1:
-000330 e0a1      	LDI  R26,LOW(1)
-000331 e0b0      	LDI  R27,0
-000332 940c 01c6 	JMP  _send_respond
+00034d e0a1      	LDI  R26,LOW(1)
+00034e e0b0      	LDI  R27,0
+00034f 940c 01e3 	JMP  _send_respond
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 2 TIMES, CODE SIZE REDUCTION:1 WORDS
                  SUBOPT_0x2:
-000334 93fa      	ST   -Y,R31
-000335 93ea      	ST   -Y,R30
+000351 93fa      	ST   -Y,R31
+000352 93ea      	ST   -Y,R30
                 +
-000336 eae5     +LDI R30 , LOW ( _request + ( 6 ) )
-000337 e0f3     +LDI R31 , HIGH ( _request + ( 6 ) )
+000353 eae5     +LDI R30 , LOW ( _request + ( 6 ) )
+000354 e0f3     +LDI R31 , HIGH ( _request + ( 6 ) )
                  	__POINTW1MN _request,6
-000338 93fa      	ST   -Y,R31
-000339 93ea      	ST   -Y,R30
-00033a 9508      	RET
+000355 93fa      	ST   -Y,R31
+000356 93ea      	ST   -Y,R30
+000357 9508      	RET
                  
                  
                  	.CSEG
+                 _delay_ms:
+000358 9610      	adiw r26,0
+000359 f039      	breq __delay_ms1
+                 __delay_ms0:
+                +
+00035a ea80     +LDI R24 , LOW ( 0xFA0 )
+00035b e09f     +LDI R25 , HIGH ( 0xFA0 )
+                +__DELAY_USW_LOOP :
+00035c 9701     +SBIW R24 , 1
+00035d f7f1     +BRNE __DELAY_USW_LOOP
+                 	__DELAY_USW 0xFA0
+00035e 95a8      	wdr
+00035f 9711      	sbiw r26,1
+000360 f7c9      	brne __delay_ms0
+                 __delay_ms1:
+000361 9508      	ret
+                 
                  __SAVELOCR4:
-00033b 933a      	ST   -Y,R19
+000362 933a      	ST   -Y,R19
                  __SAVELOCR3:
-00033c 932a      	ST   -Y,R18
+000363 932a      	ST   -Y,R18
                  __SAVELOCR2:
-00033d 931a      	ST   -Y,R17
-00033e 930a      	ST   -Y,R16
-00033f 9508      	RET
+000364 931a      	ST   -Y,R17
+000365 930a      	ST   -Y,R16
+000366 9508      	RET
                  
                  __LOADLOCR4:
-000340 813b      	LDD  R19,Y+3
+000367 813b      	LDD  R19,Y+3
                  __LOADLOCR3:
-000341 812a      	LDD  R18,Y+2
+000368 812a      	LDD  R18,Y+2
                  __LOADLOCR2:
-000342 8119      	LDD  R17,Y+1
-000343 8108      	LD   R16,Y
-000344 9508      	RET
+000369 8119      	LDD  R17,Y+1
+00036a 8108      	LD   R16,Y
+00036b 9508      	RET
                  
                  ;END OF CODE MARKER
                  __END_OF_CODE:
@@ -2601,38 +2666,38 @@ counted separately from r26..r31 here.
 ATmega328P register use summary:
 r0 :   4 r1 :   1 r2 :   0 r3 :   4 r4 :   2 r5 :   4 r6 :   4 r7 :   5 
 r8 :   4 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  17 r17:  38 r18:  12 r19:   5 r20:   0 r21:   0 r22:   8 r23:   5 
-r24:  12 r25:   3 r26:  59 r27:  25 r28:  20 r29:   1 r30: 286 r31:  66 
-x  :   9 y  : 118 z  :  13 
+r16:  17 r17:  42 r18:  14 r19:   5 r20:   0 r21:   0 r22:   8 r23:   5 
+r24:  14 r25:   4 r26:  64 r27:  26 r28:  20 r29:   1 r30: 291 r31:  70 
+x  :   9 y  : 121 z  :  13 
 Registers used: 25 out of 35 (71.4%)
 
 ATmega328P instruction use summary:
 .lds  :   0 .lds.l:   0 .sts  :   0 .sts.l:   0 adc   :   3 add   :   6 
-adiw  :  17 and   :   0 andi  :   2 asr   :   0 bclr  :   0 bld   :   0 
-brbc  :   0 brbs  :   0 brcc  :   0 brcs  :   0 break :   0 breq  :   9 
+adiw  :  18 and   :   0 andi  :   2 asr   :   0 bclr  :   0 bld   :   0 
+brbc  :   0 brbs  :   0 brcc  :   0 brcs  :   0 break :   0 breq  :  10 
 brge  :   2 brhc  :   0 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 
-brlt  :   1 brmi  :   0 brne  :  20 brpl  :   0 brsh  :   2 brtc  :   0 
-brts  :   0 brvc  :   0 brvs  :   0 bset  :   0 bst   :   0 call  :  25 
-cbi   :   0 cbr   :   0 clc   :   0 clh   :   0 cli   :   6 cln   :   0 
+brlt  :   1 brmi  :   0 brne  :  23 brpl  :   0 brsh  :   2 brtc  :   0 
+brts  :   0 brvc  :   0 brvs  :   0 bset  :   0 bst   :   0 call  :  27 
+cbi   :   0 cbr   :   0 clc   :   0 clh   :   0 cli   :   7 cln   :   0 
 clr   :   8 cls   :   0 clt   :   0 clv   :   0 clz   :   0 com   :   0 
-cp    :   9 cpc   :   6 cpi   :  13 cpse  :   0 dec   :   4 des   :   0 
-eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0 
-in    :   8 inc   :   3 jmp   :  32 ld    :  26 ldd   :  23 ldi   : 116 
+cp    :   9 cpc   :   7 cpi   :  14 cpse  :   0 dec   :   4 des   :   0 
+eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   1 
+in    :  10 inc   :   3 jmp   :  33 ld    :  26 ldd   :  23 ldi   : 124 
 lds   :  25 lpm   :   7 lsl   :   1 lsr   :   0 mov   :  20 movw  :  15 
 mul   :   0 muls  :   0 mulsu :   0 neg   :   1 nop   :   0 or    :   0 
-ori   :   0 out   :  22 pop   :   6 push  :   6 rcall :  10 ret   :  15 
-reti  :   2 rjmp  :  16 rol   :   0 ror   :   0 sbc   :   0 sbci  :   4 
-sbi   :   1 sbic  :   2 sbis  :   0 sbiw  :  13 sbr   :   0 sbrc  :   0 
+ori   :   0 out   :  22 pop   :   8 push  :   8 rcall :  11 ret   :  16 
+reti  :   2 rjmp  :  17 rol   :   0 ror   :   0 sbc   :   0 sbci  :   4 
+sbi   :   1 sbic  :   2 sbis  :   0 sbiw  :  16 sbr   :   0 sbrc  :   0 
 sbrs  :   0 sec   :   0 seh   :   0 sei   :   6 sen   :   0 ser   :   0 
 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 spm   :   0 
-st    :  74 std   :  10 sts   :  56 sub   :   0 subi  :  16 swap  :   0 
-tst   :   6 wdr   :   0 
-Instructions used: 46 out of 116 (39.7%)
+st    :  77 std   :  10 sts   :  56 sub   :   0 subi  :  16 swap  :   0 
+tst   :   6 wdr   :   1 
+Instructions used: 48 out of 116 (41.4%)
 
 ATmega328P memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00068a   1630     44   1674   32768   5.1%
+[.cseg] 0x000000 0x0006d8   1708     44   1752   32768   5.3%
 [.dseg] 0x000100 0x000566      0    614    614    2048  30.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

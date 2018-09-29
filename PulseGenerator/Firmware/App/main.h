@@ -16,7 +16,10 @@ enum{
 enum{
     CMD_READ_VERSION = 1,
     CMD_TEST_TRANSFER = 2,
-    CMD_WRITE_REGISTER = 3
+    CMD_WRITE_REGISTER = 3,
+    CMD_UPGRADE_START = 4,
+    CMD_UPGRADE_PAGE = 5,
+    CMD_UPGRADE_FINISH = 6
 };
 
 enum{
@@ -71,6 +74,7 @@ void execute_cmd();
 void process_read_version();
 void process_write_register();
 void process_test_transfer();
+void process_upgrade_start();
 void send_respond(char * payload, unsigned short len);
 void response_error_checksum();
 

@@ -221,7 +221,7 @@ void MainWindow::on_pushButtonTestTransfer_clicked()
     if(ui->pushButtonTestTransfer->isChecked()){
         total_cmd = 0;
         success_cmd = 0;
-        this->timerTestTransfer.start(0);
+        this->timerTestTransfer.start(1000);
     }else{
         this->timerTestTransfer.stop();
         fprintf(stderr, "Testing result: %d/%d\r\n", success_cmd, total_cmd);
@@ -272,4 +272,113 @@ void MainWindow::on_timerTestTransfer_timeout()
 int MainWindow::randBetween(int low, int high)
 {
     return qrand() % ((high + 1) - low) + low;
+}
+
+
+
+void MainWindow::on_pushButtonUpgradeFirmware_clicked()
+{
+    // Doc file hex
+    QString filePath = QFileDialog::getOpenFileName(this,
+        tr("Open Hex File"), QApplication::applicationDirPath(),
+        tr("Hex file (*.hex)"));
+
+    if(filePath.isEmpty())  return;
+
+    qDebug()<<filePath;
+
+    QByteArray hexData;
+    intelhex ihFile = readHexFile(filePath);
+    if(!ihFile.empty()){
+        hexData = getDataOfHexFile(ihFile);
+        printBuffer8("Hex file contents", hexData);
+    }else{
+        return;
+    }
+
+    // Gui lenh upgrade start
+    if(!upgrade_start()){
+        qDebug()<<"Upgrade start command is failed!";
+        return;
+    }
+
+    // Gui file hex - gui tung page
+    QByteArray request;
+    uint16_t nPage = hexData.length() / 128 + (hexData.length() % 128 != 0);
+    for(uint16_t page = 0; page < nPage; page++){
+        request.clear();
+        request.append(hexData.mid(page*128, 128));
+        request.append(132 - request.length(),0xFF);
+        if(!upgrade_page(page, (unsigned char *)request.data())){
+            qDebug()<<"Upgrade page command is failed!";
+            return;
+        }
+    }
+
+    // Gui lenh upgrade finish
+    if(!upgrade_finish()){
+        qDebug()<<"Upgrade finish command is failed!";
+        return;
+    }
+}
+
+bool MainWindow::upgrade_start()
+{
+    upgrade_start_respond_t *pl;
+
+    QByteArray request = createRequest(TYPE_REQUEST, 0, CMD_UPGRADE_START, NULL, 0);
+    QByteArray respond = transaction(request, 1000);
+
+    if(!respond.isEmpty()){
+        serial_command * cmd_respond = (serial_command*)respond.data();
+        pl = (upgrade_start_respond_t*)(cmd_respond->payload);
+
+        if(pl->status == STATUS_SUCCESS){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool MainWindow::upgrade_page(unsigned char page, unsigned char *page_data)
+{
+    upgrade_page_request_t rq;
+    upgrade_page_respond_t *pl;
+
+    rq.page = page;
+    memcpy(rq.page_data, page_data, sizeof(rq.page_data));
+
+    QByteArray request = createRequest(TYPE_REQUEST, 0, CMD_UPGRADE_PAGE, (unsigned char*)&rq, sizeof(rq));
+    QByteArray respond = transaction(request, 1000);
+
+    if(!respond.isEmpty()){
+        serial_command * cmd_respond = (serial_command*)respond.data();
+        pl = (upgrade_page_respond_t*)(cmd_respond->payload);
+
+        if(pl->status == STATUS_SUCCESS){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool MainWindow::upgrade_finish()
+{
+    upgrade_finish_respond_t *pl;
+
+    QByteArray request = createRequest(TYPE_REQUEST, 0, CMD_UPGRADE_FINISH, NULL, 0);
+    QByteArray respond = transaction(request, 1000);
+
+    if(!respond.isEmpty()){
+        serial_command * cmd_respond = (serial_command*)respond.data();
+        pl = (upgrade_finish_respond_t*)(cmd_respond->payload);
+
+        if(pl->status == STATUS_SUCCESS){
+            return true;
+        }
+    }
+
+    return false;
 }

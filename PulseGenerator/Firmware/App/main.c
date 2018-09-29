@@ -27,7 +27,7 @@ Data Stack size         : 512
 // Declare your global variables here
 
 char hw_version = 0;
-char fw_version[] = "1.0.0";
+char fw_version[] = "1.0.1";
 
 serial_command_t request;
 serial_command_t respond;
@@ -133,6 +133,9 @@ void execute_cmd(){
     case CMD_WRITE_REGISTER:
         process_write_register();
         break;
+    case CMD_UPGRADE_START:
+        process_upgrade_start();
+        break;
     default:
         status = STATUS_UNSUPPORT;
         send_respond((char *)&status, sizeof(status));
@@ -153,6 +156,19 @@ void process_test_transfer(){
         memcpy(&respond.data, test_transfer_request.data, respond.len);
         send_respond((char*)&respond, respond.len + 2);
     }
+}
+
+void process_upgrade_start(){
+    unsigned char status = STATUS_SUCCESS;
+    send_respond((char*)&status, sizeof(status));
+
+    delay_ms(10);
+    #asm("cli")
+    #asm
+        LDI     R31, 0x38
+        LDI     R30, 0x00
+        IJMP              ;Jump to address 0x3800
+    #endasm
 }
 
 void process_read_version(){

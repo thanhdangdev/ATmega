@@ -1143,7 +1143,7 @@ __REG_VARS:
 	.DB  0x0,0x0
 
 _0x3:
-	.DB  0x31,0x2E,0x30,0x2E,0x30
+	.DB  0x31,0x2E,0x30,0x2E,0x31
 
 __GLOBAL_INI_TBL:
 	.DW  0x06
@@ -1275,7 +1275,7 @@ __GLOBAL_INI_END:
 ;// Declare your global variables here
 ;
 ;char hw_version = 0;
-;char fw_version[] = "1.0.0";
+;char fw_version[] = "1.0.1";
 
 	.DSEG
 ;
@@ -1567,16 +1567,26 @@ _0x1C:
 	CPI  R30,LOW(0x3)
 	LDI  R26,HIGH(0x3)
 	CPC  R31,R26
-	BRNE _0x1E
+	BRNE _0x1D
 ; 0000 0086         process_write_register();
 	RCALL _process_write_register
 ; 0000 0087         break;
 	RJMP _0x1A
-; 0000 0088     default:
-_0x1E:
-; 0000 0089         status = STATUS_UNSUPPORT;
+; 0000 0088     case CMD_UPGRADE_START:
+_0x1D:
+	CPI  R30,LOW(0x4)
+	LDI  R26,HIGH(0x4)
+	CPC  R31,R26
+	BRNE _0x1F
+; 0000 0089         process_upgrade_start();
+	RCALL _process_upgrade_start
+; 0000 008A         break;
+	RJMP _0x1A
+; 0000 008B     default:
+_0x1F:
+; 0000 008C         status = STATUS_UNSUPPORT;
 	LDI  R17,LOW(3)
-; 0000 008A         send_respond((char *)&status, sizeof(status));
+; 0000 008D         send_respond((char *)&status, sizeof(status));
 	IN   R30,SPL
 	IN   R31,SPH
 	SBIW R30,1
@@ -1587,20 +1597,20 @@ _0x1E:
 	CALL SUBOPT_0x1
 	POP  R17
 	POP  R18
-; 0000 008B         break;
-; 0000 008C     }
+; 0000 008E         break;
+; 0000 008F     }
 _0x1A:
-; 0000 008D }
+; 0000 0090 }
 	JMP  _0x2060001
 ; .FEND
 ;
 ;void process_test_transfer(){
-; 0000 008F void process_test_transfer(){
+; 0000 0092 void process_test_transfer(){
 _process_test_transfer:
 ; .FSTART _process_test_transfer
-; 0000 0090     test_transfer_respond_t respond;
-; 0000 0091 
-; 0000 0092     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
+; 0000 0093     test_transfer_respond_t respond;
+; 0000 0094 
+; 0000 0095     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
 	SBIW R28,63
 	SBIW R28,63
 	SBIW R28,4
@@ -1611,29 +1621,29 @@ _process_test_transfer:
 	LDI  R26,LOW(129)
 	LDI  R27,0
 	CALL _memcpy
-; 0000 0093     respond.status = STATUS_SUCCESS;
+; 0000 0096     respond.status = STATUS_SUCCESS;
 	LDI  R30,LOW(0)
 	ST   Y,R30
-; 0000 0094     respond.len = test_transfer_request.len;
+; 0000 0097     respond.len = test_transfer_request.len;
 	LDS  R30,_test_transfer_request
 	STD  Y+1,R30
-; 0000 0095     if(respond.len > 128){
+; 0000 0098     if(respond.len > 128){
 	LDD  R26,Y+1
 	CPI  R26,LOW(0x81)
-	BRLO _0x1F
-; 0000 0096         respond.status = STATUS_FAIL;
+	BRLO _0x20
+; 0000 0099         respond.status = STATUS_FAIL;
 	LDI  R30,LOW(1)
 	ST   Y,R30
-; 0000 0097         send_respond((char*)&respond.status, sizeof(respond.status));
+; 0000 009A         send_respond((char*)&respond.status, sizeof(respond.status));
 	MOVW R30,R28
 	ST   -Y,R31
 	ST   -Y,R30
 	LDI  R26,LOW(1)
 	LDI  R27,0
-	RJMP _0x27
-; 0000 0098     }else{
-_0x1F:
-; 0000 0099         memcpy(&respond.data, test_transfer_request.data, respond.len);
+	RJMP _0x28
+; 0000 009B     }else{
+_0x20:
+; 0000 009C         memcpy(&respond.data, test_transfer_request.data, respond.len);
 	MOVW R30,R28
 	ADIW R30,2
 	ST   -Y,R31
@@ -1644,7 +1654,7 @@ _0x1F:
 	LDD  R26,Y+5
 	CLR  R27
 	CALL _memcpy
-; 0000 009A         send_respond((char*)&respond, respond.len + 2);
+; 0000 009D         send_respond((char*)&respond, respond.len + 2);
 	MOVW R30,R28
 	ST   -Y,R31
 	ST   -Y,R30
@@ -1652,28 +1662,66 @@ _0x1F:
 	LDI  R31,0
 	ADIW R30,2
 	MOVW R26,R30
-_0x27:
+_0x28:
 	RCALL _send_respond
-; 0000 009B     }
-; 0000 009C }
+; 0000 009E     }
+; 0000 009F }
 	ADIW R28,63
 	ADIW R28,63
 	ADIW R28,4
 	RET
 ; .FEND
 ;
+;void process_upgrade_start(){
+; 0000 00A1 void process_upgrade_start(){
+_process_upgrade_start:
+; .FSTART _process_upgrade_start
+; 0000 00A2     unsigned char status = STATUS_SUCCESS;
+; 0000 00A3     send_respond((char*)&status, sizeof(status));
+	ST   -Y,R17
+;	status -> R17
+	LDI  R17,0
+	IN   R30,SPL
+	IN   R31,SPH
+	SBIW R30,1
+	ST   -Y,R31
+	ST   -Y,R30
+	PUSH R18
+	PUSH R17
+	CALL SUBOPT_0x1
+	POP  R17
+	POP  R18
+; 0000 00A4 
+; 0000 00A5     delay_ms(10);
+	LDI  R26,LOW(10)
+	LDI  R27,0
+	CALL _delay_ms
+; 0000 00A6     #asm("cli")
+	cli
+; 0000 00A7     #asm
+; 0000 00A8         LDI     R31, 0x38
+        LDI     R31, 0x38
+; 0000 00A9         LDI     R30, 0x00
+        LDI     R30, 0x00
+; 0000 00AA         IJMP              ;Jump to address 0x3800
+        IJMP              ;Jump to address 0x3800
+; 0000 00AB     #endasm
+; 0000 00AC }
+	JMP  _0x2060001
+; .FEND
+;
 ;void process_read_version(){
-; 0000 009E void process_read_version(){
+; 0000 00AE void process_read_version(){
 _process_read_version:
 ; .FSTART _process_read_version
-; 0000 009F     char *c;
-; 0000 00A0     char str[] = "0.0.0";
-; 0000 00A1     respond_read_version_t res;
-; 0000 00A2     unsigned char hw0 = PIND.6;
-; 0000 00A3     unsigned char hw1 = PIND.7;
-; 0000 00A4     //hw_version = (hw1 << 1) | (hw0 << 0);
-; 0000 00A5 
-; 0000 00A6     res.status = STATUS_SUCCESS;
+; 0000 00AF     char *c;
+; 0000 00B0     char str[] = "0.0.0";
+; 0000 00B1     respond_read_version_t res;
+; 0000 00B2     unsigned char hw0 = PIND.6;
+; 0000 00B3     unsigned char hw1 = PIND.7;
+; 0000 00B4     //hw_version = (hw1 << 1) | (hw0 << 0);
+; 0000 00B5 
+; 0000 00B6     res.status = STATUS_SUCCESS;
 	SBIW R28,17
 	LDI  R30,LOW(48)
 	STD  Y+11,R30
@@ -1703,13 +1751,13 @@ _process_read_version:
 	MOV  R18,R30
 	LDI  R30,LOW(0)
 	STD  Y+4,R30
-; 0000 00A7     hw_version = hw1 * 2 + hw0 + 1;
+; 0000 00B7     hw_version = hw1 * 2 + hw0 + 1;
 	MOV  R30,R18
 	LSL  R30
 	ADD  R30,R19
 	SUBI R30,-LOW(1)
 	MOV  R4,R30
-; 0000 00A8     strncpy(res.hw_version, str, 5);
+; 0000 00B8     strncpy(res.hw_version, str, 5);
 	MOVW R30,R28
 	ADIW R30,5
 	ST   -Y,R31
@@ -1720,11 +1768,11 @@ _process_read_version:
 	ST   -Y,R30
 	LDI  R26,LOW(5)
 	CALL _strncpy
-; 0000 00A9     res.hw_version[0] = hw_version + 0x30;
+; 0000 00B9     res.hw_version[0] = hw_version + 0x30;
 	MOV  R30,R4
 	SUBI R30,-LOW(48)
 	STD  Y+5,R30
-; 0000 00AA     strncpy(res.fw_version, fw_version, 5);
+; 0000 00BA     strncpy(res.fw_version, fw_version, 5);
 	MOVW R30,R28
 	ADIW R30,10
 	ST   -Y,R31
@@ -1735,7 +1783,7 @@ _process_read_version:
 	ST   -Y,R30
 	LDI  R26,LOW(5)
 	CALL _strncpy
-; 0000 00AB     send_respond((char *)&res, sizeof(res));
+; 0000 00BB     send_respond((char *)&res, sizeof(res));
 	MOVW R30,R28
 	ADIW R30,4
 	ST   -Y,R31
@@ -1743,18 +1791,18 @@ _process_read_version:
 	LDI  R26,LOW(11)
 	LDI  R27,0
 	RCALL _send_respond
-; 0000 00AC }
+; 0000 00BC }
 	CALL __LOADLOCR4
 	ADIW R28,21
 	RET
 ; .FEND
 ;
 ;void process_write_register(){
-; 0000 00AE void process_write_register(){
+; 0000 00BE void process_write_register(){
 _process_write_register:
 ; .FSTART _process_write_register
-; 0000 00AF     unsigned char status = STATUS_SUCCESS;
-; 0000 00B0     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
+; 0000 00BF     unsigned char status = STATUS_SUCCESS;
+; 0000 00C0     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
 	ST   -Y,R17
 ;	status -> R17
 	LDI  R17,0
@@ -1764,27 +1812,27 @@ _process_write_register:
 	LDI  R26,LOW(6)
 	LDI  R27,0
 	CALL _memcpy
-; 0000 00B1 
-; 0000 00B2     TCCR1A = pl_write_register.reg_TCCR1A;
+; 0000 00C1 
+; 0000 00C2     TCCR1A = pl_write_register.reg_TCCR1A;
 	LDS  R30,_pl_write_register
 	STS  128,R30
-; 0000 00B3     TCCR1B = pl_write_register.reg_TCCR1B;
+; 0000 00C3     TCCR1B = pl_write_register.reg_TCCR1B;
 	__GETB1MN _pl_write_register,1
 	STS  129,R30
-; 0000 00B4     ICR1H = pl_write_register.reg_ICR1H;
+; 0000 00C4     ICR1H = pl_write_register.reg_ICR1H;
 	__GETB1MN _pl_write_register,2
 	STS  135,R30
-; 0000 00B5     ICR1L = pl_write_register.reg_ICR1L;
+; 0000 00C5     ICR1L = pl_write_register.reg_ICR1L;
 	__GETB1MN _pl_write_register,3
 	STS  134,R30
-; 0000 00B6     OCR1AH= pl_write_register.reg_OCR1AH;
+; 0000 00C6     OCR1AH= pl_write_register.reg_OCR1AH;
 	__GETB1MN _pl_write_register,4
 	STS  137,R30
-; 0000 00B7     OCR1AL=pl_write_register.reg_OCR1AL;
+; 0000 00C7     OCR1AL=pl_write_register.reg_OCR1AL;
 	__GETB1MN _pl_write_register,5
 	STS  136,R30
-; 0000 00B8 
-; 0000 00B9     send_respond((char*)&status, sizeof(status));
+; 0000 00C8 
+; 0000 00C9     send_respond((char*)&status, sizeof(status));
 	IN   R30,SPL
 	IN   R31,SPH
 	SBIW R30,1
@@ -1795,18 +1843,18 @@ _process_write_register:
 	CALL SUBOPT_0x1
 	POP  R17
 	POP  R18
-; 0000 00BA }
+; 0000 00CA }
 	JMP  _0x2060001
 ; .FEND
 ;
 ;void send_respond(char * payload, unsigned short len){
-; 0000 00BC void send_respond(char * payload, unsigned short len){
+; 0000 00CC void send_respond(char * payload, unsigned short len){
 _send_respond:
 ; .FSTART _send_respond
-; 0000 00BD     unsigned char i;
-; 0000 00BE     unsigned char checksum = 0;
-; 0000 00BF     unsigned char *c;
-; 0000 00C0     respond.header = 0x55FF;
+; 0000 00CD     unsigned char i;
+; 0000 00CE     unsigned char checksum = 0;
+; 0000 00CF     unsigned char *c;
+; 0000 00D0     respond.header = 0x55FF;
 	ST   -Y,R27
 	ST   -Y,R26
 	CALL __SAVELOCR4
@@ -1820,21 +1868,21 @@ _send_respond:
 	LDI  R31,HIGH(22015)
 	STS  _respond,R30
 	STS  _respond+1,R31
-; 0000 00C1     respond.len = 5 + len;
+; 0000 00D1     respond.len = 5 + len;
 	LDD  R30,Y+4
 	SUBI R30,-LOW(5)
 	__PUTB1MN _respond,2
-; 0000 00C2     respond.tranId = request.tranId;
+; 0000 00D2     respond.tranId = request.tranId;
 	__GETB1MN _request,4
 	__PUTB1MN _respond,4
-; 0000 00C3     respond.opcode = request.opcode;
+; 0000 00D3     respond.opcode = request.opcode;
 	__GETB1MN _request,5
 	__PUTB1MN _respond,5
-; 0000 00C4     respond.type = TYPE_RESPOND;
+; 0000 00D4     respond.type = TYPE_RESPOND;
 	LDI  R30,LOW(2)
 	__PUTB1MN _respond,3
-; 0000 00C5 
-; 0000 00C6     memcpy(respond.payload, payload, len);
+; 0000 00D5 
+; 0000 00D6     memcpy(respond.payload, payload, len);
 	__POINTW1MN _respond,6
 	ST   -Y,R31
 	ST   -Y,R30
@@ -1845,10 +1893,10 @@ _send_respond:
 	LDD  R26,Y+8
 	LDD  R27,Y+8+1
 	CALL _memcpy
-; 0000 00C7 
-; 0000 00C8     for(i = 0; i< respond.len - 1; i++){
+; 0000 00D7 
+; 0000 00D8     for(i = 0; i< respond.len - 1; i++){
 	LDI  R17,LOW(0)
-_0x22:
+_0x23:
 	__GETB1MN _respond,2
 	LDI  R31,0
 	SBIW R30,1
@@ -1856,27 +1904,27 @@ _0x22:
 	LDI  R27,0
 	CP   R26,R30
 	CPC  R27,R31
-	BRGE _0x23
-; 0000 00C9         checksum += *(&respond.len + i);
+	BRGE _0x24
+; 0000 00D9         checksum += *(&respond.len + i);
 	__POINTW2MN _respond,2
 	CLR  R30
 	ADD  R26,R17
 	ADC  R27,R30
 	LD   R30,X
 	ADD  R16,R30
-; 0000 00CA     }
+; 0000 00DA     }
 	SUBI R17,-1
-	RJMP _0x22
-_0x23:
-; 0000 00CB 
-; 0000 00CC     checksum = ~checksum + 1;
+	RJMP _0x23
+_0x24:
+; 0000 00DB 
+; 0000 00DC     checksum = ~checksum + 1;
 	NEG  R16
-; 0000 00CD 
-; 0000 00CE     c = (char*)&respond;
+; 0000 00DD 
+; 0000 00DE     c = (char*)&respond;
 	__POINTWRM 18,19,_respond
-; 0000 00CF     for(i = 0; i<respond.len + 2; i++){
+; 0000 00DF     for(i = 0; i<respond.len + 2; i++){
 	LDI  R17,LOW(0)
-_0x25:
+_0x26:
 	__GETB1MN _respond,2
 	LDI  R31,0
 	ADIW R30,2
@@ -1884,22 +1932,22 @@ _0x25:
 	LDI  R27,0
 	CP   R26,R30
 	CPC  R27,R31
-	BRGE _0x26
-; 0000 00D0         putchar(c[i]);
+	BRGE _0x27
+; 0000 00E0         putchar(c[i]);
 	MOVW R26,R18
 	CLR  R30
 	ADD  R26,R17
 	ADC  R27,R30
 	LD   R26,X
 	CALL _putchar
-; 0000 00D1     }
+; 0000 00E1     }
 	SUBI R17,-1
-	RJMP _0x25
-_0x26:
-; 0000 00D2     putchar(checksum);
+	RJMP _0x26
+_0x27:
+; 0000 00E2     putchar(checksum);
 	MOV  R26,R16
 	CALL _putchar
-; 0000 00D3 }
+; 0000 00E3 }
 	CALL __LOADLOCR4
 	ADIW R28,8
 	RET
@@ -2504,7 +2552,7 @@ SUBOPT_0x0:
 	STS  _rx_counter0,R30
 	RET
 
-;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:1 WORDS
+;OPTIMIZER ADDED SUBROUTINE, CALLED 4 TIMES, CODE SIZE REDUCTION:3 WORDS
 SUBOPT_0x1:
 	LDI  R26,LOW(1)
 	LDI  R27,0
@@ -2521,6 +2569,17 @@ SUBOPT_0x2:
 
 
 	.CSEG
+_delay_ms:
+	adiw r26,0
+	breq __delay_ms1
+__delay_ms0:
+	__DELAY_USW 0xFA0
+	wdr
+	sbiw r26,1
+	brne __delay_ms0
+__delay_ms1:
+	ret
+
 __SAVELOCR4:
 	ST   -Y,R19
 __SAVELOCR3:

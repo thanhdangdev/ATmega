@@ -1,0 +1,54 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+rx_wr_index0                                                                      0x0300       1
+rx_rd_index0                                                                      0x0301       1
+rx_counter0                                                                       0x0302       1
+rx_buffer0                                                                        0x0303     150
+fw_version                                                                        0x0399       6
+request                                                                           0x039F     156
+respond                                                                           0x043B     156
+upgrade_page_request                                                              0x04D7     129
+tx_buffer0                                                                        0x0558       8
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+hw_version                                                                        R4           1
+get_status                                                                        R3           1
+len                                                                               R6           1
+isUpgrade                                                                         R5           1
+rx_buffer_overflow0                                                               GPIOR0.0  1bit
+tx_wr_index0                                                                      R8           1
+tx_rd_index0                                                                      R7           1
+tx_counter0                                                                       R10          1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+main                                                                              0x0387B     19
+getCommand                                                                        0x0388E     64
+process_request                                                                   0x038CE     17
+checksum                                                                          0x038DF     24
+response_error_checksum                                                           0x038F7     15
+execute_cmd                                                                       0x03906     42
+process_upgrade_start                                                             0x03930     15
+process_read_version                                                              0x0393F     66
+send_respond                                                                      0x03981     86
+process_upgrade_page                                                              0x039D7     40
+process_upgrade_finish                                                            0x039FF     20
+boot_page_fill                                                                    0x03A13     17
+boot_page_erase                                                                   0x03A24     17
+boot_page_write                                                                   0x03A35     17
+WritePage                                                                         0x03A46     58
+system_init                                                                       0x03A80     93
+usart_rx_isr                                                                      0x03ADD     50
+getchar                                                                           0x03B0F     32
+usart_tx_isr                                                                      0x03B2F     24
+putchar                                                                           0x03B47     30
+memcpy                                                                            0x03B65     18
+strncpy                                                                           0x03B77     21

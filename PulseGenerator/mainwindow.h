@@ -5,6 +5,8 @@
 #include <QSerialPort>
 #include <QLabel>
 #include <QTimer>
+#include <QFileDialog>
+#include "Files/ihex/ihex_utils.h"
 
 namespace Ui {
 class MainWindow;
@@ -35,7 +37,10 @@ enum{
 enum{
     CMD_READ_VERSION = 1,
     CMD_TEST_TRANSFER = 2,
-    CMD_WRITE_REGISTER = 3
+    CMD_WRITE_REGISTER = 3,
+    CMD_UPGRADE_START = 4,
+    CMD_UPGRADE_PAGE = 5,
+    CMD_UPGRADE_FINISH = 6
 };
 
 
@@ -64,6 +69,23 @@ typedef struct test_transfer_respond_t{
     unsigned char len;
     unsigned char data[128];
 }test_transfer_respond_t;
+
+typedef struct upgrade_start_respond_t{
+    char status;
+}upgrade_start_respond_t;
+
+typedef struct upgrade_page_request_t{
+    unsigned char page;
+    unsigned char page_data[128];
+}upgrade_page_request_t;
+
+typedef struct upgrade_page_respond_t{
+    char status;
+}upgrade_page_respond_t;
+
+typedef struct upgrade_finish_respond_t{
+    char status;
+}upgrade_finish_respond_t;
 
 #pragma pack()
 
@@ -102,6 +124,12 @@ private slots:
     void on_timerTestTransfer_timeout();
 
     int randBetween(int low, int high);
+
+    void on_pushButtonUpgradeFirmware_clicked();
+
+    bool upgrade_start();
+    bool upgrade_page(unsigned char page, unsigned char * page_data);
+    bool upgrade_finish();
 
 private:
     Ui::MainWindow *ui;

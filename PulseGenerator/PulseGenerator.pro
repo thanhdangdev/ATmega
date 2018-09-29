@@ -25,9 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
+    Files/ihex/ihex_utils.cpp \
+    Files/ihex/intelhexclass.cpp \
     PrintDebug/printdebug.cpp
 
 HEADERS  += mainwindow.h \
+    Files/ihex/ihex_utils.h \
+    Files/ihex/intelhexclass.h \
     PrintDebug/printdebug.h
 
 FORMS    += mainwindow.ui

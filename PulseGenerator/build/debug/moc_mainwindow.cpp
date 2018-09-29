@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[28];
-    char stringdata0[469];
+    QByteArrayData data[34];
+    char stringdata0[563];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -58,7 +58,13 @@ QT_MOC_LITERAL(23, 405, 13), // "test_transfer"
 QT_MOC_LITERAL(24, 419, 28), // "on_timerTestTransfer_timeout"
 QT_MOC_LITERAL(25, 448, 11), // "randBetween"
 QT_MOC_LITERAL(26, 460, 3), // "low"
-QT_MOC_LITERAL(27, 464, 4) // "high"
+QT_MOC_LITERAL(27, 464, 4), // "high"
+QT_MOC_LITERAL(28, 469, 36), // "on_pushButtonUpgradeFirmware_..."
+QT_MOC_LITERAL(29, 506, 13), // "upgrade_start"
+QT_MOC_LITERAL(30, 520, 12), // "upgrade_page"
+QT_MOC_LITERAL(31, 533, 4), // "page"
+QT_MOC_LITERAL(32, 538, 9), // "page_data"
+QT_MOC_LITERAL(33, 548, 14) // "upgrade_finish"
 
     },
     "MainWindow\0on_dialFine_valueChanged\0"
@@ -74,7 +80,10 @@ QT_MOC_LITERAL(27, 464, 4) // "high"
     "writeRegisters\0on_verticalSliderRange_sliderReleased\0"
     "on_pushButtonTestTransfer_clicked\0"
     "test_transfer\0on_timerTestTransfer_timeout\0"
-    "randBetween\0low\0high"
+    "randBetween\0low\0high\0"
+    "on_pushButtonUpgradeFirmware_clicked\0"
+    "upgrade_start\0upgrade_page\0page\0"
+    "page_data\0upgrade_finish"
 };
 #undef QT_MOC_LITERAL
 
@@ -84,7 +93,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -92,21 +101,25 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   89,    2, 0x08 /* Private */,
-       4,    1,   92,    2, 0x08 /* Private */,
-       5,    1,   95,    2, 0x08 /* Private */,
-       6,    2,   98,    2, 0x08 /* Private */,
-       9,    0,  103,    2, 0x08 /* Private */,
-      10,    5,  104,    2, 0x08 /* Private */,
-      17,    0,  115,    2, 0x08 /* Private */,
-      18,    0,  116,    2, 0x08 /* Private */,
-      19,    0,  117,    2, 0x08 /* Private */,
-      20,    0,  118,    2, 0x08 /* Private */,
-      21,    0,  119,    2, 0x08 /* Private */,
-      22,    0,  120,    2, 0x08 /* Private */,
-      23,    0,  121,    2, 0x08 /* Private */,
-      24,    0,  122,    2, 0x08 /* Private */,
-      25,    2,  123,    2, 0x08 /* Private */,
+       1,    1,  109,    2, 0x08 /* Private */,
+       4,    1,  112,    2, 0x08 /* Private */,
+       5,    1,  115,    2, 0x08 /* Private */,
+       6,    2,  118,    2, 0x08 /* Private */,
+       9,    0,  123,    2, 0x08 /* Private */,
+      10,    5,  124,    2, 0x08 /* Private */,
+      17,    0,  135,    2, 0x08 /* Private */,
+      18,    0,  136,    2, 0x08 /* Private */,
+      19,    0,  137,    2, 0x08 /* Private */,
+      20,    0,  138,    2, 0x08 /* Private */,
+      21,    0,  139,    2, 0x08 /* Private */,
+      22,    0,  140,    2, 0x08 /* Private */,
+      23,    0,  141,    2, 0x08 /* Private */,
+      24,    0,  142,    2, 0x08 /* Private */,
+      25,    2,  143,    2, 0x08 /* Private */,
+      28,    0,  148,    2, 0x08 /* Private */,
+      29,    0,  149,    2, 0x08 /* Private */,
+      30,    2,  150,    2, 0x08 /* Private */,
+      33,    0,  155,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -124,6 +137,10 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Bool,
     QMetaType::Void,
     QMetaType::Int, QMetaType::Int, QMetaType::Int,   26,   27,
+    QMetaType::Void,
+    QMetaType::Bool,
+    QMetaType::Bool, QMetaType::UChar, 0x80000000 | 14,   31,   32,
+    QMetaType::Bool,
 
        0        // eod
 };
@@ -153,6 +170,13 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 13: _t->on_timerTestTransfer_timeout(); break;
         case 14: { int _r = _t->randBetween((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 15: _t->on_pushButtonUpgradeFirmware_clicked(); break;
+        case 16: { bool _r = _t->upgrade_start();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 17: { bool _r = _t->upgrade_page((*reinterpret_cast< unsigned char(*)>(_a[1])),(*reinterpret_cast< unsigned char*(*)>(_a[2])));
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 18: { bool _r = _t->upgrade_finish();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
     }
@@ -183,13 +207,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 19)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 15;
+        _id -= 19;
     }
     return _id;
 }
