@@ -1,7 +1,6 @@
 #include "main.h"
 #include "protocol.h"
 
-
 #define DATA_REGISTER_EMPTY (1<<UDRE0)
 #define RX_COMPLETE (1<<RXC0)
 #define FRAMING_ERROR (1<<FE0)

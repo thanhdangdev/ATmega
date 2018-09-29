@@ -6,10 +6,11 @@ rx_rd_index0                                                                    
 rx_counter0                                                                       0x0302       1
 rx_buffer0                                                                        0x0303     150
 fw_version                                                                        0x0399       6
-request                                                                           0x039F     134
-respond                                                                           0x0425     134
-pl_write_register                                                                 0x04AB       6
-tx_buffer0                                                                        0x04B1       8
+request                                                                           0x039F     156
+respond                                                                           0x043B     156
+pl_write_register                                                                 0x04D7       6
+test_transfer_request                                                             0x04DD     129
+tx_buffer0                                                                        0x055E       8
 
 EEPROM Allocation [bytes]
 Variable                                                                          Address   Size
@@ -31,16 +32,18 @@ Function                                                                        
 ------------------------------------------------------------------------------------------------
 main                                                                              0x00079     13
 getCommand                                                                        0x00086     64
-process_request                                                                   0x000C6     15
-checksum                                                                          0x000D5     24
-execute_cmd                                                                       0x000ED     15
-process_read_version                                                              0x000FC     64
-process_write_register                                                            0x0013C     37
-send_respond                                                                      0x00161     83
-system_init                                                                       0x001B4     93
-usart_rx_isr                                                                      0x00211     50
-getchar                                                                           0x00243     32
-usart_tx_isr                                                                      0x00263     24
-putchar                                                                           0x0027B     30
-memcpy                                                                            0x00299     18
-strncpy                                                                           0x002AB     21
+process_request                                                                   0x000C6     17
+checksum                                                                          0x000D7     24
+response_error_checksum                                                           0x000EF     15
+execute_cmd                                                                       0x000FE     36
+process_test_transfer                                                             0x00122     51
+process_read_version                                                              0x00155     66
+process_write_register                                                            0x00197     47
+send_respond                                                                      0x001C6     86
+system_init                                                                       0x0021C     93
+usart_rx_isr                                                                      0x00279     50
+getchar                                                                           0x002AB     32
+usart_tx_isr                                                                      0x002CB     24
+putchar                                                                           0x002E3     30
+memcpy                                                                            0x00301     18
+strncpy                                                                           0x00313     21

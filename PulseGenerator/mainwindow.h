@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QLabel>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -16,12 +17,19 @@ typedef struct serial_command{
     unsigned char type;
     unsigned char tranId;
     unsigned char opcode;
-    unsigned char payload[128];
+    unsigned char payload[150];
 }serial_command;
 
 enum{
     TYPE_REQUEST = 1,
     TYPE_RESPOND
+};
+
+enum{
+    STATUS_SUCCESS = 0,
+    STATUS_FAIL = 1,
+    STATUS_ERROR_CHECKSUM = 2,
+    STATUS_UNSUPPORT = 3
 };
 
 enum{
@@ -41,9 +49,22 @@ typedef struct Payload_Write_Register{
 }Payload_Write_Register;
 
 typedef struct Payload_Read_Version_Respond{
+    unsigned char status;
     char hw_version[5];
     char fw_version[5];
 }Payload_Read_Version_Respond;
+
+typedef struct test_transfer_request_t{
+    unsigned char len;
+    unsigned char data[128];
+}test_transfer_request_t;
+
+typedef struct test_transfer_respond_t{
+    char status;
+    unsigned char len;
+    unsigned char data[128];
+}test_transfer_respond_t;
+
 #pragma pack()
 
 class MainWindow : public QMainWindow
@@ -74,10 +95,19 @@ private slots:
 
     void on_verticalSliderRange_sliderReleased();
 
+    void on_pushButtonTestTransfer_clicked();
+
+    bool test_transfer();
+
+    void on_timerTestTransfer_timeout();
+
+    int randBetween(int low, int high);
+
 private:
     Ui::MainWindow *ui;
     QSerialPort * port;
     QLabel labelStatus;
+    QTimer timerTestTransfer;
 };
 
 #endif // MAINWINDOW_H

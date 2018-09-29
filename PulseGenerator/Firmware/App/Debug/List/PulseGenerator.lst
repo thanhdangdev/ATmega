@@ -1,12 +1,12 @@
 
-AVRASM ver. 2.1.30  D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm Sat Sep 22 20:58:34 2018
+AVRASM ver. 2.1.30  D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm Sat Sep 29 19:09:50 2018
 
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1090): warning: Register r4 already defined by the .DEF directive
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1091): warning: Register r3 already defined by the .DEF directive
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1092): warning: Register r6 already defined by the .DEF directive
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1093): warning: Register r5 already defined by the .DEF directive
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1094): warning: Register r8 already defined by the .DEF directive
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1095): warning: Register r7 already defined by the .DEF directive
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1090): warning: Register r4 already defined by the .DEF directive
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1091): warning: Register r3 already defined by the .DEF directive
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1092): warning: Register r6 already defined by the .DEF directive
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1093): warning: Register r5 already defined by the .DEF directive
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1094): warning: Register r8 already defined by the .DEF directive
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1095): warning: Register r7 already defined by the .DEF directive
                  
                  
                  ;CodeVisionAVR C Compiler V3.12 Advanced
@@ -1132,9 +1132,9 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1095): 
 00001e 940c 0000 	JMP  0x00
 000020 940c 0000 	JMP  0x00
 000022 940c 0000 	JMP  0x00
-000024 940c 0211 	JMP  _usart_rx_isr
+000024 940c 0279 	JMP  _usart_rx_isr
 000026 940c 0000 	JMP  0x00
-000028 940c 0263 	JMP  _usart_tx_isr
+000028 940c 02cb 	JMP  _usart_tx_isr
 00002a 940c 0000 	JMP  0x00
 00002c 940c 0000 	JMP  0x00
 00002e 940c 0000 	JMP  0x00
@@ -1162,7 +1162,7 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1095): 
                  _0x3:
 000040 2e31
 000041 2e30
-D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): warning: .cseg .db misalignment - padding zero byte
+D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146): warning: .cseg .db misalignment - padding zero byte
 000042 0030      	.DB  0x31,0x2E,0x30,0x2E,0x30
                  
                  __GLOBAL_INI_TBL:
@@ -1306,55 +1306,56 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ;unsigned char len = 0;
                  ;
                  ;Payload_Write_Register pl_write_register;
+                 ;test_transfer_request_t test_transfer_request;
                  ;
                  ;void main(void)
-                 ; 0000 0029 {
+                 ; 0000 002A {
                  
                  	.CSEG
                  _main:
                  ; .FSTART _main
-                 ; 0000 002A    // Declare your local variables here
-                 ; 0000 002B 
-                 ; 0000 002C    system_init();
-000079 940e 01b4 	CALL _system_init
-                 ; 0000 002D 
-                 ; 0000 002E    // Global enable interrupts
-                 ; 0000 002F    #asm("sei")
+                 ; 0000 002B    // Declare your local variables here
+                 ; 0000 002C 
+                 ; 0000 002D    system_init();
+000079 940e 021c 	CALL _system_init
+                 ; 0000 002E 
+                 ; 0000 002F    // Global enable interrupts
+                 ; 0000 0030    #asm("sei")
 00007b 9478      	sei
-                 ; 0000 0030    while (1)
+                 ; 0000 0031    while (1)
                  _0x4:
-                 ; 0000 0031    {
-                 ; 0000 0032       if(getCommand()){
+                 ; 0000 0032    {
+                 ; 0000 0033       if(getCommand()){
 00007c d009      	RCALL _getCommand
 00007d 30e0      	CPI  R30,0
 00007e f029      	BREQ _0x7
-                 ; 0000 0033          process_request();
+                 ; 0000 0034          process_request();
 00007f d046      	RCALL _process_request
-                 ; 0000 0034 
-                 ; 0000 0035          #asm("cli")
+                 ; 0000 0035 
+                 ; 0000 0036          #asm("cli")
 000080 94f8      	cli
-                 ; 0000 0036          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-000081 940e 02c0 	CALL SUBOPT_0x0
-                 ; 0000 0037          #asm("sei")
+                 ; 0000 0037          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+000081 940e 0328 	CALL SUBOPT_0x0
+                 ; 0000 0038          #asm("sei")
 000083 9478      	sei
-                 ; 0000 0038       }
-                 ; 0000 0039 
+                 ; 0000 0039       }
                  ; 0000 003A 
                  ; 0000 003B 
-                 ; 0000 003C    }
+                 ; 0000 003C 
+                 ; 0000 003D    }
                  _0x7:
 000084 cff7      	RJMP _0x4
-                 ; 0000 003D }
+                 ; 0000 003E }
                  _0x8:
 000085 cfff      	RJMP _0x8
                  ; .FEND
                  ;
                  ;bool getCommand(){
-                 ; 0000 003F _Bool getCommand(){
+                 ; 0000 0040 _Bool getCommand(){
                  _getCommand:
                  ; .FSTART _getCommand
-                 ; 0000 0040      // Place your code here
-                 ; 0000 0041       if(get_status == GET_STATUS_COMPLETE && rx_counter0 >= 7){
+                 ; 0000 0041      // Place your code here
+                 ; 0000 0042       if(get_status == GET_STATUS_COMPLETE && rx_counter0 >= 7){
 000086 2033      	TST  R3
 000087 f421      	BRNE _0xA
 000088 91a0 0302 	LDS  R26,_rx_counter0
@@ -1363,57 +1364,57 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  _0xA:
 00008c c01a      	RJMP _0x9
                  _0xB:
-                 ; 0000 0042          if(getchar() == 0xFF){
-00008d 940e 0243 	CALL _getchar
+                 ; 0000 0043          if(getchar() == 0xFF){
+00008d 940e 02ab 	CALL _getchar
 00008f 3fef      	CPI  R30,LOW(0xFF)
 000090 f491      	BRNE _0xC
-                 ; 0000 0043             if(getchar() == 0x55){
-000091 940e 0243 	CALL _getchar
+                 ; 0000 0044             if(getchar() == 0x55){
+000091 940e 02ab 	CALL _getchar
 000093 35e5      	CPI  R30,LOW(0x55)
 000094 f449      	BRNE _0xD
-                 ; 0000 0044                len = getchar();
-000095 940e 0243 	CALL _getchar
+                 ; 0000 0045                len = getchar();
+000095 940e 02ab 	CALL _getchar
 000097 2e6e      	MOV  R6,R30
-                 ; 0000 0045                if(len <= 135){
+                 ; 0000 0046                if(len <= 135){
 000098 e8e7      	LDI  R30,LOW(135)
 000099 15e6      	CP   R30,R6
 00009a f010      	BRLO _0xE
-                 ; 0000 0046                   get_status = GET_STATUS_GETTING;
+                 ; 0000 0047                   get_status = GET_STATUS_GETTING;
 00009b e0e1      	LDI  R30,LOW(1)
 00009c 2e3e      	MOV  R3,R30
-                 ; 0000 0047 
-                 ; 0000 0048                }
-                 ; 0000 0049             }else{
+                 ; 0000 0048 
+                 ; 0000 0049                }
+                 ; 0000 004A             }else{
                  _0xE:
 00009d c004      	RJMP _0xF
                  _0xD:
-                 ; 0000 004A                #asm("cli")
+                 ; 0000 004B                #asm("cli")
 00009e 94f8      	cli
-                 ; 0000 004B                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-00009f 940e 02c0 	CALL SUBOPT_0x0
-                 ; 0000 004C                #asm("sei")
+                 ; 0000 004C                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+00009f 940e 0328 	CALL SUBOPT_0x0
+                 ; 0000 004D                #asm("sei")
 0000a1 9478      	sei
-                 ; 0000 004D             }
+                 ; 0000 004E             }
                  _0xF:
-                 ; 0000 004E          }else{
+                 ; 0000 004F          }else{
 0000a2 c004      	RJMP _0x10
                  _0xC:
-                 ; 0000 004F             #asm("cli")
+                 ; 0000 0050             #asm("cli")
 0000a3 94f8      	cli
-                 ; 0000 0050             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-0000a4 940e 02c0 	CALL SUBOPT_0x0
-                 ; 0000 0051             #asm("sei")
+                 ; 0000 0051             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+0000a4 940e 0328 	CALL SUBOPT_0x0
+                 ; 0000 0052             #asm("sei")
 0000a6 9478      	sei
-                 ; 0000 0052          }
+                 ; 0000 0053          }
                  _0x10:
-                 ; 0000 0053       }
-                 ; 0000 0054 
-                 ; 0000 0055       if(get_status == GET_STATUS_GETTING){
+                 ; 0000 0054       }
+                 ; 0000 0055 
+                 ; 0000 0056       if(get_status == GET_STATUS_GETTING){
                  _0x9:
 0000a7 e0e1      	LDI  R30,LOW(1)
 0000a8 15e3      	CP   R30,R3
 0000a9 f4d1      	BRNE _0x11
-                 ; 0000 0056          if(rx_counter0 >= len - 1){
+                 ; 0000 0057          if(rx_counter0 >= len - 1){
 0000aa 2de6      	MOV  R30,R6
 0000ab e0f0      	LDI  R31,0
 0000ac 9731      	SBIW R30,1
@@ -1422,7 +1423,7 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
 0000b0 17ae      	CP   R26,R30
 0000b1 07bf      	CPC  R27,R31
 0000b2 f08c      	BRLT _0x12
-                 ; 0000 0057             memcpy(&request, &rx_buffer0, len + 2);
+                 ; 0000 0058             memcpy(&request, &rx_buffer0, len + 2);
 0000b3 e9ef      	LDI  R30,LOW(_request)
 0000b4 e0f3      	LDI  R31,HIGH(_request)
 0000b5 93fa      	ST   -Y,R31
@@ -1435,31 +1436,31 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
 0000bc e0f0      	LDI  R31,0
 0000bd 9632      	ADIW R30,2
 0000be 01df      	MOVW R26,R30
-0000bf 940e 0299 	CALL _memcpy
-                 ; 0000 0058             get_status =  GET_STATUS_COMPLETE;
+0000bf 940e 0301 	CALL _memcpy
+                 ; 0000 0059             get_status =  GET_STATUS_COMPLETE;
 0000c1 2433      	CLR  R3
-                 ; 0000 0059 
-                 ; 0000 005A             return true;
+                 ; 0000 005A 
+                 ; 0000 005B             return true;
 0000c2 e0e1      	LDI  R30,LOW(1)
 0000c3 9508      	RET
-                 ; 0000 005B          }
-                 ; 0000 005C       }
+                 ; 0000 005C          }
+                 ; 0000 005D       }
                  _0x12:
-                 ; 0000 005D 
-                 ; 0000 005E       return false;
+                 ; 0000 005E 
+                 ; 0000 005F       return false;
                  _0x11:
 0000c4 e0e0      	LDI  R30,LOW(0)
 0000c5 9508      	RET
-                 ; 0000 005F }
+                 ; 0000 0060 }
                  ; .FEND
                  ;
                  ;void process_request(){
-                 ; 0000 0061 void process_request(){
+                 ; 0000 0062 void process_request(){
                  _process_request:
                  ; .FSTART _process_request
-                 ; 0000 0062    unsigned char len = request.len;
-                 ; 0000 0063 
-                 ; 0000 0064    if(checksum(&request.len, len) != 0){
+                 ; 0000 0063    unsigned char len = request.len;
+                 ; 0000 0064 
+                 ; 0000 0065    if(checksum(&request.len, len) != 0){
 0000c6 931a      	ST   -Y,R17
                  ;	len -> R17
                 +
@@ -1473,377 +1474,500 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
 0000cc 93fa      	ST   -Y,R31
 0000cd 93ea      	ST   -Y,R30
 0000ce 2fa1      	MOV  R26,R17
-0000cf d005      	RCALL _checksum
+0000cf d007      	RCALL _checksum
 0000d0 30e0      	CPI  R30,0
-0000d1 f409      	BRNE _0x14
-                 ; 0000 0065       //response_error_checksum();
-                 ; 0000 0066    }else{
-                 ; 0000 0067       execute_cmd();
-0000d2 d01a      	RCALL _execute_cmd
-                 ; 0000 0068    }
+0000d1 f011      	BREQ _0x13
+                 ; 0000 0066       response_error_checksum();
+0000d2 d01c      	RCALL _response_error_checksum
+                 ; 0000 0067    }else{
+0000d3 c001      	RJMP _0x14
+                 _0x13:
+                 ; 0000 0068       execute_cmd();
+0000d4 d029      	RCALL _execute_cmd
+                 ; 0000 0069    }
                  _0x14:
-                 ; 0000 0069 }
-0000d3 940c 0261 	JMP  _0x2060001
+                 ; 0000 006A }
+0000d5 940c 02c9 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;unsigned char checksum(unsigned char *dat, unsigned char len){
-                 ; 0000 006B unsigned char checksum(unsigned char *dat, unsigned char len){
+                 ; 0000 006C unsigned char checksum(unsigned char *dat, unsigned char len){
                  _checksum:
                  ; .FSTART _checksum
-                 ; 0000 006C    unsigned char ck  = 0;
-                 ; 0000 006D    unsigned char i = 0;
-                 ; 0000 006E 
-                 ; 0000 006F    for(i = 0; i<len; i++){
-0000d5 93aa      	ST   -Y,R26
-0000d6 931a      	ST   -Y,R17
-0000d7 930a      	ST   -Y,R16
+                 ; 0000 006D    unsigned char ck  = 0;
+                 ; 0000 006E    unsigned char i = 0;
+                 ; 0000 006F 
+                 ; 0000 0070    for(i = 0; i<len; i++){
+0000d7 93aa      	ST   -Y,R26
+0000d8 931a      	ST   -Y,R17
+0000d9 930a      	ST   -Y,R16
                  ;	*dat -> Y+3
                  ;	len -> Y+2
                  ;	ck -> R17
                  ;	i -> R16
-0000d8 e010      	LDI  R17,0
-0000d9 e000      	LDI  R16,0
-0000da e000      	LDI  R16,LOW(0)
+0000da e010      	LDI  R17,0
+0000db e000      	LDI  R16,0
+0000dc e000      	LDI  R16,LOW(0)
                  _0x16:
-0000db 81ea      	LDD  R30,Y+2
-0000dc 170e      	CP   R16,R30
-0000dd f450      	BRSH _0x17
-                 ; 0000 0070       ck += *(dat + i);
-0000de 2fe0      	MOV  R30,R16
-0000df e0f0      	LDI  R31,0
-0000e0 81ab      	LDD  R26,Y+3
-0000e1 81bc      	LDD  R27,Y+3+1
-0000e2 0fae      	ADD  R26,R30
-0000e3 1fbf      	ADC  R27,R31
-0000e4 91ec      	LD   R30,X
-0000e5 0f1e      	ADD  R17,R30
-                 ; 0000 0071    }
-0000e6 5f0f      	SUBI R16,-1
-0000e7 cff3      	RJMP _0x16
+0000dd 81ea      	LDD  R30,Y+2
+0000de 170e      	CP   R16,R30
+0000df f450      	BRSH _0x17
+                 ; 0000 0071       ck += *(dat + i);
+0000e0 2fe0      	MOV  R30,R16
+0000e1 e0f0      	LDI  R31,0
+0000e2 81ab      	LDD  R26,Y+3
+0000e3 81bc      	LDD  R27,Y+3+1
+0000e4 0fae      	ADD  R26,R30
+0000e5 1fbf      	ADC  R27,R31
+0000e6 91ec      	LD   R30,X
+0000e7 0f1e      	ADD  R17,R30
+                 ; 0000 0072    }
+0000e8 5f0f      	SUBI R16,-1
+0000e9 cff3      	RJMP _0x16
                  _0x17:
-                 ; 0000 0072 
-                 ; 0000 0073    return ck;
-0000e8 2fe1      	MOV  R30,R17
-0000e9 8119      	LDD  R17,Y+1
-0000ea 8108      	LDD  R16,Y+0
-0000eb 9625      	ADIW R28,5
-0000ec 9508      	RET
-                 ; 0000 0074 }
+                 ; 0000 0073 
+                 ; 0000 0074    return ck;
+0000ea 2fe1      	MOV  R30,R17
+0000eb 8119      	LDD  R17,Y+1
+0000ec 8108      	LDD  R16,Y+0
+0000ed 9625      	ADIW R28,5
+0000ee 9508      	RET
+                 ; 0000 0075 }
                  ; .FEND
                  ;
                  ;void response_error_checksum(){
-                 ; 0000 0076 void response_error_checksum(){
-                 ; 0000 0077 
-                 ; 0000 0078 }
+                 ; 0000 0077 void response_error_checksum(){
+                 _response_error_checksum:
+                 ; .FSTART _response_error_checksum
+                 ; 0000 0078     unsigned char status = STATUS_ERROR_CHECKSUM;
+                 ; 0000 0079     send_respond((char *)&status, sizeof(status));
+0000ef 931a      	ST   -Y,R17
+                 ;	status -> R17
+0000f0 e012      	LDI  R17,2
+0000f1 b7ed      	IN   R30,SPL
+0000f2 b7fe      	IN   R31,SPH
+0000f3 9731      	SBIW R30,1
+0000f4 93fa      	ST   -Y,R31
+0000f5 93ea      	ST   -Y,R30
+0000f6 932f      	PUSH R18
+0000f7 931f      	PUSH R17
+0000f8 940e 0330 	CALL SUBOPT_0x1
+0000fa 911f      	POP  R17
+0000fb 912f      	POP  R18
+                 ; 0000 007A }
+0000fc 940c 02c9 	JMP  _0x2060001
+                 ; .FEND
                  ;
                  ;void execute_cmd(){
-                 ; 0000 007A void execute_cmd(){
+                 ; 0000 007C void execute_cmd(){
                  _execute_cmd:
                  ; .FSTART _execute_cmd
-                 ; 0000 007B    switch(request.opcode){
+                 ; 0000 007D     unsigned char status;
+                 ; 0000 007E     switch(request.opcode){
+0000fe 931a      	ST   -Y,R17
+                 ;	status -> R17
                 +
-0000ed 91e0 03a4+LDS R30 , _request + ( 5 )
+0000ff 91e0 03a4+LDS R30 , _request + ( 5 )
                  	__GETB1MN _request,5
-0000ef e0f0      	LDI  R31,0
-                 ; 0000 007C    case CMD_READ_VERSION:
-0000f0 30e1      	CPI  R30,LOW(0x1)
-0000f1 e0a0      	LDI  R26,HIGH(0x1)
-0000f2 07fa      	CPC  R31,R26
-0000f3 f411      	BRNE _0x1B
-                 ; 0000 007D        process_read_version();
-0000f4 d007      	RCALL _process_read_version
-                 ; 0000 007E 
-                 ; 0000 007F        break;
-0000f5 c005      	RJMP _0x1A
-                 ; 0000 0080    case CMD_WRITE_REGISTER:
+000101 e0f0      	LDI  R31,0
+                 ; 0000 007F     case CMD_READ_VERSION:
+000102 30e1      	CPI  R30,LOW(0x1)
+000103 e0a0      	LDI  R26,HIGH(0x1)
+000104 07fa      	CPC  R31,R26
+000105 f411      	BRNE _0x1B
+                 ; 0000 0080         process_read_version();
+000106 d04e      	RCALL _process_read_version
+                 ; 0000 0081         break;
+000107 c018      	RJMP _0x1A
+                 ; 0000 0082     case CMD_TEST_TRANSFER:
                  _0x1B:
-0000f6 30e3      	CPI  R30,LOW(0x3)
-0000f7 e0a0      	LDI  R26,HIGH(0x3)
-0000f8 07fa      	CPC  R31,R26
-0000f9 f409      	BRNE _0x1D
-                 ; 0000 0081       process_write_register();
-0000fa d041      	RCALL _process_write_register
-                 ; 0000 0082       break;
-                 ; 0000 0083    default:
-                 _0x1D:
-                 ; 0000 0084        //response_unsupport();
-                 ; 0000 0085        break;
-                 ; 0000 0086    }
+000108 30e2      	CPI  R30,LOW(0x2)
+000109 e0a0      	LDI  R26,HIGH(0x2)
+00010a 07fa      	CPC  R31,R26
+00010b f411      	BRNE _0x1C
+                 ; 0000 0083         process_test_transfer();
+00010c d015      	RCALL _process_test_transfer
+                 ; 0000 0084         break;
+00010d c012      	RJMP _0x1A
+                 ; 0000 0085     case CMD_WRITE_REGISTER:
+                 _0x1C:
+00010e 30e3      	CPI  R30,LOW(0x3)
+00010f e0a0      	LDI  R26,HIGH(0x3)
+000110 07fa      	CPC  R31,R26
+000111 f411      	BRNE _0x1E
+                 ; 0000 0086         process_write_register();
+000112 d084      	RCALL _process_write_register
+                 ; 0000 0087         break;
+000113 c00c      	RJMP _0x1A
+                 ; 0000 0088     default:
+                 _0x1E:
+                 ; 0000 0089         status = STATUS_UNSUPPORT;
+000114 e013      	LDI  R17,LOW(3)
+                 ; 0000 008A         send_respond((char *)&status, sizeof(status));
+000115 b7ed      	IN   R30,SPL
+000116 b7fe      	IN   R31,SPH
+000117 9731      	SBIW R30,1
+000118 93fa      	ST   -Y,R31
+000119 93ea      	ST   -Y,R30
+00011a 932f      	PUSH R18
+00011b 931f      	PUSH R17
+00011c 940e 0330 	CALL SUBOPT_0x1
+00011e 911f      	POP  R17
+00011f 912f      	POP  R18
+                 ; 0000 008B         break;
+                 ; 0000 008C     }
                  _0x1A:
-                 ; 0000 0087 }
-0000fb 9508      	RET
+                 ; 0000 008D }
+000120 940c 02c9 	JMP  _0x2060001
+                 ; .FEND
+                 ;
+                 ;void process_test_transfer(){
+                 ; 0000 008F void process_test_transfer(){
+                 _process_test_transfer:
+                 ; .FSTART _process_test_transfer
+                 ; 0000 0090     test_transfer_respond_t respond;
+                 ; 0000 0091 
+                 ; 0000 0092     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
+000122 97ef      	SBIW R28,63
+000123 97ef      	SBIW R28,63
+000124 9724      	SBIW R28,4
+                 ;	respond -> Y+0
+000125 eded      	LDI  R30,LOW(_test_transfer_request)
+000126 e0f4      	LDI  R31,HIGH(_test_transfer_request)
+000127 940e 0334 	CALL SUBOPT_0x2
+000129 e8a1      	LDI  R26,LOW(129)
+00012a e0b0      	LDI  R27,0
+00012b 940e 0301 	CALL _memcpy
+                 ; 0000 0093     respond.status = STATUS_SUCCESS;
+00012d e0e0      	LDI  R30,LOW(0)
+00012e 83e8      	ST   Y,R30
+                 ; 0000 0094     respond.len = test_transfer_request.len;
+00012f 91e0 04dd 	LDS  R30,_test_transfer_request
+000131 83e9      	STD  Y+1,R30
+                 ; 0000 0095     if(respond.len > 128){
+000132 81a9      	LDD  R26,Y+1
+000133 38a1      	CPI  R26,LOW(0x81)
+000134 f040      	BRLO _0x1F
+                 ; 0000 0096         respond.status = STATUS_FAIL;
+000135 e0e1      	LDI  R30,LOW(1)
+000136 83e8      	ST   Y,R30
+                 ; 0000 0097         send_respond((char*)&respond.status, sizeof(respond.status));
+000137 01fe      	MOVW R30,R28
+000138 93fa      	ST   -Y,R31
+000139 93ea      	ST   -Y,R30
+00013a e0a1      	LDI  R26,LOW(1)
+00013b e0b0      	LDI  R27,0
+00013c c013      	RJMP _0x27
+                 ; 0000 0098     }else{
+                 _0x1F:
+                 ; 0000 0099         memcpy(&respond.data, test_transfer_request.data, respond.len);
+00013d 01fe      	MOVW R30,R28
+00013e 9632      	ADIW R30,2
+00013f 93fa      	ST   -Y,R31
+000140 93ea      	ST   -Y,R30
+                +
+000141 edee     +LDI R30 , LOW ( _test_transfer_request + ( 1 ) )
+000142 e0f4     +LDI R31 , HIGH ( _test_transfer_request + ( 1 ) )
+                 	__POINTW1MN _test_transfer_request,1
+000143 93fa      	ST   -Y,R31
+000144 93ea      	ST   -Y,R30
+000145 81ad      	LDD  R26,Y+5
+000146 27bb      	CLR  R27
+000147 940e 0301 	CALL _memcpy
+                 ; 0000 009A         send_respond((char*)&respond, respond.len + 2);
+000149 01fe      	MOVW R30,R28
+00014a 93fa      	ST   -Y,R31
+00014b 93ea      	ST   -Y,R30
+00014c 81eb      	LDD  R30,Y+3
+00014d e0f0      	LDI  R31,0
+00014e 9632      	ADIW R30,2
+00014f 01df      	MOVW R26,R30
+                 _0x27:
+000150 d075      	RCALL _send_respond
+                 ; 0000 009B     }
+                 ; 0000 009C }
+000151 96ef      	ADIW R28,63
+000152 96ef      	ADIW R28,63
+000153 9624      	ADIW R28,4
+000154 9508      	RET
                  ; .FEND
                  ;
                  ;void process_read_version(){
-                 ; 0000 0089 void process_read_version(){
+                 ; 0000 009E void process_read_version(){
                  _process_read_version:
                  ; .FSTART _process_read_version
-                 ; 0000 008A     char *c;
-                 ; 0000 008B    char str[] = "0.0.0";
-                 ; 0000 008C    unsigned char checksum = 0;
-                 ; 0000 008D    unsigned short i;
-                 ; 0000 008E    respond_read_version_t res;
-                 ; 0000 008F    unsigned char hw0 = PIND.6;
-                 ; 0000 0090    unsigned char hw1 = PIND.7;
-                 ; 0000 0091    //hw_version = (hw1 << 1) | (hw0 << 0);
-                 ; 0000 0092 
-                 ; 0000 0093 
-                 ; 0000 0094    hw_version = hw1 * 2 + hw0 + 1;
-0000fc 9761      	SBIW R28,17
-0000fd e3e0      	LDI  R30,LOW(48)
-0000fe 87eb      	STD  Y+11,R30
-0000ff e2ee      	LDI  R30,LOW(46)
-000100 87ec      	STD  Y+12,R30
-000101 e3e0      	LDI  R30,LOW(48)
-000102 87ed      	STD  Y+13,R30
-000103 e2ee      	LDI  R30,LOW(46)
-000104 87ee      	STD  Y+14,R30
-000105 e3e0      	LDI  R30,LOW(48)
-000106 87ef      	STD  Y+15,R30
-000107 e0e0      	LDI  R30,LOW(0)
-000108 8be8      	STD  Y+16,R30
-000109 940e 02c8 	CALL __SAVELOCR6
+                 ; 0000 009F     char *c;
+                 ; 0000 00A0     char str[] = "0.0.0";
+                 ; 0000 00A1     respond_read_version_t res;
+                 ; 0000 00A2     unsigned char hw0 = PIND.6;
+                 ; 0000 00A3     unsigned char hw1 = PIND.7;
+                 ; 0000 00A4     //hw_version = (hw1 << 1) | (hw0 << 0);
+                 ; 0000 00A5 
+                 ; 0000 00A6     res.status = STATUS_SUCCESS;
+000155 9761      	SBIW R28,17
+000156 e3e0      	LDI  R30,LOW(48)
+000157 87eb      	STD  Y+11,R30
+000158 e2ee      	LDI  R30,LOW(46)
+000159 87ec      	STD  Y+12,R30
+00015a e3e0      	LDI  R30,LOW(48)
+00015b 87ed      	STD  Y+13,R30
+00015c e2ee      	LDI  R30,LOW(46)
+00015d 87ee      	STD  Y+14,R30
+00015e e3e0      	LDI  R30,LOW(48)
+00015f 87ef      	STD  Y+15,R30
+000160 e0e0      	LDI  R30,LOW(0)
+000161 8be8      	STD  Y+16,R30
+000162 940e 033b 	CALL __SAVELOCR4
                  ;	*c -> R16,R17
-                 ;	str -> Y+17
-                 ;	checksum -> R19
-                 ;	i -> R20,R21
-                 ;	res -> Y+7
-                 ;	hw0 -> R18
-                 ;	hw1 -> Y+6
-00010b e030      	LDI  R19,0
-00010c e0e0      	LDI  R30,0
-00010d 994e      	SBIC 0x9,6
-00010e e0e1      	LDI  R30,1
-00010f 2f2e      	MOV  R18,R30
-000110 e0e0      	LDI  R30,0
-000111 994f      	SBIC 0x9,7
-000112 e0e1      	LDI  R30,1
-000113 83ee      	STD  Y+6,R30
-000114 0fee      	LSL  R30
-000115 0fe2      	ADD  R30,R18
-000116 5fef      	SUBI R30,-LOW(1)
-000117 2e4e      	MOV  R4,R30
-                 ; 0000 0095    strncpy(res.hw_version, str, 5);
-000118 01fe      	MOVW R30,R28
-000119 9637      	ADIW R30,7
-00011a 93fa      	ST   -Y,R31
-00011b 93ea      	ST   -Y,R30
-00011c 01fe      	MOVW R30,R28
-00011d 9673      	ADIW R30,19
-00011e 93fa      	ST   -Y,R31
-00011f 93ea      	ST   -Y,R30
-000120 e0a5      	LDI  R26,LOW(5)
-000121 940e 02ab 	CALL _strncpy
-                 ; 0000 0096    res.hw_version[0] = hw_version + 0x30;
-000123 2de4      	MOV  R30,R4
-000124 5de0      	SUBI R30,-LOW(48)
-000125 83ef      	STD  Y+7,R30
-                 ; 0000 0097    strncpy(res.fw_version, fw_version, 5);
-000126 01fe      	MOVW R30,R28
-000127 963c      	ADIW R30,12
-000128 93fa      	ST   -Y,R31
-000129 93ea      	ST   -Y,R30
-00012a e9e9      	LDI  R30,LOW(_fw_version)
-00012b e0f3      	LDI  R31,HIGH(_fw_version)
-00012c 93fa      	ST   -Y,R31
-00012d 93ea      	ST   -Y,R30
-00012e e0a5      	LDI  R26,LOW(5)
-00012f 940e 02ab 	CALL _strncpy
-                 ; 0000 0098 
-                 ; 0000 0099 
-                 ; 0000 009A    send_respond((char *)&res, sizeof(res));
-000131 01fe      	MOVW R30,R28
-000132 9637      	ADIW R30,7
-000133 93fa      	ST   -Y,R31
-000134 93ea      	ST   -Y,R30
-000135 e0aa      	LDI  R26,LOW(10)
-000136 e0b0      	LDI  R27,0
-000137 d029      	RCALL _send_respond
-                 ; 0000 009B }
-000138 940e 02cf 	CALL __LOADLOCR6
-00013a 9667      	ADIW R28,23
-00013b 9508      	RET
+                 ;	str -> Y+15
+                 ;	res -> Y+4
+                 ;	hw0 -> R19
+                 ;	hw1 -> R18
+000164 e0e0      	LDI  R30,0
+000165 994e      	SBIC 0x9,6
+000166 e0e1      	LDI  R30,1
+000167 2f3e      	MOV  R19,R30
+000168 e0e0      	LDI  R30,0
+000169 994f      	SBIC 0x9,7
+00016a e0e1      	LDI  R30,1
+00016b 2f2e      	MOV  R18,R30
+00016c e0e0      	LDI  R30,LOW(0)
+00016d 83ec      	STD  Y+4,R30
+                 ; 0000 00A7     hw_version = hw1 * 2 + hw0 + 1;
+00016e 2fe2      	MOV  R30,R18
+00016f 0fee      	LSL  R30
+000170 0fe3      	ADD  R30,R19
+000171 5fef      	SUBI R30,-LOW(1)
+000172 2e4e      	MOV  R4,R30
+                 ; 0000 00A8     strncpy(res.hw_version, str, 5);
+000173 01fe      	MOVW R30,R28
+000174 9635      	ADIW R30,5
+000175 93fa      	ST   -Y,R31
+000176 93ea      	ST   -Y,R30
+000177 01fe      	MOVW R30,R28
+000178 9671      	ADIW R30,17
+000179 93fa      	ST   -Y,R31
+00017a 93ea      	ST   -Y,R30
+00017b e0a5      	LDI  R26,LOW(5)
+00017c 940e 0313 	CALL _strncpy
+                 ; 0000 00A9     res.hw_version[0] = hw_version + 0x30;
+00017e 2de4      	MOV  R30,R4
+00017f 5de0      	SUBI R30,-LOW(48)
+000180 83ed      	STD  Y+5,R30
+                 ; 0000 00AA     strncpy(res.fw_version, fw_version, 5);
+000181 01fe      	MOVW R30,R28
+000182 963a      	ADIW R30,10
+000183 93fa      	ST   -Y,R31
+000184 93ea      	ST   -Y,R30
+000185 e9e9      	LDI  R30,LOW(_fw_version)
+000186 e0f3      	LDI  R31,HIGH(_fw_version)
+000187 93fa      	ST   -Y,R31
+000188 93ea      	ST   -Y,R30
+000189 e0a5      	LDI  R26,LOW(5)
+00018a 940e 0313 	CALL _strncpy
+                 ; 0000 00AB     send_respond((char *)&res, sizeof(res));
+00018c 01fe      	MOVW R30,R28
+00018d 9634      	ADIW R30,4
+00018e 93fa      	ST   -Y,R31
+00018f 93ea      	ST   -Y,R30
+000190 e0ab      	LDI  R26,LOW(11)
+000191 e0b0      	LDI  R27,0
+000192 d033      	RCALL _send_respond
+                 ; 0000 00AC }
+000193 940e 0340 	CALL __LOADLOCR4
+000195 9665      	ADIW R28,21
+000196 9508      	RET
                  ; .FEND
                  ;
                  ;void process_write_register(){
-                 ; 0000 009D void process_write_register(){
+                 ; 0000 00AE void process_write_register(){
                  _process_write_register:
                  ; .FSTART _process_write_register
-                 ; 0000 009E    memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
-00013c eaeb      	LDI  R30,LOW(_pl_write_register)
-00013d e0f4      	LDI  R31,HIGH(_pl_write_register)
-00013e 93fa      	ST   -Y,R31
-00013f 93ea      	ST   -Y,R30
+                 ; 0000 00AF     unsigned char status = STATUS_SUCCESS;
+                 ; 0000 00B0     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
+000197 931a      	ST   -Y,R17
+                 ;	status -> R17
+000198 e010      	LDI  R17,0
+000199 ede7      	LDI  R30,LOW(_pl_write_register)
+00019a e0f4      	LDI  R31,HIGH(_pl_write_register)
+00019b 940e 0334 	CALL SUBOPT_0x2
+00019d e0a6      	LDI  R26,LOW(6)
+00019e e0b0      	LDI  R27,0
+00019f 940e 0301 	CALL _memcpy
+                 ; 0000 00B1 
+                 ; 0000 00B2     TCCR1A = pl_write_register.reg_TCCR1A;
+0001a1 91e0 04d7 	LDS  R30,_pl_write_register
+0001a3 93e0 0080 	STS  128,R30
+                 ; 0000 00B3     TCCR1B = pl_write_register.reg_TCCR1B;
                 +
-000140 eae5     +LDI R30 , LOW ( _request + ( 6 ) )
-000141 e0f3     +LDI R31 , HIGH ( _request + ( 6 ) )
-                 	__POINTW1MN _request,6
-000142 93fa      	ST   -Y,R31
-000143 93ea      	ST   -Y,R30
-000144 e0a6      	LDI  R26,LOW(6)
-000145 e0b0      	LDI  R27,0
-000146 940e 0299 	CALL _memcpy
-                 ; 0000 009F 
-                 ; 0000 00A0    TCCR1A = pl_write_register.reg_TCCR1A;
-000148 91e0 04ab 	LDS  R30,_pl_write_register
-00014a 93e0 0080 	STS  128,R30
-                 ; 0000 00A1    TCCR1B = pl_write_register.reg_TCCR1B;
-                +
-00014c 91e0 04ac+LDS R30 , _pl_write_register + ( 1 )
+0001a5 91e0 04d8+LDS R30 , _pl_write_register + ( 1 )
                  	__GETB1MN _pl_write_register,1
-00014e 93e0 0081 	STS  129,R30
-                 ; 0000 00A2    ICR1H = pl_write_register.reg_ICR1H;
+0001a7 93e0 0081 	STS  129,R30
+                 ; 0000 00B4     ICR1H = pl_write_register.reg_ICR1H;
                 +
-000150 91e0 04ad+LDS R30 , _pl_write_register + ( 2 )
+0001a9 91e0 04d9+LDS R30 , _pl_write_register + ( 2 )
                  	__GETB1MN _pl_write_register,2
-000152 93e0 0087 	STS  135,R30
-                 ; 0000 00A3    ICR1L = pl_write_register.reg_ICR1L;
+0001ab 93e0 0087 	STS  135,R30
+                 ; 0000 00B5     ICR1L = pl_write_register.reg_ICR1L;
                 +
-000154 91e0 04ae+LDS R30 , _pl_write_register + ( 3 )
+0001ad 91e0 04da+LDS R30 , _pl_write_register + ( 3 )
                  	__GETB1MN _pl_write_register,3
-000156 93e0 0086 	STS  134,R30
-                 ; 0000 00A4    OCR1AH= pl_write_register.reg_OCR1AH;
+0001af 93e0 0086 	STS  134,R30
+                 ; 0000 00B6     OCR1AH= pl_write_register.reg_OCR1AH;
                 +
-000158 91e0 04af+LDS R30 , _pl_write_register + ( 4 )
+0001b1 91e0 04db+LDS R30 , _pl_write_register + ( 4 )
                  	__GETB1MN _pl_write_register,4
-00015a 93e0 0089 	STS  137,R30
-                 ; 0000 00A5    OCR1AL=pl_write_register.reg_OCR1AL;
+0001b3 93e0 0089 	STS  137,R30
+                 ; 0000 00B7     OCR1AL=pl_write_register.reg_OCR1AL;
                 +
-00015c 91e0 04b0+LDS R30 , _pl_write_register + ( 5 )
+0001b5 91e0 04dc+LDS R30 , _pl_write_register + ( 5 )
                  	__GETB1MN _pl_write_register,5
-00015e 93e0 0088 	STS  136,R30
-                 ; 0000 00A6 
-                 ; 0000 00A7    //send_respond();
-                 ; 0000 00A8 }
-000160 9508      	RET
+0001b7 93e0 0088 	STS  136,R30
+                 ; 0000 00B8 
+                 ; 0000 00B9     send_respond((char*)&status, sizeof(status));
+0001b9 b7ed      	IN   R30,SPL
+0001ba b7fe      	IN   R31,SPH
+0001bb 9731      	SBIW R30,1
+0001bc 93fa      	ST   -Y,R31
+0001bd 93ea      	ST   -Y,R30
+0001be 932f      	PUSH R18
+0001bf 931f      	PUSH R17
+0001c0 940e 0330 	CALL SUBOPT_0x1
+0001c2 911f      	POP  R17
+0001c3 912f      	POP  R18
+                 ; 0000 00BA }
+0001c4 940c 02c9 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void send_respond(char * payload, unsigned short len){
-                 ; 0000 00AA void send_respond(char * payload, unsigned short len){
+                 ; 0000 00BC void send_respond(char * payload, unsigned short len){
                  _send_respond:
                  ; .FSTART _send_respond
-                 ; 0000 00AB    unsigned char i;
-                 ; 0000 00AC    unsigned char checksum = 0;
-                 ; 0000 00AD    unsigned char *c;
-                 ; 0000 00AE     respond.header = 0x55FF;
-000161 93ba      	ST   -Y,R27
-000162 93aa      	ST   -Y,R26
-000163 940e 02ca 	CALL __SAVELOCR4
+                 ; 0000 00BD     unsigned char i;
+                 ; 0000 00BE     unsigned char checksum = 0;
+                 ; 0000 00BF     unsigned char *c;
+                 ; 0000 00C0     respond.header = 0x55FF;
+0001c6 93ba      	ST   -Y,R27
+0001c7 93aa      	ST   -Y,R26
+0001c8 940e 033b 	CALL __SAVELOCR4
                  ;	*payload -> Y+6
                  ;	len -> Y+4
                  ;	i -> R17
                  ;	checksum -> R16
                  ;	*c -> R18,R19
-000165 e000      	LDI  R16,0
-000166 efef      	LDI  R30,LOW(22015)
-000167 e5f5      	LDI  R31,HIGH(22015)
-000168 93e0 0425 	STS  _respond,R30
-00016a 93f0 0426 	STS  _respond+1,R31
-                 ; 0000 00AF     respond.len = 5 + len;
-00016c 81ec      	LDD  R30,Y+4
-00016d 5feb      	SUBI R30,-LOW(5)
+0001ca e000      	LDI  R16,0
+0001cb efef      	LDI  R30,LOW(22015)
+0001cc e5f5      	LDI  R31,HIGH(22015)
+0001cd 93e0 043b 	STS  _respond,R30
+0001cf 93f0 043c 	STS  _respond+1,R31
+                 ; 0000 00C1     respond.len = 5 + len;
+0001d1 81ec      	LDD  R30,Y+4
+0001d2 5feb      	SUBI R30,-LOW(5)
                 +
-00016e 93e0 0427+STS _respond + ( 2 ) , R30
+0001d3 93e0 043d+STS _respond + ( 2 ) , R30
                  	__PUTB1MN _respond,2
-                 ; 0000 00B0     respond.tranId = request.tranId;
+                 ; 0000 00C2     respond.tranId = request.tranId;
                 +
-000170 91e0 03a3+LDS R30 , _request + ( 4 )
+0001d5 91e0 03a3+LDS R30 , _request + ( 4 )
                  	__GETB1MN _request,4
                 +
-000172 93e0 0429+STS _respond + ( 4 ) , R30
+0001d7 93e0 043f+STS _respond + ( 4 ) , R30
                  	__PUTB1MN _respond,4
-                 ; 0000 00B1     respond.opcode = request.opcode;
+                 ; 0000 00C3     respond.opcode = request.opcode;
                 +
-000174 91e0 03a4+LDS R30 , _request + ( 5 )
+0001d9 91e0 03a4+LDS R30 , _request + ( 5 )
                  	__GETB1MN _request,5
                 +
-000176 93e0 042a+STS _respond + ( 5 ) , R30
+0001db 93e0 0440+STS _respond + ( 5 ) , R30
                  	__PUTB1MN _respond,5
-                 ; 0000 00B2     respond.type = TYPE_RESPOND;
-000178 e0e2      	LDI  R30,LOW(2)
+                 ; 0000 00C4     respond.type = TYPE_RESPOND;
+0001dd e0e2      	LDI  R30,LOW(2)
                 +
-000179 93e0 0428+STS _respond + ( 3 ) , R30
+0001de 93e0 043e+STS _respond + ( 3 ) , R30
                  	__PUTB1MN _respond,3
-                 ; 0000 00B3 
-                 ; 0000 00B4     memcpy(respond.payload, payload, len);
+                 ; 0000 00C5 
+                 ; 0000 00C6     memcpy(respond.payload, payload, len);
                 +
-00017b e2eb     +LDI R30 , LOW ( _respond + ( 6 ) )
-00017c e0f4     +LDI R31 , HIGH ( _respond + ( 6 ) )
+0001e0 e4e1     +LDI R30 , LOW ( _respond + ( 6 ) )
+0001e1 e0f4     +LDI R31 , HIGH ( _respond + ( 6 ) )
                  	__POINTW1MN _respond,6
-00017d 93fa      	ST   -Y,R31
-00017e 93ea      	ST   -Y,R30
-00017f 85e8      	LDD  R30,Y+8
-000180 85f9      	LDD  R31,Y+8+1
-000181 93fa      	ST   -Y,R31
-000182 93ea      	ST   -Y,R30
-000183 85a8      	LDD  R26,Y+8
-000184 85b9      	LDD  R27,Y+8+1
-000185 940e 0299 	CALL _memcpy
-                 ; 0000 00B5 
-                 ; 0000 00B6     for(i = 0; i< respond.len - 1; i++){
-000187 e010      	LDI  R17,LOW(0)
-                 _0x1F:
-                +
-000188 91e0 0427+LDS R30 , _respond + ( 2 )
-                 	__GETB1MN _respond,2
-00018a e0f0      	LDI  R31,0
-00018b 9731      	SBIW R30,1
-00018c 2fa1      	MOV  R26,R17
-00018d e0b0      	LDI  R27,0
-00018e 17ae      	CP   R26,R30
-00018f 07bf      	CPC  R27,R31
-000190 f44c      	BRGE _0x20
-                 ; 0000 00B7          checksum += *(&respond.len + i);
-                +
-000191 e2a7     +LDI R26 , LOW ( _respond + ( 2 ) )
-000192 e0b4     +LDI R27 , HIGH ( _respond + ( 2 ) )
-                 	__POINTW2MN _respond,2
-000193 27ee      	CLR  R30
-000194 0fa1      	ADD  R26,R17
-000195 1fbe      	ADC  R27,R30
-000196 91ec      	LD   R30,X
-000197 0f0e      	ADD  R16,R30
-                 ; 0000 00B8     }
-000198 5f1f      	SUBI R17,-1
-000199 cfee      	RJMP _0x1F
-                 _0x20:
-                 ; 0000 00B9 
-                 ; 0000 00BA     checksum = ~checksum + 1;
-00019a 9501      	NEG  R16
-                 ; 0000 00BB 
-                 ; 0000 00BC     c = (char*)&respond;
-                +
-00019b e225     +LDI R18 , LOW ( _respond )
-00019c e034     +LDI R19 , HIGH ( _respond )
-                 	__POINTWRM 18,19,_respond
-                 ; 0000 00BD     for(i = 0; i<respond.len + 2; i++){
-00019d e010      	LDI  R17,LOW(0)
+0001e2 93fa      	ST   -Y,R31
+0001e3 93ea      	ST   -Y,R30
+0001e4 85e8      	LDD  R30,Y+8
+0001e5 85f9      	LDD  R31,Y+8+1
+0001e6 93fa      	ST   -Y,R31
+0001e7 93ea      	ST   -Y,R30
+0001e8 85a8      	LDD  R26,Y+8
+0001e9 85b9      	LDD  R27,Y+8+1
+0001ea 940e 0301 	CALL _memcpy
+                 ; 0000 00C7 
+                 ; 0000 00C8     for(i = 0; i< respond.len - 1; i++){
+0001ec e010      	LDI  R17,LOW(0)
                  _0x22:
                 +
-00019e 91e0 0427+LDS R30 , _respond + ( 2 )
+0001ed 91e0 043d+LDS R30 , _respond + ( 2 )
                  	__GETB1MN _respond,2
-0001a0 e0f0      	LDI  R31,0
-0001a1 9632      	ADIW R30,2
-0001a2 2fa1      	MOV  R26,R17
-0001a3 e0b0      	LDI  R27,0
-0001a4 17ae      	CP   R26,R30
-0001a5 07bf      	CPC  R27,R31
-0001a6 f44c      	BRGE _0x23
-                 ; 0000 00BE          putchar(c[i]);
-0001a7 01d9      	MOVW R26,R18
-0001a8 27ee      	CLR  R30
-0001a9 0fa1      	ADD  R26,R17
-0001aa 1fbe      	ADC  R27,R30
-0001ab 91ac      	LD   R26,X
-0001ac 940e 027b 	CALL _putchar
-                 ; 0000 00BF      }
-0001ae 5f1f      	SUBI R17,-1
-0001af cfee      	RJMP _0x22
+0001ef e0f0      	LDI  R31,0
+0001f0 9731      	SBIW R30,1
+0001f1 2fa1      	MOV  R26,R17
+0001f2 e0b0      	LDI  R27,0
+0001f3 17ae      	CP   R26,R30
+0001f4 07bf      	CPC  R27,R31
+0001f5 f44c      	BRGE _0x23
+                 ; 0000 00C9         checksum += *(&respond.len + i);
+                +
+0001f6 e3ad     +LDI R26 , LOW ( _respond + ( 2 ) )
+0001f7 e0b4     +LDI R27 , HIGH ( _respond + ( 2 ) )
+                 	__POINTW2MN _respond,2
+0001f8 27ee      	CLR  R30
+0001f9 0fa1      	ADD  R26,R17
+0001fa 1fbe      	ADC  R27,R30
+0001fb 91ec      	LD   R30,X
+0001fc 0f0e      	ADD  R16,R30
+                 ; 0000 00CA     }
+0001fd 5f1f      	SUBI R17,-1
+0001fe cfee      	RJMP _0x22
                  _0x23:
-                 ; 0000 00C0 }
-0001b0 940e 02d1 	CALL __LOADLOCR4
-0001b2 9628      	ADIW R28,8
-0001b3 9508      	RET
+                 ; 0000 00CB 
+                 ; 0000 00CC     checksum = ~checksum + 1;
+0001ff 9501      	NEG  R16
+                 ; 0000 00CD 
+                 ; 0000 00CE     c = (char*)&respond;
+                +
+000200 e32b     +LDI R18 , LOW ( _respond )
+000201 e034     +LDI R19 , HIGH ( _respond )
+                 	__POINTWRM 18,19,_respond
+                 ; 0000 00CF     for(i = 0; i<respond.len + 2; i++){
+000202 e010      	LDI  R17,LOW(0)
+                 _0x25:
+                +
+000203 91e0 043d+LDS R30 , _respond + ( 2 )
+                 	__GETB1MN _respond,2
+000205 e0f0      	LDI  R31,0
+000206 9632      	ADIW R30,2
+000207 2fa1      	MOV  R26,R17
+000208 e0b0      	LDI  R27,0
+000209 17ae      	CP   R26,R30
+00020a 07bf      	CPC  R27,R31
+00020b f44c      	BRGE _0x26
+                 ; 0000 00D0         putchar(c[i]);
+00020c 01d9      	MOVW R26,R18
+00020d 27ee      	CLR  R30
+00020e 0fa1      	ADD  R26,R17
+00020f 1fbe      	ADC  R27,R30
+000210 91ac      	LD   R26,X
+000211 940e 02e3 	CALL _putchar
+                 ; 0000 00D1     }
+000213 5f1f      	SUBI R17,-1
+000214 cfee      	RJMP _0x25
+                 _0x26:
+                 ; 0000 00D2     putchar(checksum);
+000215 2fa0      	MOV  R26,R16
+000216 940e 02e3 	CALL _putchar
+                 ; 0000 00D3 }
+000218 940e 0340 	CALL __LOADLOCR4
+00021a 9628      	ADIW R28,8
+00021b 9508      	RET
                  ; .FEND
                  ;#include "main.h"
                  	#ifndef __SLEEP_DEFINED__
@@ -1859,11 +1983,11 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 0005    // Crystal Oscillator division factor: 1
                  ; 0001 0006    #pragma optsize-
                  ; 0001 0007    CLKPR=(1<<CLKPCE);
-0001b4 e8e0      	LDI  R30,LOW(128)
-0001b5 93e0 0061 	STS  97,R30
+00021c e8e0      	LDI  R30,LOW(128)
+00021d 93e0 0061 	STS  97,R30
                  ; 0001 0008    CLKPR=(0<<CLKPCE) | (0<<CLKPS3) | (0<<CLKPS2) | (0<<CLKPS1) | (0<<CLKPS0);
-0001b7 e0e0      	LDI  R30,LOW(0)
-0001b8 93e0 0061 	STS  97,R30
+00021f e0e0      	LDI  R30,LOW(0)
+000220 93e0 0061 	STS  97,R30
                  ; 0001 0009    #ifdef _OPTIMIZE_SIZE_
                  ; 0001 000A    #pragma optsize+
                  ; 0001 000B    #endif
@@ -1872,28 +1996,28 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 000E    // Port B initialization
                  ; 0001 000F    // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=Out Bit0=In
                  ; 0001 0010    DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (1<<DDB1) | (0<<DDB0);
-0001ba e0e2      	LDI  R30,LOW(2)
-0001bb b9e4      	OUT  0x4,R30
+000222 e0e2      	LDI  R30,LOW(2)
+000223 b9e4      	OUT  0x4,R30
                  ; 0001 0011    // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=0 Bit0=T
                  ; 0001 0012    PORTB=(0<<PORTB7) | (0<<PORTB6) | (0<<PORTB5) | (0<<PORTB4) | (0<<PORTB3) | (0<<PORTB2) | (0<<PORTB1) | (0<<PORTB0);
-0001bc e0e0      	LDI  R30,LOW(0)
-0001bd b9e5      	OUT  0x5,R30
+000224 e0e0      	LDI  R30,LOW(0)
+000225 b9e5      	OUT  0x5,R30
                  ; 0001 0013 
                  ; 0001 0014    // Port C initialization
                  ; 0001 0015    // Function: Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
                  ; 0001 0016    DDRC=(0<<DDC6) | (0<<DDC5) | (0<<DDC4) | (0<<DDC3) | (0<<DDC2) | (0<<DDC1) | (0<<DDC0);
-0001be b9e7      	OUT  0x7,R30
+000226 b9e7      	OUT  0x7,R30
                  ; 0001 0017    // State: Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
                  ; 0001 0018    PORTC=(0<<PORTC6) | (0<<PORTC5) | (0<<PORTC4) | (0<<PORTC3) | (0<<PORTC2) | (0<<PORTC1) | (0<<PORTC0);
-0001bf b9e8      	OUT  0x8,R30
+000227 b9e8      	OUT  0x8,R30
                  ; 0001 0019 
                  ; 0001 001A    // Port D initialization
                  ; 0001 001B    // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
                  ; 0001 001C    DDRD=(0<<DDD7) | (0<<DDD6) | (0<<DDD5) | (0<<DDD4) | (0<<DDD3) | (0<<DDD2) | (0<<DDD1) | (0<<DDD0);
-0001c0 b9ea      	OUT  0xA,R30
+000228 b9ea      	OUT  0xA,R30
                  ; 0001 001D    // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
                  ; 0001 001E    PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<PORTD2) | (0<<PORTD1) | (0<<PORTD0);
-0001c1 b9eb      	OUT  0xB,R30
+000229 b9eb      	OUT  0xB,R30
                  ; 0001 001F 
                  ; 0001 0020    // Timer/Counter 0 initialization
                  ; 0001 0021    // Clock source: System Clock
@@ -1902,15 +2026,15 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 0024    // OC0A output: Disconnected
                  ; 0001 0025    // OC0B output: Disconnected
                  ; 0001 0026    TCCR0A=(0<<COM0A1) | (0<<COM0A0) | (0<<COM0B1) | (0<<COM0B0) | (0<<WGM01) | (0<<WGM00);
-0001c2 bde4      	OUT  0x24,R30
+00022a bde4      	OUT  0x24,R30
                  ; 0001 0027    TCCR0B=(0<<WGM02) | (0<<CS02) | (0<<CS01) | (0<<CS00);
-0001c3 bde5      	OUT  0x25,R30
+00022b bde5      	OUT  0x25,R30
                  ; 0001 0028    TCNT0=0x00;
-0001c4 bde6      	OUT  0x26,R30
+00022c bde6      	OUT  0x26,R30
                  ; 0001 0029    OCR0A=0x00;
-0001c5 bde7      	OUT  0x27,R30
+00022d bde7      	OUT  0x27,R30
                  ; 0001 002A    OCR0B=0x00;
-0001c6 bde8      	OUT  0x28,R30
+00022e bde8      	OUT  0x28,R30
                  ; 0001 002B 
                  ; 0001 002C    // Timer/Counter 1 initialization
                  ; 0001 002D    // Clock source: System Clock
@@ -1928,28 +2052,28 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 0039    // Compare A Match Interrupt: Off
                  ; 0001 003A    // Compare B Match Interrupt: Off
                  ; 0001 003B    TCCR1A=(1<<COM1A1) | (0<<COM1A0) | (0<<COM1B1) | (0<<COM1B0) | (1<<WGM11) | (0<<WGM10);
-0001c7 e8e2      	LDI  R30,LOW(130)
-0001c8 93e0 0080 	STS  128,R30
+00022f e8e2      	LDI  R30,LOW(130)
+000230 93e0 0080 	STS  128,R30
                  ; 0001 003C    TCCR1B=(0<<ICNC1) | (0<<ICES1) | (1<<WGM13) | (1<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10);
-0001ca e1e9      	LDI  R30,LOW(25)
-0001cb 93e0 0081 	STS  129,R30
+000232 e1e9      	LDI  R30,LOW(25)
+000233 93e0 0081 	STS  129,R30
                  ; 0001 003D    TCNT1H=0;
-0001cd e0e0      	LDI  R30,LOW(0)
-0001ce 93e0 0085 	STS  133,R30
+000235 e0e0      	LDI  R30,LOW(0)
+000236 93e0 0085 	STS  133,R30
                  ; 0001 003E    TCNT1L=0;
-0001d0 93e0 0084 	STS  132,R30
+000238 93e0 0084 	STS  132,R30
                  ; 0001 003F    ICR1H=0x00;
-0001d2 93e0 0087 	STS  135,R30
+00023a 93e0 0087 	STS  135,R30
                  ; 0001 0040    ICR1L=0x00;
-0001d4 93e0 0086 	STS  134,R30
+00023c 93e0 0086 	STS  134,R30
                  ; 0001 0041    OCR1AH=0x00;
-0001d6 93e0 0089 	STS  137,R30
+00023e 93e0 0089 	STS  137,R30
                  ; 0001 0042    OCR1AL=0x00;
-0001d8 93e0 0088 	STS  136,R30
+000240 93e0 0088 	STS  136,R30
                  ; 0001 0043    OCR1BH=0x00;
-0001da 93e0 008b 	STS  139,R30
+000242 93e0 008b 	STS  139,R30
                  ; 0001 0044    OCR1BL=0x00;
-0001dc 93e0 008a 	STS  138,R30
+000244 93e0 008a 	STS  138,R30
                  ; 0001 0045 
                  ; 0001 0046    // Timer/Counter 2 initialization
                  ; 0001 0047    // Clock source: System Clock
@@ -1958,29 +2082,29 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 004A    // OC2A output: Disconnected
                  ; 0001 004B    // OC2B output: Disconnected
                  ; 0001 004C    ASSR=(0<<EXCLK) | (0<<AS2);
-0001de 93e0 00b6 	STS  182,R30
+000246 93e0 00b6 	STS  182,R30
                  ; 0001 004D    TCCR2A=(0<<COM2A1) | (0<<COM2A0) | (0<<COM2B1) | (0<<COM2B0) | (0<<WGM21) | (0<<WGM20);
-0001e0 93e0 00b0 	STS  176,R30
+000248 93e0 00b0 	STS  176,R30
                  ; 0001 004E    TCCR2B=(0<<WGM22) | (0<<CS22) | (0<<CS21) | (0<<CS20);
-0001e2 93e0 00b1 	STS  177,R30
+00024a 93e0 00b1 	STS  177,R30
                  ; 0001 004F    TCNT2=0x00;
-0001e4 93e0 00b2 	STS  178,R30
+00024c 93e0 00b2 	STS  178,R30
                  ; 0001 0050    OCR2A=0x00;
-0001e6 93e0 00b3 	STS  179,R30
+00024e 93e0 00b3 	STS  179,R30
                  ; 0001 0051    OCR2B=0x00;
-0001e8 93e0 00b4 	STS  180,R30
+000250 93e0 00b4 	STS  180,R30
                  ; 0001 0052 
                  ; 0001 0053    // Timer/Counter 0 Interrupt(s) initialization
                  ; 0001 0054    TIMSK0=(0<<OCIE0B) | (0<<OCIE0A) | (0<<TOIE0);
-0001ea 93e0 006e 	STS  110,R30
+000252 93e0 006e 	STS  110,R30
                  ; 0001 0055 
                  ; 0001 0056    // Timer/Counter 1 Interrupt(s) initialization
                  ; 0001 0057    TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (0<<OCIE1A) | (0<<TOIE1);
-0001ec 93e0 006f 	STS  111,R30
+000254 93e0 006f 	STS  111,R30
                  ; 0001 0058 
                  ; 0001 0059    // Timer/Counter 2 Interrupt(s) initialization
                  ; 0001 005A    TIMSK2=(0<<OCIE2B) | (0<<OCIE2A) | (0<<TOIE2);
-0001ee 93e0 0070 	STS  112,R30
+000256 93e0 0070 	STS  112,R30
                  ; 0001 005B 
                  ; 0001 005C    // External Interrupt(s) initialization
                  ; 0001 005D    // INT0: Off
@@ -1989,11 +2113,11 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 0060    // Interrupt on any change on pins PCINT8-14: Off
                  ; 0001 0061    // Interrupt on any change on pins PCINT16-23: Off
                  ; 0001 0062    EICRA=(0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
-0001f0 93e0 0069 	STS  105,R30
+000258 93e0 0069 	STS  105,R30
                  ; 0001 0063    EIMSK=(0<<INT1) | (0<<INT0);
-0001f2 bbed      	OUT  0x1D,R30
+00025a bbed      	OUT  0x1D,R30
                  ; 0001 0064    PCICR=(0<<PCIE2) | (0<<PCIE1) | (0<<PCIE0);
-0001f3 93e0 0068 	STS  104,R30
+00025b 93e0 0068 	STS  104,R30
                  ; 0001 0065 
                  ; 0001 0066    // USART initialization
                  ; 0001 0067    // Communication Parameters: 8 Data, 1 Stop, No Parity
@@ -2008,20 +2132,20 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 0070    //UBRR0L=0x22;
                  ; 0001 0071 
                  ; 0001 0072    UCSR0A=(0<<RXC0) | (0<<TXC0) | (0<<UDRE0) | (0<<FE0) | (0<<DOR0) | (0<<UPE0) | (1<<U2X0) | (0<<MPCM0);
-0001f5 e0e2      	LDI  R30,LOW(2)
-0001f6 93e0 00c0 	STS  192,R30
+00025d e0e2      	LDI  R30,LOW(2)
+00025e 93e0 00c0 	STS  192,R30
                  ; 0001 0073    UCSR0B=(1<<RXCIE0) | (1<<TXCIE0) | (0<<UDRIE0) | (1<<RXEN0) | (1<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
-0001f8 ede8      	LDI  R30,LOW(216)
-0001f9 93e0 00c1 	STS  193,R30
+000260 ede8      	LDI  R30,LOW(216)
+000261 93e0 00c1 	STS  193,R30
                  ; 0001 0074    UCSR0C=(0<<UMSEL01) | (0<<UMSEL00) | (0<<UPM01) | (0<<UPM00) | (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00) | (0<<UCPOL0);
-0001fb e0e6      	LDI  R30,LOW(6)
-0001fc 93e0 00c2 	STS  194,R30
+000263 e0e6      	LDI  R30,LOW(6)
+000264 93e0 00c2 	STS  194,R30
                  ; 0001 0075    UBRR0H=0x00;
-0001fe e0e0      	LDI  R30,LOW(0)
-0001ff 93e0 00c5 	STS  197,R30
+000266 e0e0      	LDI  R30,LOW(0)
+000267 93e0 00c5 	STS  197,R30
                  ; 0001 0076    UBRR0L=0x22;
-000201 e2e2      	LDI  R30,LOW(34)
-000202 93e0 00c4 	STS  196,R30
+000269 e2e2      	LDI  R30,LOW(34)
+00026a 93e0 00c4 	STS  196,R30
                  ; 0001 0077 
                  ; 0001 0078    // Analog Comparator initialization
                  ; 0001 0079    // Analog Comparator: Off
@@ -2030,38 +2154,37 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ; 0001 007C    // The Analog Comparator's negative input is
                  ; 0001 007D    // connected to the AIN1 pin
                  ; 0001 007E    ACSR=(1<<ACD) | (0<<ACBG) | (0<<ACO) | (0<<ACI) | (0<<ACIE) | (0<<ACIC) | (0<<ACIS1) | (0<<ACIS0);
-000204 e8e0      	LDI  R30,LOW(128)
-000205 bfe0      	OUT  0x30,R30
+00026c e8e0      	LDI  R30,LOW(128)
+00026d bfe0      	OUT  0x30,R30
                  ; 0001 007F    ADCSRB=(0<<ACME);
-000206 e0e0      	LDI  R30,LOW(0)
-000207 93e0 007b 	STS  123,R30
+00026e e0e0      	LDI  R30,LOW(0)
+00026f 93e0 007b 	STS  123,R30
                  ; 0001 0080    // Digital input buffer on AIN0: On
                  ; 0001 0081    // Digital input buffer on AIN1: On
                  ; 0001 0082    DIDR1=(0<<AIN0D) | (0<<AIN1D);
-000209 93e0 007f 	STS  127,R30
+000271 93e0 007f 	STS  127,R30
                  ; 0001 0083 
                  ; 0001 0084    // ADC initialization
                  ; 0001 0085    // ADC disabled
                  ; 0001 0086    ADCSRA=(0<<ADEN) | (0<<ADSC) | (0<<ADATE) | (0<<ADIF) | (0<<ADIE) | (0<<ADPS2) | (0<<ADPS1) | (0<<ADPS0);
-00020b 93e0 007a 	STS  122,R30
+000273 93e0 007a 	STS  122,R30
                  ; 0001 0087 
                  ; 0001 0088    // SPI initialization
                  ; 0001 0089    // SPI disabled
                  ; 0001 008A    SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0);
-00020d bdec      	OUT  0x2C,R30
+000275 bdec      	OUT  0x2C,R30
                  ; 0001 008B 
                  ; 0001 008C    // TWI initialization
                  ; 0001 008D    // TWI disabled
                  ; 0001 008E    TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
-00020e 93e0 00bc 	STS  188,R30
+000276 93e0 00bc 	STS  188,R30
                  ; 0001 008F }
-000210 9508      	RET
+000278 9508      	RET
                  ; .FEND
                  ;#include "main.h"
                  	#ifndef __SLEEP_DEFINED__
                  	#endif
                  ;#include "protocol.h"
-                 ;
                  ;
                  ;#define DATA_REGISTER_EMPTY (1<<UDRE0)
                  ;#define RX_COMPLETE (1<<RXC0)
@@ -2089,76 +2212,76 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ;
                  ;// USART Receiver interrupt service routine
                  ;interrupt [USART_RXC] void usart_rx_isr(void)
-                 ; 0002 001F {
+                 ; 0002 001E {
                  
                  	.CSEG
                  _usart_rx_isr:
                  ; .FSTART _usart_rx_isr
-000211 93aa      	ST   -Y,R26
-000212 93ea      	ST   -Y,R30
-000213 93fa      	ST   -Y,R31
-000214 b7ef      	IN   R30,SREG
-000215 93ea      	ST   -Y,R30
-                 ; 0002 0020    char status,data;
-                 ; 0002 0021    status=UCSR0A;
-000216 931a      	ST   -Y,R17
-000217 930a      	ST   -Y,R16
+000279 93aa      	ST   -Y,R26
+00027a 93ea      	ST   -Y,R30
+00027b 93fa      	ST   -Y,R31
+00027c b7ef      	IN   R30,SREG
+00027d 93ea      	ST   -Y,R30
+                 ; 0002 001F    char status,data;
+                 ; 0002 0020    status=UCSR0A;
+00027e 931a      	ST   -Y,R17
+00027f 930a      	ST   -Y,R16
                  ;	status -> R17
                  ;	data -> R16
-000218 9110 00c0 	LDS  R17,192
-                 ; 0002 0022    data=UDR0;
-00021a 9100 00c6 	LDS  R16,198
-                 ; 0002 0023    if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
-00021c 2fe1      	MOV  R30,R17
-00021d 71ec      	ANDI R30,LOW(0x1C)
-00021e f4e1      	BRNE _0x40003
-                 ; 0002 0024       {
-                 ; 0002 0025       rx_buffer0[rx_wr_index0++]=data;
-00021f 91e0 0300 	LDS  R30,_rx_wr_index0
-000221 5fef      	SUBI R30,-LOW(1)
-000222 93e0 0300 	STS  _rx_wr_index0,R30
-000224 50e1      	SUBI R30,LOW(1)
-000225 e0f0      	LDI  R31,0
-000226 5fed      	SUBI R30,LOW(-_rx_buffer0)
-000227 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
-000228 8300      	ST   Z,R16
-                 ; 0002 0026    #if RX_BUFFER_SIZE0 == 256
-                 ; 0002 0027       // special case for receiver buffer size=256
-                 ; 0002 0028       if (++rx_counter0 == 0) rx_buffer_overflow0=1;
-                 ; 0002 0029    #else
-                 ; 0002 002A       if (rx_wr_index0 == RX_BUFFER_SIZE0) rx_wr_index0=0;
-000229 91a0 0300 	LDS  R26,_rx_wr_index0
-00022b 39a6      	CPI  R26,LOW(0x96)
-00022c f419      	BRNE _0x40004
-00022d e0e0      	LDI  R30,LOW(0)
-00022e 93e0 0300 	STS  _rx_wr_index0,R30
-                 ; 0002 002B       if (++rx_counter0 == RX_BUFFER_SIZE0)
+000280 9110 00c0 	LDS  R17,192
+                 ; 0002 0021    data=UDR0;
+000282 9100 00c6 	LDS  R16,198
+                 ; 0002 0022    if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
+000284 2fe1      	MOV  R30,R17
+000285 71ec      	ANDI R30,LOW(0x1C)
+000286 f4e1      	BRNE _0x40003
+                 ; 0002 0023       {
+                 ; 0002 0024       rx_buffer0[rx_wr_index0++]=data;
+000287 91e0 0300 	LDS  R30,_rx_wr_index0
+000289 5fef      	SUBI R30,-LOW(1)
+00028a 93e0 0300 	STS  _rx_wr_index0,R30
+00028c 50e1      	SUBI R30,LOW(1)
+00028d e0f0      	LDI  R31,0
+00028e 5fed      	SUBI R30,LOW(-_rx_buffer0)
+00028f 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
+000290 8300      	ST   Z,R16
+                 ; 0002 0025    #if RX_BUFFER_SIZE0 == 256
+                 ; 0002 0026       // special case for receiver buffer size=256
+                 ; 0002 0027       if (++rx_counter0 == 0) rx_buffer_overflow0=1;
+                 ; 0002 0028    #else
+                 ; 0002 0029       if (rx_wr_index0 == RX_BUFFER_SIZE0) rx_wr_index0=0;
+000291 91a0 0300 	LDS  R26,_rx_wr_index0
+000293 39a6      	CPI  R26,LOW(0x96)
+000294 f419      	BRNE _0x40004
+000295 e0e0      	LDI  R30,LOW(0)
+000296 93e0 0300 	STS  _rx_wr_index0,R30
+                 ; 0002 002A       if (++rx_counter0 == RX_BUFFER_SIZE0)
                  _0x40004:
-000230 91a0 0302 	LDS  R26,_rx_counter0
-000232 5faf      	SUBI R26,-LOW(1)
-000233 93a0 0302 	STS  _rx_counter0,R26
-000235 39a6      	CPI  R26,LOW(0x96)
-000236 f421      	BRNE _0x40005
-                 ; 0002 002C          {
-                 ; 0002 002D          rx_counter0=0;
-000237 e0e0      	LDI  R30,LOW(0)
-000238 93e0 0302 	STS  _rx_counter0,R30
-                 ; 0002 002E          rx_buffer_overflow0=1;
-00023a 9af0      	SBI  0x1E,0
-                 ; 0002 002F          }
-                 ; 0002 0030    #endif
-                 ; 0002 0031       }
+000298 91a0 0302 	LDS  R26,_rx_counter0
+00029a 5faf      	SUBI R26,-LOW(1)
+00029b 93a0 0302 	STS  _rx_counter0,R26
+00029d 39a6      	CPI  R26,LOW(0x96)
+00029e f421      	BRNE _0x40005
+                 ; 0002 002B          {
+                 ; 0002 002C          rx_counter0=0;
+00029f e0e0      	LDI  R30,LOW(0)
+0002a0 93e0 0302 	STS  _rx_counter0,R30
+                 ; 0002 002D          rx_buffer_overflow0=1;
+0002a2 9af0      	SBI  0x1E,0
+                 ; 0002 002E          }
+                 ; 0002 002F    #endif
+                 ; 0002 0030       }
                  _0x40005:
-                 ; 0002 0032 }
+                 ; 0002 0031 }
                  _0x40003:
-00023b 9109      	LD   R16,Y+
-00023c 9119      	LD   R17,Y+
-00023d 91e9      	LD   R30,Y+
-00023e bfef      	OUT  SREG,R30
-00023f 91f9      	LD   R31,Y+
-000240 91e9      	LD   R30,Y+
-000241 91a9      	LD   R26,Y+
-000242 9518      	RETI
+0002a3 9109      	LD   R16,Y+
+0002a4 9119      	LD   R17,Y+
+0002a5 91e9      	LD   R30,Y+
+0002a6 bfef      	OUT  SREG,R30
+0002a7 91f9      	LD   R31,Y+
+0002a8 91e9      	LD   R30,Y+
+0002a9 91a9      	LD   R26,Y+
+0002aa 9518      	RETI
                  ; .FEND
                  ;
                  ;#ifndef _DEBUG_TERMINAL_IO_
@@ -2166,49 +2289,49 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ;#define _ALTERNATE_GETCHAR_
                  ;#pragma used+
                  ;char getchar(void)
-                 ; 0002 0039 {
+                 ; 0002 0038 {
                  _getchar:
                  ; .FSTART _getchar
-                 ; 0002 003A    char data;
-                 ; 0002 003B    while (rx_counter0==0);
-000243 931a      	ST   -Y,R17
+                 ; 0002 0039    char data;
+                 ; 0002 003A    while (rx_counter0==0);
+0002ab 931a      	ST   -Y,R17
                  ;	data -> R17
                  _0x40008:
-000244 91e0 0302 	LDS  R30,_rx_counter0
-000246 30e0      	CPI  R30,0
-000247 f3e1      	BREQ _0x40008
-                 ; 0002 003C    data=rx_buffer0[rx_rd_index0++];
-000248 91e0 0301 	LDS  R30,_rx_rd_index0
-00024a 5fef      	SUBI R30,-LOW(1)
-00024b 93e0 0301 	STS  _rx_rd_index0,R30
-00024d 50e1      	SUBI R30,LOW(1)
-00024e e0f0      	LDI  R31,0
-00024f 5fed      	SUBI R30,LOW(-_rx_buffer0)
-000250 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
-000251 8110      	LD   R17,Z
-                 ; 0002 003D    #if RX_BUFFER_SIZE0 != 256
-                 ; 0002 003E    if (rx_rd_index0 == RX_BUFFER_SIZE0) rx_rd_index0=0;
-000252 91a0 0301 	LDS  R26,_rx_rd_index0
-000254 39a6      	CPI  R26,LOW(0x96)
-000255 f419      	BRNE _0x4000B
-000256 e0e0      	LDI  R30,LOW(0)
-000257 93e0 0301 	STS  _rx_rd_index0,R30
-                 ; 0002 003F    #endif
-                 ; 0002 0040    #asm("cli")
+0002ac 91e0 0302 	LDS  R30,_rx_counter0
+0002ae 30e0      	CPI  R30,0
+0002af f3e1      	BREQ _0x40008
+                 ; 0002 003B    data=rx_buffer0[rx_rd_index0++];
+0002b0 91e0 0301 	LDS  R30,_rx_rd_index0
+0002b2 5fef      	SUBI R30,-LOW(1)
+0002b3 93e0 0301 	STS  _rx_rd_index0,R30
+0002b5 50e1      	SUBI R30,LOW(1)
+0002b6 e0f0      	LDI  R31,0
+0002b7 5fed      	SUBI R30,LOW(-_rx_buffer0)
+0002b8 4ffc      	SBCI R31,HIGH(-_rx_buffer0)
+0002b9 8110      	LD   R17,Z
+                 ; 0002 003C    #if RX_BUFFER_SIZE0 != 256
+                 ; 0002 003D    if (rx_rd_index0 == RX_BUFFER_SIZE0) rx_rd_index0=0;
+0002ba 91a0 0301 	LDS  R26,_rx_rd_index0
+0002bc 39a6      	CPI  R26,LOW(0x96)
+0002bd f419      	BRNE _0x4000B
+0002be e0e0      	LDI  R30,LOW(0)
+0002bf 93e0 0301 	STS  _rx_rd_index0,R30
+                 ; 0002 003E    #endif
+                 ; 0002 003F    #asm("cli")
                  _0x4000B:
-000259 94f8      	cli
-                 ; 0002 0041    --rx_counter0;
-00025a 91e0 0302 	LDS  R30,_rx_counter0
-00025c 50e1      	SUBI R30,LOW(1)
-00025d 93e0 0302 	STS  _rx_counter0,R30
-                 ; 0002 0042    #asm("sei")
-00025f 9478      	sei
-                 ; 0002 0043    return data;
-000260 2fe1      	MOV  R30,R17
+0002c1 94f8      	cli
+                 ; 0002 0040    --rx_counter0;
+0002c2 91e0 0302 	LDS  R30,_rx_counter0
+0002c4 50e1      	SUBI R30,LOW(1)
+0002c5 93e0 0302 	STS  _rx_counter0,R30
+                 ; 0002 0041    #asm("sei")
+0002c7 9478      	sei
+                 ; 0002 0042    return data;
+0002c8 2fe1      	MOV  R30,R17
                  _0x2060001:
-000261 9119      	LD   R17,Y+
-000262 9508      	RET
-                 ; 0002 0044 }
+0002c9 9119      	LD   R17,Y+
+0002ca 9508      	RET
+                 ; 0002 0043 }
                  ; .FEND
                  ;#pragma used-
                  ;#endif
@@ -2231,43 +2354,43 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ;
                  ;// USART Transmitter interrupt service routine
                  ;interrupt [USART_TXC] void usart_tx_isr(void)
-                 ; 0002 005A {
+                 ; 0002 0059 {
                  _usart_tx_isr:
                  ; .FSTART _usart_tx_isr
-000263 93ea      	ST   -Y,R30
-000264 93fa      	ST   -Y,R31
-000265 b7ef      	IN   R30,SREG
-000266 93ea      	ST   -Y,R30
-                 ; 0002 005B    if (tx_counter0)
-000267 2077      	TST  R7
-000268 f069      	BREQ _0x4000C
-                 ; 0002 005C       {
-                 ; 0002 005D       --tx_counter0;
-000269 947a      	DEC  R7
-                 ; 0002 005E       UDR0=tx_buffer0[tx_rd_index0++];
-00026a 2de8      	MOV  R30,R8
-00026b 9483      	INC  R8
-00026c e0f0      	LDI  R31,0
-00026d 54ef      	SUBI R30,LOW(-_tx_buffer0)
-00026e 4ffb      	SBCI R31,HIGH(-_tx_buffer0)
-00026f 81e0      	LD   R30,Z
-000270 93e0 00c6 	STS  198,R30
-                 ; 0002 005F    #if TX_BUFFER_SIZE0 != 256
-                 ; 0002 0060       if (tx_rd_index0 == TX_BUFFER_SIZE0) tx_rd_index0=0;
-000272 e0e8      	LDI  R30,LOW(8)
-000273 15e8      	CP   R30,R8
-000274 f409      	BRNE _0x4000D
-000275 2488      	CLR  R8
-                 ; 0002 0061    #endif
-                 ; 0002 0062       }
+0002cb 93ea      	ST   -Y,R30
+0002cc 93fa      	ST   -Y,R31
+0002cd b7ef      	IN   R30,SREG
+0002ce 93ea      	ST   -Y,R30
+                 ; 0002 005A    if (tx_counter0)
+0002cf 2077      	TST  R7
+0002d0 f069      	BREQ _0x4000C
+                 ; 0002 005B       {
+                 ; 0002 005C       --tx_counter0;
+0002d1 947a      	DEC  R7
+                 ; 0002 005D       UDR0=tx_buffer0[tx_rd_index0++];
+0002d2 2de8      	MOV  R30,R8
+0002d3 9483      	INC  R8
+0002d4 e0f0      	LDI  R31,0
+0002d5 5ae2      	SUBI R30,LOW(-_tx_buffer0)
+0002d6 4ffa      	SBCI R31,HIGH(-_tx_buffer0)
+0002d7 81e0      	LD   R30,Z
+0002d8 93e0 00c6 	STS  198,R30
+                 ; 0002 005E    #if TX_BUFFER_SIZE0 != 256
+                 ; 0002 005F       if (tx_rd_index0 == TX_BUFFER_SIZE0) tx_rd_index0=0;
+0002da e0e8      	LDI  R30,LOW(8)
+0002db 15e8      	CP   R30,R8
+0002dc f409      	BRNE _0x4000D
+0002dd 2488      	CLR  R8
+                 ; 0002 0060    #endif
+                 ; 0002 0061       }
                  _0x4000D:
-                 ; 0002 0063 }
+                 ; 0002 0062 }
                  _0x4000C:
-000276 91e9      	LD   R30,Y+
-000277 bfef      	OUT  SREG,R30
-000278 91f9      	LD   R31,Y+
-000279 91e9      	LD   R30,Y+
-00027a 9518      	RETI
+0002de 91e9      	LD   R30,Y+
+0002df bfef      	OUT  SREG,R30
+0002e0 91f9      	LD   R31,Y+
+0002e1 91e9      	LD   R30,Y+
+0002e2 9518      	RETI
                  ; .FEND
                  ;
                  ;#ifndef _DEBUG_TERMINAL_IO_
@@ -2275,57 +2398,57 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  ;#define _ALTERNATE_PUTCHAR_
                  ;#pragma used+
                  ;void putchar(char c)
-                 ; 0002 006A {
+                 ; 0002 0069 {
                  _putchar:
                  ; .FSTART _putchar
-                 ; 0002 006B    while (tx_counter0 == TX_BUFFER_SIZE0);
-00027b 93aa      	ST   -Y,R26
+                 ; 0002 006A    while (tx_counter0 == TX_BUFFER_SIZE0);
+0002e3 93aa      	ST   -Y,R26
                  ;	c -> Y+0
                  _0x4000E:
-00027c e0e8      	LDI  R30,LOW(8)
-00027d 15e7      	CP   R30,R7
-00027e f3e9      	BREQ _0x4000E
-                 ; 0002 006C    #asm("cli")
-00027f 94f8      	cli
-                 ; 0002 006D    if (tx_counter0 || ((UCSR0A & DATA_REGISTER_EMPTY)==0))
-000280 2077      	TST  R7
-000281 f421      	BRNE _0x40012
-000282 91e0 00c0 	LDS  R30,192
-000284 72e0      	ANDI R30,LOW(0x20)
-000285 f469      	BRNE _0x40011
+0002e4 e0e8      	LDI  R30,LOW(8)
+0002e5 15e7      	CP   R30,R7
+0002e6 f3e9      	BREQ _0x4000E
+                 ; 0002 006B    #asm("cli")
+0002e7 94f8      	cli
+                 ; 0002 006C    if (tx_counter0 || ((UCSR0A & DATA_REGISTER_EMPTY)==0))
+0002e8 2077      	TST  R7
+0002e9 f421      	BRNE _0x40012
+0002ea 91e0 00c0 	LDS  R30,192
+0002ec 72e0      	ANDI R30,LOW(0x20)
+0002ed f469      	BRNE _0x40011
                  _0x40012:
-                 ; 0002 006E       {
-                 ; 0002 006F       tx_buffer0[tx_wr_index0++]=c;
-000286 2de5      	MOV  R30,R5
-000287 9453      	INC  R5
-000288 e0f0      	LDI  R31,0
-000289 54ef      	SUBI R30,LOW(-_tx_buffer0)
-00028a 4ffb      	SBCI R31,HIGH(-_tx_buffer0)
-00028b 81a8      	LD   R26,Y
-00028c 83a0      	STD  Z+0,R26
-                 ; 0002 0070    #if TX_BUFFER_SIZE0 != 256
-                 ; 0002 0071       if (tx_wr_index0 == TX_BUFFER_SIZE0) tx_wr_index0=0;
-00028d e0e8      	LDI  R30,LOW(8)
-00028e 15e5      	CP   R30,R5
-00028f f409      	BRNE _0x40014
-000290 2455      	CLR  R5
-                 ; 0002 0072    #endif
-                 ; 0002 0073       ++tx_counter0;
+                 ; 0002 006D       {
+                 ; 0002 006E       tx_buffer0[tx_wr_index0++]=c;
+0002ee 2de5      	MOV  R30,R5
+0002ef 9453      	INC  R5
+0002f0 e0f0      	LDI  R31,0
+0002f1 5ae2      	SUBI R30,LOW(-_tx_buffer0)
+0002f2 4ffa      	SBCI R31,HIGH(-_tx_buffer0)
+0002f3 81a8      	LD   R26,Y
+0002f4 83a0      	STD  Z+0,R26
+                 ; 0002 006F    #if TX_BUFFER_SIZE0 != 256
+                 ; 0002 0070       if (tx_wr_index0 == TX_BUFFER_SIZE0) tx_wr_index0=0;
+0002f5 e0e8      	LDI  R30,LOW(8)
+0002f6 15e5      	CP   R30,R5
+0002f7 f409      	BRNE _0x40014
+0002f8 2455      	CLR  R5
+                 ; 0002 0071    #endif
+                 ; 0002 0072       ++tx_counter0;
                  _0x40014:
-000291 9473      	INC  R7
-                 ; 0002 0074       }
-                 ; 0002 0075    else
-000292 c003      	RJMP _0x40015
+0002f9 9473      	INC  R7
+                 ; 0002 0073       }
+                 ; 0002 0074    else
+0002fa c003      	RJMP _0x40015
                  _0x40011:
-                 ; 0002 0076       UDR0=c;
-000293 81e8      	LD   R30,Y
-000294 93e0 00c6 	STS  198,R30
-                 ; 0002 0077    #asm("sei")
+                 ; 0002 0075       UDR0=c;
+0002fb 81e8      	LD   R30,Y
+0002fc 93e0 00c6 	STS  198,R30
+                 ; 0002 0076    #asm("sei")
                  _0x40015:
-000296 9478      	sei
-                 ; 0002 0078 }
-000297 9621      	ADIW R28,1
-000298 9508      	RET
+0002fe 9478      	sei
+                 ; 0002 0077 }
+0002ff 9621      	ADIW R28,1
+000300 9508      	RET
                  ; .FEND
                  ;#pragma used-
                  ;#endif
@@ -2333,53 +2456,53 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  	.CSEG
                  _memcpy:
                  ; .FSTART _memcpy
-000299 93ba      	ST   -Y,R27
-00029a 93aa      	ST   -Y,R26
-00029b 8199          ldd  r25,y+1
-00029c 8188          ld   r24,y
-00029d 9600          adiw r24,0
-00029e f041          breq memcpy1
-00029f 81bd          ldd  r27,y+5
-0002a0 81ac          ldd  r26,y+4
-0002a1 81fb          ldd  r31,y+3
-0002a2 81ea          ldd  r30,y+2
+000301 93ba      	ST   -Y,R27
+000302 93aa      	ST   -Y,R26
+000303 8199          ldd  r25,y+1
+000304 8188          ld   r24,y
+000305 9600          adiw r24,0
+000306 f041          breq memcpy1
+000307 81bd          ldd  r27,y+5
+000308 81ac          ldd  r26,y+4
+000309 81fb          ldd  r31,y+3
+00030a 81ea          ldd  r30,y+2
                  memcpy0:
-0002a3 9161          ld   r22,z+
-0002a4 936d          st   x+,r22
-0002a5 9701          sbiw r24,1
-0002a6 f7e1          brne memcpy0
+00030b 9161          ld   r22,z+
+00030c 936d          st   x+,r22
+00030d 9701          sbiw r24,1
+00030e f7e1          brne memcpy0
                  memcpy1:
-0002a7 81fd          ldd  r31,y+5
-0002a8 81ec          ldd  r30,y+4
-0002a9 9626      	ADIW R28,6
-0002aa 9508      	RET
+00030f 81fd          ldd  r31,y+5
+000310 81ec          ldd  r30,y+4
+000311 9626      	ADIW R28,6
+000312 9508      	RET
                  ; .FEND
                  _strncpy:
                  ; .FSTART _strncpy
-0002ab 93aa      	ST   -Y,R26
-0002ac 9179          ld   r23,y+
-0002ad 91e9          ld   r30,y+
-0002ae 91f9          ld   r31,y+
-0002af 91a9          ld   r26,y+
-0002b0 91b9          ld   r27,y+
-0002b1 01cd          movw r24,r26
+000313 93aa      	ST   -Y,R26
+000314 9179          ld   r23,y+
+000315 91e9          ld   r30,y+
+000316 91f9          ld   r31,y+
+000317 91a9          ld   r26,y+
+000318 91b9          ld   r27,y+
+000319 01cd          movw r24,r26
                  strncpy0:
-0002b2 2377          tst  r23
-0002b3 f051          breq strncpy1
-0002b4 957a          dec  r23
-0002b5 9161          ld   r22,z+
-0002b6 936d          st   x+,r22
-0002b7 2366          tst  r22
-0002b8 f7c9          brne strncpy0
+00031a 2377          tst  r23
+00031b f051          breq strncpy1
+00031c 957a          dec  r23
+00031d 9161          ld   r22,z+
+00031e 936d          st   x+,r22
+00031f 2366          tst  r22
+000320 f7c9          brne strncpy0
                  strncpy2:
-0002b9 2377          tst  r23
-0002ba f019          breq strncpy1
-0002bb 957a          dec  r23
-0002bc 936d          st   x+,r22
-0002bd cffb          rjmp strncpy2
+000321 2377          tst  r23
+000322 f019          breq strncpy1
+000323 957a          dec  r23
+000324 936d          st   x+,r22
+000325 cffb          rjmp strncpy2
                  strncpy1:
-0002be 01fc          movw r30,r24
-0002bf 9508          ret
+000326 01fc          movw r30,r24
+000327 9508          ret
                  ; .FEND
                  	#ifndef __SLEEP_DEFINED__
                  	#endif
@@ -2400,50 +2523,62 @@ D:\Training\Qt C++\PulseGenerator\Firmware\Debug\List\PulseGenerator.asm(1146): 
                  _fw_version:
 000399           	.BYTE 0x6
                  _request:
-00039f           	.BYTE 0x86
+00039f           	.BYTE 0x9C
                  _respond:
-000425           	.BYTE 0x86
+00043b           	.BYTE 0x9C
                  _pl_write_register:
-0004ab           	.BYTE 0x6
+0004d7           	.BYTE 0x6
+                 _test_transfer_request:
+0004dd           	.BYTE 0x81
                  _tx_buffer0:
-0004b1           	.BYTE 0x8
+00055e           	.BYTE 0x8
                  
                  	.CSEG
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:7 WORDS
                  SUBOPT_0x0:
-0002c0 e0e0      	LDI  R30,LOW(0)
-0002c1 93e0 0301 	STS  _rx_rd_index0,R30
-0002c3 93e0 0300 	STS  _rx_wr_index0,R30
-0002c5 93e0 0302 	STS  _rx_counter0,R30
-0002c7 9508      	RET
+000328 e0e0      	LDI  R30,LOW(0)
+000329 93e0 0301 	STS  _rx_rd_index0,R30
+00032b 93e0 0300 	STS  _rx_wr_index0,R30
+00032d 93e0 0302 	STS  _rx_counter0,R30
+00032f 9508      	RET
+                 
+                 ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:1 WORDS
+                 SUBOPT_0x1:
+000330 e0a1      	LDI  R26,LOW(1)
+000331 e0b0      	LDI  R27,0
+000332 940c 01c6 	JMP  _send_respond
+                 
+                 ;OPTIMIZER ADDED SUBROUTINE, CALLED 2 TIMES, CODE SIZE REDUCTION:1 WORDS
+                 SUBOPT_0x2:
+000334 93fa      	ST   -Y,R31
+000335 93ea      	ST   -Y,R30
+                +
+000336 eae5     +LDI R30 , LOW ( _request + ( 6 ) )
+000337 e0f3     +LDI R31 , HIGH ( _request + ( 6 ) )
+                 	__POINTW1MN _request,6
+000338 93fa      	ST   -Y,R31
+000339 93ea      	ST   -Y,R30
+00033a 9508      	RET
                  
                  
                  	.CSEG
-                 __SAVELOCR6:
-0002c8 935a      	ST   -Y,R21
-                 __SAVELOCR5:
-0002c9 934a      	ST   -Y,R20
                  __SAVELOCR4:
-0002ca 933a      	ST   -Y,R19
+00033b 933a      	ST   -Y,R19
                  __SAVELOCR3:
-0002cb 932a      	ST   -Y,R18
+00033c 932a      	ST   -Y,R18
                  __SAVELOCR2:
-0002cc 931a      	ST   -Y,R17
-0002cd 930a      	ST   -Y,R16
-0002ce 9508      	RET
+00033d 931a      	ST   -Y,R17
+00033e 930a      	ST   -Y,R16
+00033f 9508      	RET
                  
-                 __LOADLOCR6:
-0002cf 815d      	LDD  R21,Y+5
-                 __LOADLOCR5:
-0002d0 814c      	LDD  R20,Y+4
                  __LOADLOCR4:
-0002d1 813b      	LDD  R19,Y+3
+000340 813b      	LDD  R19,Y+3
                  __LOADLOCR3:
-0002d2 812a      	LDD  R18,Y+2
+000341 812a      	LDD  R18,Y+2
                  __LOADLOCR2:
-0002d3 8119      	LDD  R17,Y+1
-0002d4 8108      	LD   R16,Y
-0002d5 9508      	RET
+000342 8119      	LDD  R17,Y+1
+000343 8108      	LD   R16,Y
+000344 9508      	RET
                  
                  ;END OF CODE MARKER
                  __END_OF_CODE:
@@ -2466,39 +2601,39 @@ counted separately from r26..r31 here.
 ATmega328P register use summary:
 r0 :   4 r1 :   1 r2 :   0 r3 :   4 r4 :   2 r5 :   4 r6 :   4 r7 :   5 
 r8 :   4 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  16 r17:  26 r18:   6 r19:   4 r20:   2 r21:   2 r22:   8 r23:   5 
-r24:  12 r25:   3 r26:  49 r27:  21 r28:  11 r29:   1 r30: 254 r31:  52 
-x  :   9 y  :  99 z  :  13 
-Registers used: 27 out of 35 (77.1%)
+r16:  17 r17:  38 r18:  12 r19:   5 r20:   0 r21:   0 r22:   8 r23:   5 
+r24:  12 r25:   3 r26:  59 r27:  25 r28:  20 r29:   1 r30: 286 r31:  66 
+x  :   9 y  : 118 z  :  13 
+Registers used: 25 out of 35 (71.4%)
 
 ATmega328P instruction use summary:
 .lds  :   0 .lds.l:   0 .sts  :   0 .sts.l:   0 adc   :   3 add   :   6 
-adiw  :  12 and   :   0 andi  :   2 asr   :   0 bclr  :   0 bld   :   0 
-brbc  :   0 brbs  :   0 brcc  :   0 brcs  :   0 break :   0 breq  :   8 
-brge  :   2 brhc  :   0 brhs  :   0 brid  :   0 brie  :   0 brlo  :   1 
+adiw  :  17 and   :   0 andi  :   2 asr   :   0 bclr  :   0 bld   :   0 
+brbc  :   0 brbs  :   0 brcc  :   0 brcs  :   0 break :   0 breq  :   9 
+brge  :   2 brhc  :   0 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 
 brlt  :   1 brmi  :   0 brne  :  20 brpl  :   0 brsh  :   2 brtc  :   0 
-brts  :   0 brvc  :   0 brvs  :   0 bset  :   0 bst   :   0 call  :  17 
+brts  :   0 brvc  :   0 brvs  :   0 bset  :   0 bst   :   0 call  :  25 
 cbi   :   0 cbr   :   0 clc   :   0 clh   :   0 cli   :   6 cln   :   0 
-clr   :   7 cls   :   0 clt   :   0 clv   :   0 clz   :   0 com   :   0 
-cp    :   9 cpc   :   5 cpi   :  11 cpse  :   0 dec   :   4 des   :   0 
+clr   :   8 cls   :   0 clt   :   0 clv   :   0 clz   :   0 com   :   0 
+cp    :   9 cpc   :   6 cpi   :  13 cpse  :   0 dec   :   4 des   :   0 
 eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0 
-in    :   2 inc   :   3 jmp   :  28 ld    :  26 ldd   :  22 ldi   :  99 
-lds   :  24 lpm   :   7 lsl   :   1 lsr   :   0 mov   :  17 movw  :  11 
+in    :   8 inc   :   3 jmp   :  32 ld    :  26 ldd   :  23 ldi   : 116 
+lds   :  25 lpm   :   7 lsl   :   1 lsr   :   0 mov   :  20 movw  :  15 
 mul   :   0 muls  :   0 mulsu :   0 neg   :   1 nop   :   0 or    :   0 
-ori   :   0 out   :  22 pop   :   0 push  :   0 rcall :   7 ret   :  15 
-reti  :   2 rjmp  :  12 rol   :   0 ror   :   0 sbc   :   0 sbci  :   4 
-sbi   :   1 sbic  :   2 sbis  :   0 sbiw  :   7 sbr   :   0 sbrc  :   0 
+ori   :   0 out   :  22 pop   :   6 push  :   6 rcall :  10 ret   :  15 
+reti  :   2 rjmp  :  16 rol   :   0 ror   :   0 sbc   :   0 sbci  :   4 
+sbi   :   1 sbic  :   2 sbis  :   0 sbiw  :  13 sbr   :   0 sbrc  :   0 
 sbrs  :   0 sec   :   0 seh   :   0 sei   :   6 sen   :   0 ser   :   0 
 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 spm   :   0 
-st    :  57 std   :   9 sts   :  56 sub   :   0 subi  :  16 swap  :   0 
+st    :  74 std   :  10 sts   :  56 sub   :   0 subi  :  16 swap  :   0 
 tst   :   6 wdr   :   0 
-Instructions used: 44 out of 116 (37.9%)
+Instructions used: 46 out of 116 (39.7%)
 
 ATmega328P memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0005ac   1408     44   1452   32768   4.4%
-[.dseg] 0x000100 0x0004b9      0    441    441    2048  21.5%
+[.cseg] 0x000000 0x00068a   1630     44   1674   32768   5.1%
+[.dseg] 0x000100 0x000566      0    614    614    2048  30.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
 Assembly complete, 0 errors, 7 warnings

@@ -36,6 +36,7 @@ unsigned char get_status = GET_STATUS_COMPLETE;
 unsigned char len = 0;
 
 Payload_Write_Register pl_write_register;
+test_transfer_request_t test_transfer_request;
 
 void main(void)
 {
@@ -98,7 +99,7 @@ void process_request(){
    unsigned char len = request.len;
 
    if(checksum(&request.len, len) != 0){
-      //response_error_checksum();
+      response_error_checksum();
    }else{
       execute_cmd();
    }
@@ -116,61 +117,78 @@ unsigned char checksum(unsigned char *dat, unsigned char len){
 }
 
 void response_error_checksum(){
-
+    unsigned char status = STATUS_ERROR_CHECKSUM;
+    send_respond((char *)&status, sizeof(status));
 }
 
 void execute_cmd(){
-   switch(request.opcode){
-   case CMD_READ_VERSION:
-       process_read_version();
+    unsigned char status;
+    switch(request.opcode){
+    case CMD_READ_VERSION:
+        process_read_version();
+        break;
+    case CMD_TEST_TRANSFER:
+        process_test_transfer();
+        break;
+    case CMD_WRITE_REGISTER:
+        process_write_register();
+        break;
+    default:
+        status = STATUS_UNSUPPORT;
+        send_respond((char *)&status, sizeof(status));
+        break;
+    }
+}
 
-       break;
-   case CMD_WRITE_REGISTER:  
-      process_write_register();
-      break;
-   default:
-       //response_unsupport();
-       break;
-   }
+void process_test_transfer(){
+    test_transfer_respond_t respond;
+
+    memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
+    respond.status = STATUS_SUCCESS;
+    respond.len = test_transfer_request.len;
+    if(respond.len > 128){
+        respond.status = STATUS_FAIL;
+        send_respond((char*)&respond.status, sizeof(respond.status));
+    }else{
+        memcpy(&respond.data, test_transfer_request.data, respond.len);
+        send_respond((char*)&respond, respond.len + 2);
+    }
 }
 
 void process_read_version(){
     char *c;
-   char str[] = "0.0.0";
-   unsigned char checksum = 0;
-   unsigned short i;
-   respond_read_version_t res;
-   unsigned char hw0 = PIND.6;
-   unsigned char hw1 = PIND.7;
-   //hw_version = (hw1 << 1) | (hw0 << 0);
+    char str[] = "0.0.0";
+    respond_read_version_t res;
+    unsigned char hw0 = PIND.6;
+    unsigned char hw1 = PIND.7;
+    //hw_version = (hw1 << 1) | (hw0 << 0);
 
-
-   hw_version = hw1 * 2 + hw0 + 1;
-   strncpy(res.hw_version, str, 5);
-   res.hw_version[0] = hw_version + 0x30;
-   strncpy(res.fw_version, fw_version, 5);
-
-
-   send_respond((char *)&res, sizeof(res));
+    res.status = STATUS_SUCCESS;
+    hw_version = hw1 * 2 + hw0 + 1;
+    strncpy(res.hw_version, str, 5);
+    res.hw_version[0] = hw_version + 0x30;
+    strncpy(res.fw_version, fw_version, 5);
+    send_respond((char *)&res, sizeof(res));
 }
 
 void process_write_register(){
-   memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
-   
-   TCCR1A = pl_write_register.reg_TCCR1A;
-   TCCR1B = pl_write_register.reg_TCCR1B;
-   ICR1H = pl_write_register.reg_ICR1H;
-   ICR1L = pl_write_register.reg_ICR1L;
-   OCR1AH= pl_write_register.reg_OCR1AH;
-   OCR1AL=pl_write_register.reg_OCR1AL; 
-   
-   //send_respond();
+    unsigned char status = STATUS_SUCCESS;
+    memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
+
+    TCCR1A = pl_write_register.reg_TCCR1A;
+    TCCR1B = pl_write_register.reg_TCCR1B;
+    ICR1H = pl_write_register.reg_ICR1H;
+    ICR1L = pl_write_register.reg_ICR1L;
+    OCR1AH= pl_write_register.reg_OCR1AH;
+    OCR1AL=pl_write_register.reg_OCR1AL;
+
+    send_respond((char*)&status, sizeof(status));
 }
 
 void send_respond(char * payload, unsigned short len){
-   unsigned char i; 
-   unsigned char checksum = 0;
-   unsigned char *c;
+    unsigned char i;
+    unsigned char checksum = 0;
+    unsigned char *c;
     respond.header = 0x55FF;
     respond.len = 5 + len;
     respond.tranId = request.tranId;
@@ -180,13 +198,14 @@ void send_respond(char * payload, unsigned short len){
     memcpy(respond.payload, payload, len);
 
     for(i = 0; i< respond.len - 1; i++){
-         checksum += *(&respond.len + i);
+        checksum += *(&respond.len + i);
     }
 
     checksum = ~checksum + 1;
 
     c = (char*)&respond;
     for(i = 0; i<respond.len + 2; i++){
-         putchar(c[i]);
-     }
+        putchar(c[i]);
+    }
+    putchar(checksum);
 }

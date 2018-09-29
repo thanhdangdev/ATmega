@@ -44,6 +44,7 @@ public:
     QLabel *label_2;
     QDial *dialCoarse;
     QSlider *verticalSliderRange;
+    QPushButton *pushButtonTestTransfer;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -109,6 +110,10 @@ public:
         verticalSliderRange->setPageStep(1);
         verticalSliderRange->setOrientation(Qt::Vertical);
         verticalSliderRange->setTickPosition(QSlider::TicksAbove);
+        pushButtonTestTransfer = new QPushButton(centralWidget);
+        pushButtonTestTransfer->setObjectName(QStringLiteral("pushButtonTestTransfer"));
+        pushButtonTestTransfer->setGeometry(QRect(460, 220, 75, 23));
+        pushButtonTestTransfer->setCheckable(true);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -136,6 +141,7 @@ public:
         groupBox->setTitle(QApplication::translate("MainWindow", "Frequency", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "Coarse", Q_NULLPTR));
         label_2->setText(QApplication::translate("MainWindow", "Fine", Q_NULLPTR));
+        pushButtonTestTransfer->setText(QApplication::translate("MainWindow", "Test Transfer", Q_NULLPTR));
     } // retranslateUi
 
 };

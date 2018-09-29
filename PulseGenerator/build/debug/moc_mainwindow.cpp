@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[22];
-    char stringdata0[371];
+    QByteArrayData data[28];
+    char stringdata0[469];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -52,7 +52,13 @@ QT_MOC_LITERAL(17, 230, 28), // "on_dialCoarse_sliderReleased"
 QT_MOC_LITERAL(18, 259, 26), // "on_dialFine_sliderReleased"
 QT_MOC_LITERAL(19, 286, 31), // "on_dialDutyCycle_sliderReleased"
 QT_MOC_LITERAL(20, 318, 14), // "writeRegisters"
-QT_MOC_LITERAL(21, 333, 37) // "on_verticalSliderRange_slider..."
+QT_MOC_LITERAL(21, 333, 37), // "on_verticalSliderRange_slider..."
+QT_MOC_LITERAL(22, 371, 33), // "on_pushButtonTestTransfer_cli..."
+QT_MOC_LITERAL(23, 405, 13), // "test_transfer"
+QT_MOC_LITERAL(24, 419, 28), // "on_timerTestTransfer_timeout"
+QT_MOC_LITERAL(25, 448, 11), // "randBetween"
+QT_MOC_LITERAL(26, 460, 3), // "low"
+QT_MOC_LITERAL(27, 464, 4) // "high"
 
     },
     "MainWindow\0on_dialFine_valueChanged\0"
@@ -65,7 +71,10 @@ QT_MOC_LITERAL(21, 333, 37) // "on_verticalSliderRange_slider..."
     "on_dialCoarse_sliderReleased\0"
     "on_dialFine_sliderReleased\0"
     "on_dialDutyCycle_sliderReleased\0"
-    "writeRegisters\0on_verticalSliderRange_sliderReleased"
+    "writeRegisters\0on_verticalSliderRange_sliderReleased\0"
+    "on_pushButtonTestTransfer_clicked\0"
+    "test_transfer\0on_timerTestTransfer_timeout\0"
+    "randBetween\0low\0high"
 };
 #undef QT_MOC_LITERAL
 
@@ -75,7 +84,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -83,17 +92,21 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   69,    2, 0x08 /* Private */,
-       4,    1,   72,    2, 0x08 /* Private */,
-       5,    1,   75,    2, 0x08 /* Private */,
-       6,    2,   78,    2, 0x08 /* Private */,
-       9,    0,   83,    2, 0x08 /* Private */,
-      10,    5,   84,    2, 0x08 /* Private */,
-      17,    0,   95,    2, 0x08 /* Private */,
-      18,    0,   96,    2, 0x08 /* Private */,
-      19,    0,   97,    2, 0x08 /* Private */,
-      20,    0,   98,    2, 0x08 /* Private */,
-      21,    0,   99,    2, 0x08 /* Private */,
+       1,    1,   89,    2, 0x08 /* Private */,
+       4,    1,   92,    2, 0x08 /* Private */,
+       5,    1,   95,    2, 0x08 /* Private */,
+       6,    2,   98,    2, 0x08 /* Private */,
+       9,    0,  103,    2, 0x08 /* Private */,
+      10,    5,  104,    2, 0x08 /* Private */,
+      17,    0,  115,    2, 0x08 /* Private */,
+      18,    0,  116,    2, 0x08 /* Private */,
+      19,    0,  117,    2, 0x08 /* Private */,
+      20,    0,  118,    2, 0x08 /* Private */,
+      21,    0,  119,    2, 0x08 /* Private */,
+      22,    0,  120,    2, 0x08 /* Private */,
+      23,    0,  121,    2, 0x08 /* Private */,
+      24,    0,  122,    2, 0x08 /* Private */,
+      25,    2,  123,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -107,6 +120,10 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Bool,
+    QMetaType::Void,
+    QMetaType::Int, QMetaType::Int, QMetaType::Int,   26,   27,
 
        0        // eod
 };
@@ -130,6 +147,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 8: _t->on_dialDutyCycle_sliderReleased(); break;
         case 9: _t->writeRegisters(); break;
         case 10: _t->on_verticalSliderRange_sliderReleased(); break;
+        case 11: _t->on_pushButtonTestTransfer_clicked(); break;
+        case 12: { bool _r = _t->test_transfer();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 13: _t->on_timerTestTransfer_timeout(); break;
+        case 14: { int _r = _t->randBetween((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])));
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
         default: ;
         }
     }
@@ -160,13 +183,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 15)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 11;
+        _id -= 15;
     }
     return _id;
 }

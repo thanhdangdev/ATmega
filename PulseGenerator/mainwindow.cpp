@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    qsrand(qrand());
+
     this->setFixedSize(this->width(), this->height());
     ui->statusBar->addWidget(&labelStatus);
     this->labelStatus.setText("FW version: ???");
@@ -22,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     port->setFlowControl(QSerialPort::NoFlowControl);
 
     port->open(QIODevice::ReadWrite);
+
+    QObject::connect(&this->timerTestTransfer, SIGNAL(timeout()),
+                     this, SLOT(on_timerTestTransfer_timeout()));
 }
 
 MainWindow::~MainWindow()
@@ -59,11 +64,11 @@ QByteArray MainWindow::transaction(const QByteArray &request, int waitTimeout)
     // write request
     printBuffer8("Request", request);
     port->write(request);
-    if ( port->waitForBytesWritten(waitTimeout)) {
+    if (port->waitForBytesWritten(waitTimeout)) {
         // read response
         if ( port->waitForReadyRead(waitTimeout)) {
             responseData =  port->readAll();
-            while( port->waitForReadyRead(20))
+            while(port->waitForReadyRead(20))
                 responseData +=  port->readAll();
 
             printBuffer8("Respone", responseData);
@@ -76,9 +81,6 @@ QByteArray MainWindow::transaction(const QByteArray &request, int waitTimeout)
 
     return responseData;
 }
-
-
-
 
 void MainWindow::on_pushButtonGetVersion_clicked()
 {
@@ -117,7 +119,6 @@ QByteArray MainWindow::createRequest(unsigned char type, unsigned char tranId, u
         ck += (unsigned char)request.at(i);
     }
 
-//    ck = 256 - ck;
     ck = ~ck + 1;
     request.append(ck);
 
@@ -210,4 +211,65 @@ void MainWindow::on_dialDutyCycle_sliderReleased()
 void MainWindow::on_verticalSliderRange_sliderReleased()
 {
     writeRegisters();
+}
+
+int total_cmd = 0;
+int success_cmd = 0;
+void MainWindow::on_pushButtonTestTransfer_clicked()
+{
+    //test_transfer();
+    if(ui->pushButtonTestTransfer->isChecked()){
+        total_cmd = 0;
+        success_cmd = 0;
+        this->timerTestTransfer.start(0);
+    }else{
+        this->timerTestTransfer.stop();
+        fprintf(stderr, "Testing result: %d/%d\r\n", success_cmd, total_cmd);
+        fflush(stderr);
+    }
+}
+
+bool MainWindow::test_transfer()
+{
+    test_transfer_request_t test_transfer_request;
+    unsigned char len = randBetween(1, 128);
+
+    test_transfer_request.len = len;
+    for(uint8_t i = 0; i<len; i++){
+        test_transfer_request.data[i] = randBetween(0, 255);
+    }
+
+    QByteArray request = createRequest(TYPE_REQUEST, 0, CMD_TEST_TRANSFER,
+                                       (unsigned char*)&test_transfer_request,
+                                       len + 1);
+    QByteArray respond = transaction(request, 1000);
+
+    if(!respond.isEmpty()){
+        serial_command * cmd_respond = (serial_command*)respond.data();
+        test_transfer_respond_t *pl = (test_transfer_respond_t*)(cmd_respond->payload);
+
+        if(pl->status != STATUS_SUCCESS) return false;
+        for(uint8_t i = 0; i<len; i++){
+            if(pl->data[i] != test_transfer_request.data[i]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+void MainWindow::on_timerTestTransfer_timeout()
+{
+    total_cmd++;
+    if(test_transfer()){
+        success_cmd++;
+    }
+}
+
+int MainWindow::randBetween(int low, int high)
+{
+    return qrand() % ((high + 1) - low) + low;
 }
