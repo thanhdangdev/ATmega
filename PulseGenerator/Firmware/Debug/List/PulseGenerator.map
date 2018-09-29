@@ -1,0 +1,46 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+rx_wr_index0                                                                      0x0300       1
+rx_rd_index0                                                                      0x0301       1
+rx_counter0                                                                       0x0302       1
+rx_buffer0                                                                        0x0303     150
+fw_version                                                                        0x0399       6
+request                                                                           0x039F     134
+respond                                                                           0x0425     134
+pl_write_register                                                                 0x04AB       6
+tx_buffer0                                                                        0x04B1       8
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+hw_version                                                                        R4           1
+get_status                                                                        R3           1
+len                                                                               R6           1
+rx_buffer_overflow0                                                               GPIOR0.0  1bit
+tx_wr_index0                                                                      R5           1
+tx_rd_index0                                                                      R8           1
+tx_counter0                                                                       R7           1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+main                                                                              0x00079     13
+getCommand                                                                        0x00086     64
+process_request                                                                   0x000C6     15
+checksum                                                                          0x000D5     24
+execute_cmd                                                                       0x000ED     15
+process_read_version                                                              0x000FC     64
+process_write_register                                                            0x0013C     37
+send_respond                                                                      0x00161     83
+system_init                                                                       0x001B4     93
+usart_rx_isr                                                                      0x00211     50
+getchar                                                                           0x00243     32
+usart_tx_isr                                                                      0x00263     24
+putchar                                                                           0x0027B     30
+memcpy                                                                            0x00299     18
+strncpy                                                                           0x002AB     21

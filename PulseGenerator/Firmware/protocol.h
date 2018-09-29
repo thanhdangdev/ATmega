@@ -1,0 +1,25 @@
+#ifndef _PROTOCOL_H_
+#define _PROTOCOL_H_
+
+#define RX_BUFFER_SIZE0 150
+
+//extern unsigned char rx_wr_index0,rx_rd_index0;
+#if RX_BUFFER_SIZE0 <= 256
+extern unsigned char rx_wr_index0,rx_rd_index0;
+#else
+extern unsigned int rx_wr_index0,rx_rd_index0;
+#endif
+
+//extern unsigned char rx_counter0;
+#if RX_BUFFER_SIZE0 < 256
+extern unsigned char rx_counter0;
+#else
+extern unsigned int rx_counter0;
+#endif
+
+extern char rx_buffer0[];
+
+char getchar(void);
+void putchar(char c);
+
+#endif
