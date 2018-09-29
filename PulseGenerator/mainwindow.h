@@ -131,6 +131,8 @@ private slots:
     bool upgrade_page(unsigned char page, unsigned char * page_data);
     bool upgrade_finish();
 
+    void on_pushButtonStartApp_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSerialPort * port;

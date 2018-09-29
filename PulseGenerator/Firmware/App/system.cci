@@ -1,4 +1,4 @@
-VERSION:3 SOURCE_TIMESTAMP:4D2FAF3B
-NODE:I LEVEL:0 LINE:1 "D:\Training\Qt C++\PulseGenerator\Firmware\main.h"
-NODE:I LEVEL:0 LINE:2 "D:\Training\Qt C++\PulseGenerator\Firmware\system.h"
+VERSION:3 SOURCE_TIMESTAMP:4D3E0C12
+NODE:I LEVEL:0 LINE:1 "D:\GitHub\ATmega\PulseGenerator\Firmware\App\main.h"
+NODE:I LEVEL:0 LINE:2 "D:\GitHub\ATmega\PulseGenerator\Firmware\App\system.h"
 NODE:F LEVEL:0 LINE:4 "system_init(void)"

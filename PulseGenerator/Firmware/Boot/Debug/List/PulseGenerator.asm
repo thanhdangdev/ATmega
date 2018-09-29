@@ -8,7 +8,7 @@
 ;Program type           : Boot Loader
 ;Clock frequency        : 16.000000 MHz
 ;Memory model           : Small
-;Optimize for           : Size
+;Optimize for           : Speed
 ;(s)printf features     : int, width
 ;(s)scanf features      : int, width
 ;External RAM size      : 0
@@ -1275,6 +1275,16 @@ __GLOBAL_INI_END:
 ;#include "protocol.h"
 ;#include <iobits.h>
 ;
+;/* definitions for SPM control */
+;#define	SPMCR_REG	SPMCSR
+;#asm
+     #define WR_SPMCR_REG_R22 out 0x37,r22
+; 0000 0020 #endasm
+;
+;#define _ENABLE_RWW_SECTION() __DataToR0ByteToSPMCR_SPM( 0x00, 0x11 )
+;#define _WAIT_FOR_SPM() while( SPMCR_REG & (1<<SELFPRGEN) );
+;void __DataToR0ByteToSPMCR_SPM(unsigned char data, unsigned char ctrl);
+;
 ;// Declare your global variables here
 ;
 ;char hw_version = 0;
@@ -1293,127 +1303,176 @@ __GLOBAL_INI_END:
 ;bool isUpgrade = true;
 ;
 ;void main(void)
-; 0000 002C {
+; 0000 0036 {
 
 	.CSEG
 _main:
 ; .FSTART _main
-; 0000 002D    // Declare your local variables here
-; 0000 002E 
-; 0000 002F    system_init();
+; 0000 0037     // Declare your local variables here
+; 0000 0038     unsigned char d = 0;
+; 0000 0039     system_init();
+;	d -> R17
+	LDI  R17,0
 	CALL _system_init
-; 0000 0030 
-; 0000 0031    // Global enable interrupts
-; 0000 0032    #asm("sei")
+; 0000 003A 
+; 0000 003B     for(d = 0; d<5; d++){
+	LDI  R17,LOW(0)
+_0x5:
+	CPI  R17,5
+	BRSH _0x6
+; 0000 003C         PORTB.5 = 0;
+	CBI  0x5,5
+; 0000 003D         delay_ms(200);
+	LDI  R26,LOW(200)
+	LDI  R27,0
+	CALL _delay_ms
+; 0000 003E         PORTB.5 = 1;
+	SBI  0x5,5
+; 0000 003F         delay_ms(200);
+	LDI  R26,LOW(200)
+	LDI  R27,0
+	CALL _delay_ms
+; 0000 0040     }
+	SUBI R17,-1
+	RJMP _0x5
+_0x6:
+; 0000 0041 
+; 0000 0042     // Global enable interrupts
+; 0000 0043     #asm("sei")
 	sei
-; 0000 0033    while (1)
-_0x4:
-; 0000 0034    {
-; 0000 0035       if(getCommand()){
+; 0000 0044     while (1)
+_0xB:
+; 0000 0045     {
+; 0000 0046         if(getCommand()){
 	RCALL _getCommand
 	CPI  R30,0
-	BREQ _0x7
-; 0000 0036          process_request();
+	BREQ _0xE
+; 0000 0047             process_request();
 	RCALL _process_request
-; 0000 0037 
-; 0000 0038          #asm("cli")
+; 0000 0048 
+; 0000 0049             #asm("cli")
 	cli
-; 0000 0039          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-	CALL SUBOPT_0x0
-; 0000 003A          #asm("sei")
+; 0000 004A             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+	LDI  R30,LOW(0)
+	STS  _rx_rd_index0,R30
+	STS  _rx_wr_index0,R30
+	STS  _rx_counter0,R30
+; 0000 004B             #asm("sei")
 	sei
-; 0000 003B       }
-; 0000 003C 
-; 0000 003D       if(!isUpgrade){
-_0x7:
+; 0000 004C         }
+; 0000 004D 
+; 0000 004E         if(!isUpgrade){
+_0xE:
 	TST  R5
-	BRNE _0x8
-; 0000 003E             // Jump to application
-; 0000 003F             #asm("cli")
+	BRNE _0xF
+; 0000 004F             #asm("cli")
 	cli
-; 0000 0040             #asm
-; 0000 0041             LDI     R31, 0x00
-            LDI     R31, 0x00
-; 0000 0042             LDI     R30, 0x00
-            LDI     R30, 0x00
-; 0000 0043             IJMP               ;Jump to address 0x0000
-            IJMP               ;Jump to address 0x0000
-; 0000 0044             #endasm
-; 0000 0045       }
-; 0000 0046 
-; 0000 0047    }
-_0x8:
-	RJMP _0x4
-; 0000 0048 }
-_0x9:
-	RJMP _0x9
+; 0000 0050 
+; 0000 0051             // Jump to application
+; 0000 0052 //            #asm
+; 0000 0053 //            LDI     R30, 0x00
+; 0000 0054 //            LDI     R31, 0x00
+; 0000 0055 //            IJMP               ;Jump to address 0x0000
+; 0000 0056 //            #endasm
+; 0000 0057             #pragma optsize-
+; 0000 0058             // will use the interrupt vectors from the application section
+; 0000 0059             MCUCR=(1<<IVCE);
+	LDI  R30,LOW(1)
+	OUT  0x35,R30
+; 0000 005A             MCUCR=(0<<IVSEL) | (0<<IVCE);
+	LDI  R30,LOW(0)
+	OUT  0x35,R30
+; 0000 005B             #ifdef _OPTIMIZE_SIZE_
+; 0000 005C             #pragma optsize+
+; 0000 005D             #endif
+; 0000 005E 
+; 0000 005F             // start execution from address 0
+; 0000 0060             #asm("jmp 0")
+	jmp 0
+; 0000 0061         }
+; 0000 0062         delay_ms(5);
+_0xF:
+	LDI  R26,LOW(5)
+	LDI  R27,0
+	CALL _delay_ms
+; 0000 0063     }
+	RJMP _0xB
+; 0000 0064 }
+_0x10:
+	RJMP _0x10
 ; .FEND
 ;
 ;bool getCommand(){
-; 0000 004A _Bool getCommand(){
+; 0000 0066 _Bool getCommand(){
 _getCommand:
 ; .FSTART _getCommand
-; 0000 004B      // Place your code here
-; 0000 004C       if(get_status == GET_STATUS_COMPLETE && rx_counter0 >= 7){
+; 0000 0067      // Place your code here
+; 0000 0068       if(get_status == GET_STATUS_COMPLETE && rx_counter0 >= 7){
 	TST  R3
-	BRNE _0xB
+	BRNE _0x12
 	LDS  R26,_rx_counter0
 	CPI  R26,LOW(0x7)
-	BRSH _0xC
-_0xB:
-	RJMP _0xA
-_0xC:
-; 0000 004D          if(getchar() == 0xFF){
+	BRSH _0x13
+_0x12:
+	RJMP _0x11
+_0x13:
+; 0000 0069          if(getchar() == 0xFF){
 	CALL _getchar
 	CPI  R30,LOW(0xFF)
-	BRNE _0xD
-; 0000 004E             if(getchar() == 0x55){
+	BRNE _0x14
+; 0000 006A             if(getchar() == 0x55){
 	CALL _getchar
 	CPI  R30,LOW(0x55)
-	BRNE _0xE
-; 0000 004F                len = getchar();
+	BRNE _0x15
+; 0000 006B                len = getchar();
 	CALL _getchar
 	MOV  R6,R30
-; 0000 0050                if(len <= 135){
-	LDI  R30,LOW(135)
+; 0000 006C                if(len <= 157){
+	LDI  R30,LOW(157)
 	CP   R30,R6
-	BRLO _0xF
-; 0000 0051                   get_status = GET_STATUS_GETTING;
+	BRLO _0x16
+; 0000 006D                   get_status = GET_STATUS_GETTING;
 	LDI  R30,LOW(1)
 	MOV  R3,R30
-; 0000 0052 
-; 0000 0053                }
-; 0000 0054             }else{
-_0xF:
-	RJMP _0x10
-_0xE:
-; 0000 0055                #asm("cli")
+; 0000 006E 
+; 0000 006F                }
+; 0000 0070             }else{
+_0x16:
+	RJMP _0x17
+_0x15:
+; 0000 0071                #asm("cli")
 	cli
-; 0000 0056                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-	CALL SUBOPT_0x0
-; 0000 0057                #asm("sei")
+; 0000 0072                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+	LDI  R30,LOW(0)
+	STS  _rx_rd_index0,R30
+	STS  _rx_wr_index0,R30
+	STS  _rx_counter0,R30
+; 0000 0073                #asm("sei")
 	sei
-; 0000 0058             }
-_0x10:
-; 0000 0059          }else{
-	RJMP _0x11
-_0xD:
-; 0000 005A             #asm("cli")
+; 0000 0074             }
+_0x17:
+; 0000 0075          }else{
+	RJMP _0x18
+_0x14:
+; 0000 0076             #asm("cli")
 	cli
-; 0000 005B             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-	CALL SUBOPT_0x0
-; 0000 005C             #asm("sei")
+; 0000 0077             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+	LDI  R30,LOW(0)
+	STS  _rx_rd_index0,R30
+	STS  _rx_wr_index0,R30
+	STS  _rx_counter0,R30
+; 0000 0078             #asm("sei")
 	sei
-; 0000 005D          }
+; 0000 0079          }
+_0x18:
+; 0000 007A       }
+; 0000 007B 
+; 0000 007C       if(get_status == GET_STATUS_GETTING){
 _0x11:
-; 0000 005E       }
-; 0000 005F 
-; 0000 0060       if(get_status == GET_STATUS_GETTING){
-_0xA:
 	LDI  R30,LOW(1)
 	CP   R30,R3
-	BRNE _0x12
-; 0000 0061          if(rx_counter0 >= len - 1){
+	BRNE _0x19
+; 0000 007D          if(rx_counter0 >= len - 1){
 	MOV  R30,R6
 	LDI  R31,0
 	SBIW R30,1
@@ -1421,8 +1480,8 @@ _0xA:
 	LDI  R27,0
 	CP   R26,R30
 	CPC  R27,R31
-	BRLT _0x13
-; 0000 0062             memcpy(&request, &rx_buffer0, len + 2);
+	BRLT _0x1A
+; 0000 007E             memcpy(&request, &rx_buffer0, len + 2);
 	LDI  R30,LOW(_request)
 	LDI  R31,HIGH(_request)
 	ST   -Y,R31
@@ -1436,30 +1495,30 @@ _0xA:
 	ADIW R30,2
 	MOVW R26,R30
 	CALL _memcpy
-; 0000 0063             get_status =  GET_STATUS_COMPLETE;
+; 0000 007F             get_status =  GET_STATUS_COMPLETE;
 	CLR  R3
-; 0000 0064 
-; 0000 0065             return true;
+; 0000 0080 
+; 0000 0081             return true;
 	LDI  R30,LOW(1)
 	RET
-; 0000 0066          }
-; 0000 0067       }
-_0x13:
-; 0000 0068 
-; 0000 0069       return false;
-_0x12:
+; 0000 0082          }
+; 0000 0083       }
+_0x1A:
+; 0000 0084 
+; 0000 0085       return false;
+_0x19:
 	LDI  R30,LOW(0)
 	RET
-; 0000 006A }
+; 0000 0086 }
 ; .FEND
 ;
 ;void process_request(){
-; 0000 006C void process_request(){
+; 0000 0088 void process_request(){
 _process_request:
 ; .FSTART _process_request
-; 0000 006D    unsigned char len = request.len;
-; 0000 006E 
-; 0000 006F    if(checksum(&request.len, len) != 0){
+; 0000 0089    unsigned char len = request.len;
+; 0000 008A 
+; 0000 008B    if(checksum(&request.len, len) != 0){
 	ST   -Y,R17
 ;	len -> R17
 	__GETB1MN _request,2
@@ -1470,28 +1529,28 @@ _process_request:
 	MOV  R26,R17
 	RCALL _checksum
 	CPI  R30,0
-	BREQ _0x14
-; 0000 0070       response_error_checksum();
+	BREQ _0x1B
+; 0000 008C       response_error_checksum();
 	RCALL _response_error_checksum
-; 0000 0071    }else{
-	RJMP _0x15
-_0x14:
-; 0000 0072       execute_cmd();
+; 0000 008D    }else{
+	RJMP _0x1C
+_0x1B:
+; 0000 008E       execute_cmd();
 	RCALL _execute_cmd
-; 0000 0073    }
-_0x15:
-; 0000 0074 }
+; 0000 008F    }
+_0x1C:
+; 0000 0090 }
 	JMP  _0x2060002
 ; .FEND
 ;
 ;unsigned char checksum(unsigned char *dat, unsigned char len){
-; 0000 0076 unsigned char checksum(unsigned char *dat, unsigned char len){
+; 0000 0092 unsigned char checksum(unsigned char *dat, unsigned char len){
 _checksum:
 ; .FSTART _checksum
-; 0000 0077    unsigned char ck  = 0;
-; 0000 0078    unsigned char i = 0;
-; 0000 0079 
-; 0000 007A    for(i = 0; i<len; i++){
+; 0000 0093    unsigned char ck  = 0;
+; 0000 0094    unsigned char i = 0;
+; 0000 0095 
+; 0000 0096    for(i = 0; i<len; i++){
 	ST   -Y,R26
 	ST   -Y,R17
 	ST   -Y,R16
@@ -1502,11 +1561,11 @@ _checksum:
 	LDI  R17,0
 	LDI  R16,0
 	LDI  R16,LOW(0)
-_0x17:
+_0x1E:
 	LDD  R30,Y+2
 	CP   R16,R30
-	BRSH _0x18
-; 0000 007B       ck += *(dat + i);
+	BRSH _0x1F
+; 0000 0097       ck += *(dat + i);
 	MOV  R30,R16
 	LDI  R31,0
 	LDD  R26,Y+3
@@ -1515,26 +1574,26 @@ _0x17:
 	ADC  R27,R31
 	LD   R30,X
 	ADD  R17,R30
-; 0000 007C    }
+; 0000 0098    }
 	SUBI R16,-1
-	RJMP _0x17
-_0x18:
-; 0000 007D 
-; 0000 007E    return ck;
+	RJMP _0x1E
+_0x1F:
+; 0000 0099 
+; 0000 009A    return ck;
 	MOV  R30,R17
 	LDD  R17,Y+1
 	LDD  R16,Y+0
 	ADIW R28,5
 	RET
-; 0000 007F }
+; 0000 009B }
 ; .FEND
 ;
 ;void response_error_checksum(){
-; 0000 0081 void response_error_checksum(){
+; 0000 009D void response_error_checksum(){
 _response_error_checksum:
 ; .FSTART _response_error_checksum
-; 0000 0082     unsigned char status = STATUS_ERROR_CHECKSUM;
-; 0000 0083     send_respond((char *)&status, sizeof(status));
+; 0000 009E     unsigned char status = STATUS_ERROR_CHECKSUM;
+; 0000 009F     send_respond((char *)&status, sizeof(status));
 	ST   -Y,R17
 ;	status -> R17
 	LDI  R17,2
@@ -1545,67 +1604,69 @@ _response_error_checksum:
 	ST   -Y,R30
 	PUSH R18
 	PUSH R17
-	CALL SUBOPT_0x1
+	LDI  R26,LOW(1)
+	LDI  R27,0
+	RCALL _send_respond
 	POP  R17
 	POP  R18
-; 0000 0084 }
+; 0000 00A0 }
 	JMP  _0x2060002
 ; .FEND
 ;
 ;void execute_cmd(){
-; 0000 0086 void execute_cmd(){
+; 0000 00A2 void execute_cmd(){
 _execute_cmd:
 ; .FSTART _execute_cmd
-; 0000 0087     unsigned char status;
-; 0000 0088     switch(request.opcode){
+; 0000 00A3     unsigned char status;
+; 0000 00A4     switch(request.opcode){
 	ST   -Y,R17
 ;	status -> R17
 	__GETB1MN _request,5
 	LDI  R31,0
-; 0000 0089     case CMD_READ_VERSION:
+; 0000 00A5     case CMD_READ_VERSION:
 	CPI  R30,LOW(0x1)
 	LDI  R26,HIGH(0x1)
 	CPC  R31,R26
-	BRNE _0x1C
-; 0000 008A         process_read_version();
+	BRNE _0x23
+; 0000 00A6         process_read_version();
 	RCALL _process_read_version
-; 0000 008B         break;
-	RJMP _0x1B
-; 0000 008C     case CMD_UPGRADE_START:
-_0x1C:
+; 0000 00A7         break;
+	RJMP _0x22
+; 0000 00A8     case CMD_UPGRADE_START:
+_0x23:
 	CPI  R30,LOW(0x4)
 	LDI  R26,HIGH(0x4)
 	CPC  R31,R26
-	BRNE _0x1D
-; 0000 008D         process_upgrade_start();
+	BRNE _0x24
+; 0000 00A9         process_upgrade_start();
 	RCALL _process_upgrade_start
-; 0000 008E         break;
-	RJMP _0x1B
-; 0000 008F     case CMD_UPGRADE_PAGE:
-_0x1D:
+; 0000 00AA         break;
+	RJMP _0x22
+; 0000 00AB     case CMD_UPGRADE_PAGE:
+_0x24:
 	CPI  R30,LOW(0x5)
 	LDI  R26,HIGH(0x5)
 	CPC  R31,R26
-	BRNE _0x1E
-; 0000 0090         process_upgrade_page();
+	BRNE _0x25
+; 0000 00AC         process_upgrade_page();
 	RCALL _process_upgrade_page
-; 0000 0091         break;
-	RJMP _0x1B
-; 0000 0092     case CMD_UPGRADE_FINISH:
-_0x1E:
+; 0000 00AD         break;
+	RJMP _0x22
+; 0000 00AE     case CMD_UPGRADE_FINISH:
+_0x25:
 	CPI  R30,LOW(0x6)
 	LDI  R26,HIGH(0x6)
 	CPC  R31,R26
-	BRNE _0x20
-; 0000 0093         process_upgrade_finish();
+	BRNE _0x27
+; 0000 00AF         process_upgrade_finish();
 	RCALL _process_upgrade_finish
-; 0000 0094         break;
-	RJMP _0x1B
-; 0000 0095     default:
-_0x20:
-; 0000 0096         status = STATUS_UNSUPPORT;
+; 0000 00B0         break;
+	RJMP _0x22
+; 0000 00B1     default:
+_0x27:
+; 0000 00B2         status = STATUS_UNSUPPORT;
 	LDI  R17,LOW(3)
-; 0000 0097         send_respond((char *)&status, sizeof(status));
+; 0000 00B3         send_respond((char *)&status, sizeof(status));
 	IN   R30,SPL
 	IN   R31,SPH
 	SBIW R30,1
@@ -1613,22 +1674,24 @@ _0x20:
 	ST   -Y,R30
 	PUSH R18
 	PUSH R17
-	CALL SUBOPT_0x1
+	LDI  R26,LOW(1)
+	LDI  R27,0
+	RCALL _send_respond
 	POP  R17
 	POP  R18
-; 0000 0098         break;
-; 0000 0099     }
-_0x1B:
-; 0000 009A }
+; 0000 00B4         break;
+; 0000 00B5     }
+_0x22:
+; 0000 00B6 }
 	JMP  _0x2060002
 ; .FEND
 ;
 ;void process_upgrade_start(){
-; 0000 009C void process_upgrade_start(){
+; 0000 00B8 void process_upgrade_start(){
 _process_upgrade_start:
 ; .FSTART _process_upgrade_start
-; 0000 009D     unsigned char status = STATUS_SUCCESS;
-; 0000 009E     send_respond((char*)&status, sizeof(status));
+; 0000 00B9     unsigned char status = STATUS_SUCCESS;
+; 0000 00BA     send_respond((char*)&status, sizeof(status));
 	ST   -Y,R17
 ;	status -> R17
 	LDI  R17,0
@@ -1639,25 +1702,27 @@ _process_upgrade_start:
 	ST   -Y,R30
 	PUSH R18
 	PUSH R17
-	CALL SUBOPT_0x1
+	LDI  R26,LOW(1)
+	LDI  R27,0
+	RCALL _send_respond
 	POP  R17
 	POP  R18
-; 0000 009F }
+; 0000 00BB }
 	JMP  _0x2060002
 ; .FEND
 ;
 ;void process_read_version(){
-; 0000 00A1 void process_read_version(){
+; 0000 00BD void process_read_version(){
 _process_read_version:
 ; .FSTART _process_read_version
-; 0000 00A2     char *c;
-; 0000 00A3     char str[] = "0.0.0";
-; 0000 00A4     respond_read_version_t res;
-; 0000 00A5     unsigned char hw0 = PIND.6;
-; 0000 00A6     unsigned char hw1 = PIND.7;
-; 0000 00A7     //hw_version = (hw1 << 1) | (hw0 << 0);
-; 0000 00A8 
-; 0000 00A9     res.status = STATUS_SUCCESS;
+; 0000 00BE     char *c;
+; 0000 00BF     char str[] = "0.0.0";
+; 0000 00C0     respond_read_version_t res;
+; 0000 00C1     unsigned char hw0 = PIND.6;
+; 0000 00C2     unsigned char hw1 = PIND.7;
+; 0000 00C3     //hw_version = (hw1 << 1) | (hw0 << 0);
+; 0000 00C4 
+; 0000 00C5     res.status = STATUS_SUCCESS;
 	SBIW R28,17
 	LDI  R30,LOW(48)
 	STD  Y+11,R30
@@ -1687,13 +1752,13 @@ _process_read_version:
 	MOV  R18,R30
 	LDI  R30,LOW(0)
 	STD  Y+4,R30
-; 0000 00AA     hw_version = hw1 * 2 + hw0 + 1;
+; 0000 00C6     hw_version = hw1 * 2 + hw0 + 1;
 	MOV  R30,R18
 	LSL  R30
 	ADD  R30,R19
 	SUBI R30,-LOW(1)
 	MOV  R4,R30
-; 0000 00AB     strncpy(res.hw_version, str, 5);
+; 0000 00C7     strncpy(res.hw_version, str, 5);
 	MOVW R30,R28
 	ADIW R30,5
 	ST   -Y,R31
@@ -1704,11 +1769,11 @@ _process_read_version:
 	ST   -Y,R30
 	LDI  R26,LOW(5)
 	CALL _strncpy
-; 0000 00AC     res.hw_version[0] = hw_version + 0x30;
+; 0000 00C8     res.hw_version[0] = hw_version + 0x30;
 	MOV  R30,R4
 	SUBI R30,-LOW(48)
 	STD  Y+5,R30
-; 0000 00AD     strncpy(res.fw_version, fw_version, 5);
+; 0000 00C9     strncpy(res.fw_version, fw_version, 5);
 	MOVW R30,R28
 	ADIW R30,10
 	ST   -Y,R31
@@ -1719,7 +1784,7 @@ _process_read_version:
 	ST   -Y,R30
 	LDI  R26,LOW(5)
 	CALL _strncpy
-; 0000 00AE     send_respond((char *)&res, sizeof(res));
+; 0000 00CA     send_respond((char *)&res, sizeof(res));
 	MOVW R30,R28
 	ADIW R30,4
 	ST   -Y,R31
@@ -1727,20 +1792,20 @@ _process_read_version:
 	LDI  R26,LOW(11)
 	LDI  R27,0
 	RCALL _send_respond
-; 0000 00AF }
+; 0000 00CB }
 	CALL __LOADLOCR4
 	ADIW R28,21
 	RET
 ; .FEND
 ;
 ;void send_respond(char * payload, unsigned short len){
-; 0000 00B1 void send_respond(char * payload, unsigned short len){
+; 0000 00CD void send_respond(char * payload, unsigned short len){
 _send_respond:
 ; .FSTART _send_respond
-; 0000 00B2     unsigned char i;
-; 0000 00B3     unsigned char checksum = 0;
-; 0000 00B4     unsigned char *c;
-; 0000 00B5     respond.header = 0x55FF;
+; 0000 00CE     unsigned char i;
+; 0000 00CF     unsigned char checksum = 0;
+; 0000 00D0     unsigned char *c;
+; 0000 00D1     respond.header = 0x55FF;
 	ST   -Y,R27
 	ST   -Y,R26
 	CALL __SAVELOCR4
@@ -1754,21 +1819,21 @@ _send_respond:
 	LDI  R31,HIGH(22015)
 	STS  _respond,R30
 	STS  _respond+1,R31
-; 0000 00B6     respond.len = 5 + len;
+; 0000 00D2     respond.len = 5 + len;
 	LDD  R30,Y+4
 	SUBI R30,-LOW(5)
 	__PUTB1MN _respond,2
-; 0000 00B7     respond.tranId = request.tranId;
+; 0000 00D3     respond.tranId = request.tranId;
 	__GETB1MN _request,4
 	__PUTB1MN _respond,4
-; 0000 00B8     respond.opcode = request.opcode;
+; 0000 00D4     respond.opcode = request.opcode;
 	__GETB1MN _request,5
 	__PUTB1MN _respond,5
-; 0000 00B9     respond.type = TYPE_RESPOND;
+; 0000 00D5     respond.type = TYPE_RESPOND;
 	LDI  R30,LOW(2)
 	__PUTB1MN _respond,3
-; 0000 00BA 
-; 0000 00BB     memcpy(respond.payload, payload, len);
+; 0000 00D6 
+; 0000 00D7     memcpy(respond.payload, payload, len);
 	__POINTW1MN _respond,6
 	ST   -Y,R31
 	ST   -Y,R30
@@ -1779,10 +1844,10 @@ _send_respond:
 	LDD  R26,Y+8
 	LDD  R27,Y+8+1
 	CALL _memcpy
-; 0000 00BC 
-; 0000 00BD     for(i = 0; i< respond.len - 1; i++){
+; 0000 00D8 
+; 0000 00D9     for(i = 0; i< respond.len - 1; i++){
 	LDI  R17,LOW(0)
-_0x22:
+_0x29:
 	__GETB1MN _respond,2
 	LDI  R31,0
 	SBIW R30,1
@@ -1790,61 +1855,61 @@ _0x22:
 	LDI  R27,0
 	CP   R26,R30
 	CPC  R27,R31
-	BRGE _0x23
-; 0000 00BE         checksum += *(&respond.len + i);
+	BRGE _0x2A
+; 0000 00DA         checksum += *(&respond.len + i);
 	__POINTW2MN _respond,2
 	CLR  R30
 	ADD  R26,R17
 	ADC  R27,R30
 	LD   R30,X
 	ADD  R16,R30
-; 0000 00BF     }
+; 0000 00DB     }
 	SUBI R17,-1
-	RJMP _0x22
-_0x23:
-; 0000 00C0 
-; 0000 00C1     checksum = ~checksum + 1;
+	RJMP _0x29
+_0x2A:
+; 0000 00DC 
+; 0000 00DD     checksum = ~checksum + 1;
 	NEG  R16
-; 0000 00C2 
-; 0000 00C3     c = (char*)&respond;
+; 0000 00DE 
+; 0000 00DF     c = (char*)&respond;
 	__POINTWRM 18,19,_respond
-; 0000 00C4     for(i = 0; i<respond.len + 2; i++){
+; 0000 00E0     for(i = 0; i<respond.len + 1; i++){
 	LDI  R17,LOW(0)
-_0x25:
+_0x2C:
 	__GETB1MN _respond,2
 	LDI  R31,0
-	ADIW R30,2
+	ADIW R30,1
 	MOV  R26,R17
 	LDI  R27,0
 	CP   R26,R30
 	CPC  R27,R31
-	BRGE _0x26
-; 0000 00C5         putchar(c[i]);
+	BRGE _0x2D
+; 0000 00E1         putchar(c[i]);
 	MOVW R26,R18
 	CLR  R30
 	ADD  R26,R17
 	ADC  R27,R30
 	LD   R26,X
 	CALL _putchar
-; 0000 00C6     }
+; 0000 00E2     }
 	SUBI R17,-1
-	RJMP _0x25
-_0x26:
-; 0000 00C7     putchar(checksum);
+	RJMP _0x2C
+_0x2D:
+; 0000 00E3     putchar(checksum);
 	MOV  R26,R16
 	CALL _putchar
-; 0000 00C8 }
+; 0000 00E4 }
 	CALL __LOADLOCR4
 	ADIW R28,8
 	RET
 ; .FEND
 ;
 ;void process_upgrade_page()
-; 0000 00CB {
+; 0000 00E7 {
 _process_upgrade_page:
 ; .FSTART _process_upgrade_page
-; 0000 00CC     unsigned char status = STATUS_SUCCESS;
-; 0000 00CD     memcpy(&upgrade_page_request, request.payload, sizeof(upgrade_page_request));
+; 0000 00E8     unsigned char status = STATUS_SUCCESS;
+; 0000 00E9     memcpy(&upgrade_page_request, request.payload, sizeof(upgrade_page_request));
 	ST   -Y,R17
 ;	status -> R17
 	LDI  R17,0
@@ -1858,27 +1923,22 @@ _process_upgrade_page:
 	LDI  R26,LOW(129)
 	LDI  R27,0
 	CALL _memcpy
-; 0000 00CE 
-; 0000 00CF     #asm("cli")
+; 0000 00EA 
+; 0000 00EB     #asm("cli")
 	cli
-; 0000 00D0 
-; 0000 00D1     // Erase page
-; 0000 00D2     boot_page_erase(upgrade_page_request.page);
-	LDS  R26,_upgrade_page_request
-	RCALL _boot_page_erase
-; 0000 00D3 
-; 0000 00D4     // Write page
-; 0000 00D5     WritePage(upgrade_page_request.page_data, upgrade_page_request.page);
+; 0000 00EC 
+; 0000 00ED     // Write page
+; 0000 00EE     WritePage(upgrade_page_request.page_data, upgrade_page_request.page);
 	__POINTW1MN _upgrade_page_request,1
 	ST   -Y,R31
 	ST   -Y,R30
 	LDS  R26,_upgrade_page_request
 	CALL _WritePage
-; 0000 00D6 
-; 0000 00D7     #asm("sei")
+; 0000 00EF 
+; 0000 00F0     #asm("sei")
 	sei
-; 0000 00D8 
-; 0000 00D9     send_respond((char*)&status, sizeof(status));
+; 0000 00F1 
+; 0000 00F2     send_respond((char*)&status, sizeof(status));
 	IN   R30,SPL
 	IN   R31,SPH
 	SBIW R30,1
@@ -1886,20 +1946,22 @@ _process_upgrade_page:
 	ST   -Y,R30
 	PUSH R18
 	PUSH R17
-	CALL SUBOPT_0x1
+	LDI  R26,LOW(1)
+	LDI  R27,0
+	RCALL _send_respond
 	POP  R17
 	POP  R18
-; 0000 00DA }
+; 0000 00F3 }
 	JMP  _0x2060002
 ; .FEND
 ;
 ;void process_upgrade_finish()
-; 0000 00DD {
+; 0000 00F6 {
 _process_upgrade_finish:
 ; .FSTART _process_upgrade_finish
-; 0000 00DE     // respond
-; 0000 00DF     unsigned char status = STATUS_SUCCESS;
-; 0000 00E0     send_respond((char*)&status, sizeof(status));
+; 0000 00F7     // respond
+; 0000 00F8     unsigned char status = STATUS_SUCCESS;
+; 0000 00F9     send_respond((char*)&status, sizeof(status));
 	ST   -Y,R17
 ;	status -> R17
 	LDI  R17,0
@@ -1910,150 +1972,164 @@ _process_upgrade_finish:
 	ST   -Y,R30
 	PUSH R18
 	PUSH R17
-	CALL SUBOPT_0x1
+	LDI  R26,LOW(1)
+	LDI  R27,0
+	RCALL _send_respond
 	POP  R17
 	POP  R18
-; 0000 00E1 
-; 0000 00E2     delay_ms(10);
+; 0000 00FA 
+; 0000 00FB     delay_ms(10);
 	LDI  R26,LOW(10)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 00E3     isUpgrade = false;
+; 0000 00FC 
+; 0000 00FD     _WAIT_FOR_SPM();
+_0x2E:
+	IN   R30,0x37
+	SBRC R30,0
+	RJMP _0x2E
+; 0000 00FE     _ENABLE_RWW_SECTION();
+	LDI  R30,LOW(0)
+	ST   -Y,R30
+	LDI  R26,LOW(17)
+	CALL ___DataToR0ByteToSPMCR_SPM
+; 0000 00FF 
+; 0000 0100     isUpgrade = false;
 	CLR  R5
-; 0000 00E4 }
+; 0000 0101 }
 	JMP  _0x2060002
 ; .FEND
 ;
 ;/* Fill data into a temporary page (2 bytes once) */
 ;void boot_page_fill(unsigned int WordData, unsigned char Byte)
-; 0000 00E8 {
+; 0000 0105 {
 _boot_page_fill:
 ; .FSTART _boot_page_fill
-; 0000 00E9     //while (SPMEN);
-; 0000 00EA     while(TSTBIT(SPMCSR,0));
+; 0000 0106     //while (SPMEN);
+; 0000 0107     while(TSTBIT(SPMCSR,0));
 	ST   -Y,R26
 ;	WordData -> Y+1
 ;	Byte -> Y+0
-_0x27:
+_0x31:
 	IN   R30,0x37
 	SBRC R30,0
-	RJMP _0x27
-; 0000 00EB #asm
-; 0000 00EC     LDD     R1, Y+2     ;R1  <-- MSB of data (Byte N)
+	RJMP _0x31
+; 0000 0108 #asm
+; 0000 0109     LDD     R1, Y+2     ;R1  <-- MSB of data (Byte N)
     LDD     R1, Y+2     ;R1  <-- MSB of data (Byte N)
-; 0000 00ED     LDD     R0, Y+1     ;R0  <-- LSB of data (Byte N+1)
+; 0000 010A     LDD     R0, Y+1     ;R0  <-- LSB of data (Byte N+1)
     LDD     R0, Y+1     ;R0  <-- LSB of data (Byte N+1)
-; 0000 00EE     LDI     R31, 0x00   ;Load 0x00 into R31
+; 0000 010B     LDI     R31, 0x00   ;Load 0x00 into R31
     LDI     R31, 0x00   ;Load 0x00 into R31
-; 0000 00EF     LDD     R30, Y+0    ;R30 <-- addr  (0-255 byte)
+; 0000 010C     LDD     R30, Y+0    ;R30 <-- addr  (0-255 byte)
     LDD     R30, Y+0    ;R30 <-- addr  (0-255 byte)
-; 0000 00F0     LDI     R20,0x01    ;Load 0x01 into R20
+; 0000 010D     LDI     R20,0x01    ;Load 0x01 into R20
     LDI     R20,0x01    ;Load 0x01 into R20
-; 0000 00F1     OUT     0x37,R20    ;R20 --> SPMCSR (BaseAddress: 0x37)
+; 0000 010E     OUT     0x37,R20    ;R20 --> SPMCSR (BaseAddress: 0x37)
     OUT     0x37,R20    ;R20 --> SPMCSR (BaseAddress: 0x37)
-; 0000 00F2     SPM
+; 0000 010F     SPM
     SPM
-; 0000 00F3 #endasm
-; 0000 00F4     WordData = 0; Byte = 0;
+; 0000 0110 #endasm
+; 0000 0111     WordData = 0; Byte = 0;
 	LDI  R30,LOW(0)
 	STD  Y+1,R30
 	STD  Y+1+1,R30
 	ST   Y,R30
-; 0000 00F5 }
+; 0000 0112 }
 	ADIW R28,3
 	RET
 ; .FEND
 ;
 ;/* Erase a page */
 ;void boot_page_erase(unsigned char Page)
-; 0000 00F9 {
+; 0000 0116 {
 _boot_page_erase:
 ; .FSTART _boot_page_erase
-; 0000 00FA     while(TSTBIT(SPMCSR,0));
+; 0000 0117     while(TSTBIT(SPMCSR,0));
 	ST   -Y,R26
 ;	Page -> Y+0
-_0x2A:
+_0x34:
 	IN   R30,0x37
 	SBRC R30,0
-	RJMP _0x2A
-; 0000 00FB     //SPMCSR = 0x03;
-; 0000 00FC #asm
-; 0000 00FD     LDD R31, Y+0
+	RJMP _0x34
+; 0000 0118     //SPMCSR = 0x03;
+; 0000 0119 #asm
+; 0000 011A     LDD R31, Y+0
     LDD R31, Y+0
-; 0000 00FE     LDI R30, 0x00
+; 0000 011B     LDI R30, 0x00
     LDI R30, 0x00
-; 0000 00FF     LSR R31
+; 0000 011C     LSR R31
     LSR R31
-; 0000 0100     ROR R30
+; 0000 011D     ROR R30
     ROR R30
-; 0000 0101     PUSH R20
+; 0000 011E     PUSH R20
     PUSH R20
-; 0000 0102     LDI R20, 0x03
+; 0000 011F     LDI R20, 0x03
     LDI R20, 0x03
-; 0000 0103     OUT 0x37, R20
+; 0000 0120     OUT 0x37, R20
     OUT 0x37, R20
-; 0000 0104     POP R20
+; 0000 0121     POP R20
     POP R20
-; 0000 0105     SPM
+; 0000 0122     SPM
     SPM
-; 0000 0106 #endasm
-; 0000 0107     Page = 0;
+; 0000 0123 #endasm
+; 0000 0124     Page = 0;
 	LDI  R30,LOW(0)
 	ST   Y,R30
-; 0000 0108 }
+; 0000 0125 }
 	JMP  _0x2060001
 ; .FEND
 ;
 ;/* Write a Page */
 ;void boot_page_write(unsigned char Page)
-; 0000 010C {
+; 0000 0129 {
 _boot_page_write:
 ; .FSTART _boot_page_write
-; 0000 010D     //while (SPMEN);
-; 0000 010E     while(TSTBIT(SPMCSR,0));
+; 0000 012A     //while (SPMEN);
+; 0000 012B     while(TSTBIT(SPMCSR,0));
 	ST   -Y,R26
 ;	Page -> Y+0
-_0x2D:
+_0x37:
 	IN   R30,0x37
 	SBRC R30,0
-	RJMP _0x2D
-; 0000 010F     //SPMCSR =0x05;
-; 0000 0110 #asm
-; 0000 0111     LDD R31, Y+0
+	RJMP _0x37
+; 0000 012C     //SPMCSR =0x05;
+; 0000 012D #asm
+; 0000 012E     LDD R31, Y+0
     LDD R31, Y+0
-; 0000 0112     LDI R30, 0x00
+; 0000 012F     LDI R30, 0x00
     LDI R30, 0x00
-; 0000 0113     LSR R31
+; 0000 0130     LSR R31
     LSR R31
-; 0000 0114     ROR R30
+; 0000 0131     ROR R30
     ROR R30
-; 0000 0115     PUSH R20
+; 0000 0132     PUSH R20
     PUSH R20
-; 0000 0116     LDI R20, 0x05
+; 0000 0133     LDI R20, 0x05
     LDI R20, 0x05
-; 0000 0117     OUT 0x37, R20
+; 0000 0134     OUT 0x37, R20
     OUT 0x37, R20
-; 0000 0118     POP R20
+; 0000 0135     POP R20
     POP R20
-; 0000 0119     SPM
+; 0000 0136     SPM
     SPM
-; 0000 011A #endasm
-; 0000 011B     Page = 0;
+; 0000 0137 #endasm
+; 0000 0138     Page = 0;
 	LDI  R30,LOW(0)
 	ST   Y,R30
-; 0000 011C }
+; 0000 0139 }
 	JMP  _0x2060001
 ; .FEND
 ;
 ;/* Write to the App. section */
 ;void WritePage(unsigned char *PageData, unsigned char PageNum)
-; 0000 0120 {
+; 0000 013D {
 _WritePage:
 ; .FSTART _WritePage
-; 0000 0121     unsigned int worddata = 0;
-; 0000 0122     unsigned int bytenum = 0;  // 0 to 255
-; 0000 0123 
-; 0000 0124     boot_page_erase(PageNum);
+; 0000 013E     unsigned int worddata = 0;
+; 0000 013F     unsigned int bytenum = 0;  // 0 to 255
+; 0000 0140 
+; 0000 0141     boot_page_erase(PageNum);
 	ST   -Y,R26
 	CALL __SAVELOCR4
 ;	*PageData -> Y+5
@@ -2064,16 +2140,16 @@ _WritePage:
 	__GETWRN 18,19,0
 	LDD  R26,Y+4
 	RCALL _boot_page_erase
-; 0000 0125     delay_ms(5);
+; 0000 0142     delay_ms(5);
 	LDI  R26,LOW(5)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 0126     while(bytenum < 128)
-_0x30:
+; 0000 0143     while(bytenum < 128)
+_0x3A:
 	__CPWRN 18,19,128
-	BRSH _0x32
-; 0000 0127     {
-; 0000 0128         worddata = (unsigned int)(PageData[bytenum + 1]*256) + PageData[bytenum];
+	BRSH _0x3C
+; 0000 0144     {
+; 0000 0145         worddata = (unsigned int)(PageData[bytenum + 1]*256) + PageData[bytenum];
 	MOVW R30,R18
 	ADIW R30,1
 	LDD  R26,Y+5
@@ -2094,28 +2170,50 @@ _0x30:
 	ADD  R30,R0
 	ADC  R31,R1
 	MOVW R16,R30
-; 0000 0129 
-; 0000 012A         boot_page_fill(worddata, bytenum);      delay_us(2);
+; 0000 0146 
+; 0000 0147         boot_page_fill(worddata, bytenum);      delay_us(2);
 	ST   -Y,R17
 	ST   -Y,R16
 	MOV  R26,R18
 	CALL _boot_page_fill
 	__DELAY_USB 11
-; 0000 012B         bytenum += 2;
+; 0000 0148         bytenum += 2;
 	__ADDWRN 18,19,2
-; 0000 012C     }
-	RJMP _0x30
-_0x32:
-; 0000 012D     boot_page_write(PageNum);
+; 0000 0149     }
+	RJMP _0x3A
+_0x3C:
+; 0000 014A     boot_page_write(PageNum);
 	LDD  R26,Y+4
 	RCALL _boot_page_write
-; 0000 012E     delay_ms(5);
+; 0000 014B     delay_ms(5);
 	LDI  R26,LOW(5)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 012F }
+; 0000 014C }
 	CALL __LOADLOCR4
 	ADIW R28,7
+	RET
+; .FEND
+;
+;void __DataToR0ByteToSPMCR_SPM(unsigned char data, unsigned char ctrl)
+; 0000 014F {
+___DataToR0ByteToSPMCR_SPM:
+; .FSTART ___DataToR0ByteToSPMCR_SPM
+; 0000 0150 #asm
+	ST   -Y,R26
+;	data -> Y+1
+;	ctrl -> Y+0
+; 0000 0151      ldd  r0,y+1
+     ldd  r0,y+1
+; 0000 0152      ld   r22,y
+     ld   r22,y
+; 0000 0153      WR_SPMCR_REG_R22
+     WR_SPMCR_REG_R22
+; 0000 0154      spm
+     spm
+; 0000 0155 #endasm
+; 0000 0156 }
+	ADIW R28,2
 	RET
 ; .FEND
 ;
@@ -2197,147 +2295,141 @@ _system_init:
 ; 0001 002B 
 ; 0001 002C    // Timer/Counter 1 initialization
 ; 0001 002D    // Clock source: System Clock
-; 0001 002E    // Clock value: 16000.000 kHz
-; 0001 002F    // Mode: Fast PWM top=ICR1
-; 0001 0030    // OC1A output: Non-Inverted PWM
+; 0001 002E    // Clock value: Timer1 Stopped
+; 0001 002F    // Mode: Normal top=0xFFFF
+; 0001 0030    // OC1A output: Disconnected
 ; 0001 0031    // OC1B output: Disconnected
 ; 0001 0032    // Noise Canceler: Off
 ; 0001 0033    // Input Capture on Falling Edge
-; 0001 0034    // Timer Period: 1 ms
-; 0001 0035    // Output Pulse(s):
-; 0001 0036    // OC1A Period: 1 ms Width: 0.50003 ms
-; 0001 0037    // Timer1 Overflow Interrupt: Off
-; 0001 0038    // Input Capture Interrupt: Off
-; 0001 0039    // Compare A Match Interrupt: Off
-; 0001 003A    // Compare B Match Interrupt: Off
-; 0001 003B    TCCR1A=(1<<COM1A1) | (0<<COM1A0) | (0<<COM1B1) | (0<<COM1B0) | (1<<WGM11) | (0<<WGM10);
-	LDI  R30,LOW(130)
+; 0001 0034    // Timer1 Overflow Interrupt: Off
+; 0001 0035    // Input Capture Interrupt: Off
+; 0001 0036    // Compare A Match Interrupt: Off
+; 0001 0037    // Compare B Match Interrupt: Off
+; 0001 0038    TCCR1A=(0<<COM1A1) | (0<<COM1A0) | (0<<COM1B1) | (0<<COM1B0) | (0<<WGM11) | (0<<WGM10);
 	STS  128,R30
-; 0001 003C    TCCR1B=(0<<ICNC1) | (0<<ICES1) | (1<<WGM13) | (1<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10);
-	LDI  R30,LOW(25)
+; 0001 0039    TCCR1B=(0<<ICNC1) | (0<<ICES1) | (0<<WGM13) | (0<<WGM12) | (0<<CS12) | (0<<CS11) | (0<<CS10);
 	STS  129,R30
-; 0001 003D    TCNT1H=0;
-	LDI  R30,LOW(0)
+; 0001 003A    TCNT1H=0x00;
 	STS  133,R30
-; 0001 003E    TCNT1L=0;
+; 0001 003B    TCNT1L=0x00;
 	STS  132,R30
-; 0001 003F    ICR1H=0x00;
+; 0001 003C    ICR1H=0x00;
 	STS  135,R30
-; 0001 0040    ICR1L=0x00;
+; 0001 003D    ICR1L=0x00;
 	STS  134,R30
-; 0001 0041    OCR1AH=0x00;
+; 0001 003E    OCR1AH=0x00;
 	STS  137,R30
-; 0001 0042    OCR1AL=0x00;
+; 0001 003F    OCR1AL=0x00;
 	STS  136,R30
-; 0001 0043    OCR1BH=0x00;
+; 0001 0040    OCR1BH=0x00;
 	STS  139,R30
-; 0001 0044    OCR1BL=0x00;
+; 0001 0041    OCR1BL=0x00;
 	STS  138,R30
-; 0001 0045 
-; 0001 0046    // Timer/Counter 2 initialization
-; 0001 0047    // Clock source: System Clock
-; 0001 0048    // Clock value: Timer2 Stopped
-; 0001 0049    // Mode: Normal top=0xFF
-; 0001 004A    // OC2A output: Disconnected
-; 0001 004B    // OC2B output: Disconnected
-; 0001 004C    ASSR=(0<<EXCLK) | (0<<AS2);
+; 0001 0042 
+; 0001 0043    // Timer/Counter 2 initialization
+; 0001 0044    // Clock source: System Clock
+; 0001 0045    // Clock value: Timer2 Stopped
+; 0001 0046    // Mode: Normal top=0xFF
+; 0001 0047    // OC2A output: Disconnected
+; 0001 0048    // OC2B output: Disconnected
+; 0001 0049    ASSR=(0<<EXCLK) | (0<<AS2);
 	STS  182,R30
-; 0001 004D    TCCR2A=(0<<COM2A1) | (0<<COM2A0) | (0<<COM2B1) | (0<<COM2B0) | (0<<WGM21) | (0<<WGM20);
+; 0001 004A    TCCR2A=(0<<COM2A1) | (0<<COM2A0) | (0<<COM2B1) | (0<<COM2B0) | (0<<WGM21) | (0<<WGM20);
 	STS  176,R30
-; 0001 004E    TCCR2B=(0<<WGM22) | (0<<CS22) | (0<<CS21) | (0<<CS20);
+; 0001 004B    TCCR2B=(0<<WGM22) | (0<<CS22) | (0<<CS21) | (0<<CS20);
 	STS  177,R30
-; 0001 004F    TCNT2=0x00;
+; 0001 004C    TCNT2=0x00;
 	STS  178,R30
-; 0001 0050    OCR2A=0x00;
+; 0001 004D    OCR2A=0x00;
 	STS  179,R30
-; 0001 0051    OCR2B=0x00;
+; 0001 004E    OCR2B=0x00;
 	STS  180,R30
-; 0001 0052 
-; 0001 0053    // Timer/Counter 0 Interrupt(s) initialization
-; 0001 0054    TIMSK0=(0<<OCIE0B) | (0<<OCIE0A) | (0<<TOIE0);
+; 0001 004F 
+; 0001 0050    // Timer/Counter 0 Interrupt(s) initialization
+; 0001 0051    TIMSK0=(0<<OCIE0B) | (0<<OCIE0A) | (0<<TOIE0);
 	STS  110,R30
-; 0001 0055 
-; 0001 0056    // Timer/Counter 1 Interrupt(s) initialization
-; 0001 0057    TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (0<<OCIE1A) | (0<<TOIE1);
+; 0001 0052 
+; 0001 0053    // Timer/Counter 1 Interrupt(s) initialization
+; 0001 0054    TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (0<<OCIE1A) | (0<<TOIE1);
 	STS  111,R30
-; 0001 0058 
-; 0001 0059    // Timer/Counter 2 Interrupt(s) initialization
-; 0001 005A    TIMSK2=(0<<OCIE2B) | (0<<OCIE2A) | (0<<TOIE2);
+; 0001 0055 
+; 0001 0056    // Timer/Counter 2 Interrupt(s) initialization
+; 0001 0057    TIMSK2=(0<<OCIE2B) | (0<<OCIE2A) | (0<<TOIE2);
 	STS  112,R30
-; 0001 005B 
-; 0001 005C    // External Interrupt(s) initialization
-; 0001 005D    // INT0: Off
-; 0001 005E    // INT1: Off
-; 0001 005F    // Interrupt on any change on pins PCINT0-7: Off
-; 0001 0060    // Interrupt on any change on pins PCINT8-14: Off
-; 0001 0061    // Interrupt on any change on pins PCINT16-23: Off
-; 0001 0062    EICRA=(0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
+; 0001 0058 
+; 0001 0059    // External Interrupt(s) initialization
+; 0001 005A    // INT0: Off
+; 0001 005B    // INT1: Off
+; 0001 005C    // Interrupt on any change on pins PCINT0-7: Off
+; 0001 005D    // Interrupt on any change on pins PCINT8-14: Off
+; 0001 005E    // Interrupt on any change on pins PCINT16-23: Off
+; 0001 005F    EICRA=(0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
 	STS  105,R30
-; 0001 0063    EIMSK=(0<<INT1) | (0<<INT0);
+; 0001 0060    EIMSK=(0<<INT1) | (0<<INT0);
 	OUT  0x1D,R30
-; 0001 0064    PCICR=(0<<PCIE2) | (0<<PCIE1) | (0<<PCIE0);
+; 0001 0061    PCICR=(0<<PCIE2) | (0<<PCIE1) | (0<<PCIE0);
 	STS  104,R30
-; 0001 0065 
-; 0001 0066    // USART initialization
-; 0001 0067    // Communication Parameters: 8 Data, 1 Stop, No Parity
-; 0001 0068    // USART Receiver: On
-; 0001 0069    // USART Transmitter: On
-; 0001 006A    // USART0 Mode: Asynchronous
-; 0001 006B    // USART Baud Rate: 57600 (Double Speed Mode)
-; 0001 006C    //UCSR0A=(0<<RXC0) | (0<<TXC0) | (0<<UDRE0) | (0<<FE0) | (0<<DOR0) | (0<<UPE0) | (1<<U2X0) | (0<<MPCM0);
-; 0001 006D    //UCSR0B=(0<<RXCIE0) | (0<<TXCIE0) | (0<<UDRIE0) | (1<<RXEN0) | (1<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
-; 0001 006E    //UCSR0C=(0<<UMSEL01) | (0<<UMSEL00) | (0<<UPM01) | (0<<UPM00) | (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00) | (0<<UCPOL0) ...
-; 0001 006F    //UBRR0H=0x00;
-; 0001 0070    //UBRR0L=0x22;
-; 0001 0071 
-; 0001 0072    UCSR0A=(0<<RXC0) | (0<<TXC0) | (0<<UDRE0) | (0<<FE0) | (0<<DOR0) | (0<<UPE0) | (1<<U2X0) | (0<<MPCM0);
+; 0001 0062 
+; 0001 0063    // USART initialization
+; 0001 0064    // Communication Parameters: 8 Data, 1 Stop, No Parity
+; 0001 0065    // USART Receiver: On
+; 0001 0066    // USART Transmitter: On
+; 0001 0067    // USART0 Mode: Asynchronous
+; 0001 0068    // USART Baud Rate: 57600 (Double Speed Mode)
+; 0001 0069    //UCSR0A=(0<<RXC0) | (0<<TXC0) | (0<<UDRE0) | (0<<FE0) | (0<<DOR0) | (0<<UPE0) | (1<<U2X0) | (0<<MPCM0);
+; 0001 006A    //UCSR0B=(0<<RXCIE0) | (0<<TXCIE0) | (0<<UDRIE0) | (1<<RXEN0) | (1<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
+; 0001 006B    //UCSR0C=(0<<UMSEL01) | (0<<UMSEL00) | (0<<UPM01) | (0<<UPM00) | (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00) | (0<<UCPOL0) ...
+; 0001 006C    //UBRR0H=0x00;
+; 0001 006D    //UBRR0L=0x22;
+; 0001 006E 
+; 0001 006F    UCSR0A=(0<<RXC0) | (0<<TXC0) | (0<<UDRE0) | (0<<FE0) | (0<<DOR0) | (0<<UPE0) | (1<<U2X0) | (0<<MPCM0);
 	LDI  R30,LOW(2)
 	STS  192,R30
-; 0001 0073    UCSR0B=(1<<RXCIE0) | (1<<TXCIE0) | (0<<UDRIE0) | (1<<RXEN0) | (1<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
+; 0001 0070    UCSR0B=(1<<RXCIE0) | (1<<TXCIE0) | (0<<UDRIE0) | (1<<RXEN0) | (1<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
 	LDI  R30,LOW(216)
 	STS  193,R30
-; 0001 0074    UCSR0C=(0<<UMSEL01) | (0<<UMSEL00) | (0<<UPM01) | (0<<UPM00) | (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00) | (0<<UCPOL0);
+; 0001 0071    UCSR0C=(0<<UMSEL01) | (0<<UMSEL00) | (0<<UPM01) | (0<<UPM00) | (0<<USBS0) | (1<<UCSZ01) | (1<<UCSZ00) | (0<<UCPOL0);
 	LDI  R30,LOW(6)
 	STS  194,R30
-; 0001 0075    UBRR0H=0x00;
+; 0001 0072    UBRR0H=0x00;
 	LDI  R30,LOW(0)
 	STS  197,R30
-; 0001 0076    UBRR0L=0x22;
+; 0001 0073    UBRR0L=0x22;
 	LDI  R30,LOW(34)
 	STS  196,R30
-; 0001 0077 
-; 0001 0078    // Analog Comparator initialization
-; 0001 0079    // Analog Comparator: Off
-; 0001 007A    // The Analog Comparator's positive input is
-; 0001 007B    // connected to the AIN0 pin
-; 0001 007C    // The Analog Comparator's negative input is
-; 0001 007D    // connected to the AIN1 pin
-; 0001 007E    ACSR=(1<<ACD) | (0<<ACBG) | (0<<ACO) | (0<<ACI) | (0<<ACIE) | (0<<ACIC) | (0<<ACIS1) | (0<<ACIS0);
+; 0001 0074 
+; 0001 0075    // Analog Comparator initialization
+; 0001 0076    // Analog Comparator: Off
+; 0001 0077    // The Analog Comparator's positive input is
+; 0001 0078    // connected to the AIN0 pin
+; 0001 0079    // The Analog Comparator's negative input is
+; 0001 007A    // connected to the AIN1 pin
+; 0001 007B    ACSR=(1<<ACD) | (0<<ACBG) | (0<<ACO) | (0<<ACI) | (0<<ACIE) | (0<<ACIC) | (0<<ACIS1) | (0<<ACIS0);
 	LDI  R30,LOW(128)
 	OUT  0x30,R30
-; 0001 007F    ADCSRB=(0<<ACME);
+; 0001 007C    ADCSRB=(0<<ACME);
 	LDI  R30,LOW(0)
 	STS  123,R30
-; 0001 0080    // Digital input buffer on AIN0: On
-; 0001 0081    // Digital input buffer on AIN1: On
-; 0001 0082    DIDR1=(0<<AIN0D) | (0<<AIN1D);
+; 0001 007D    // Digital input buffer on AIN0: On
+; 0001 007E    // Digital input buffer on AIN1: On
+; 0001 007F    DIDR1=(0<<AIN0D) | (0<<AIN1D);
 	STS  127,R30
-; 0001 0083 
-; 0001 0084    // ADC initialization
-; 0001 0085    // ADC disabled
-; 0001 0086    ADCSRA=(0<<ADEN) | (0<<ADSC) | (0<<ADATE) | (0<<ADIF) | (0<<ADIE) | (0<<ADPS2) | (0<<ADPS1) | (0<<ADPS0);
+; 0001 0080 
+; 0001 0081    // ADC initialization
+; 0001 0082    // ADC disabled
+; 0001 0083    ADCSRA=(0<<ADEN) | (0<<ADSC) | (0<<ADATE) | (0<<ADIF) | (0<<ADIE) | (0<<ADPS2) | (0<<ADPS1) | (0<<ADPS0);
 	STS  122,R30
-; 0001 0087 
-; 0001 0088    // SPI initialization
-; 0001 0089    // SPI disabled
-; 0001 008A    SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0);
+; 0001 0084 
+; 0001 0085    // SPI initialization
+; 0001 0086    // SPI disabled
+; 0001 0087    SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0);
 	OUT  0x2C,R30
-; 0001 008B 
-; 0001 008C    // TWI initialization
-; 0001 008D    // TWI disabled
-; 0001 008E    TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
+; 0001 0088 
+; 0001 0089    // TWI initialization
+; 0001 008A    // TWI disabled
+; 0001 008B    TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 	STS  188,R30
-; 0001 008F }
+; 0001 008C }
 	RET
 ; .FEND
 ;#include "main.h"
@@ -2710,20 +2802,6 @@ _tx_buffer0:
 	.BYTE 0x8
 
 	.CSEG
-;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:7 WORDS
-SUBOPT_0x0:
-	LDI  R30,LOW(0)
-	STS  _rx_rd_index0,R30
-	STS  _rx_wr_index0,R30
-	STS  _rx_counter0,R30
-	RET
-
-;OPTIMIZER ADDED SUBROUTINE, CALLED 5 TIMES, CODE SIZE REDUCTION:5 WORDS
-SUBOPT_0x1:
-	LDI  R26,LOW(1)
-	LDI  R27,0
-	JMP  _send_respond
-
 
 	.CSEG
 _delay_ms:

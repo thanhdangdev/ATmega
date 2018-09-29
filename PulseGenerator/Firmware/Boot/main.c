@@ -25,6 +25,16 @@ Data Stack size         : 512
 #include "protocol.h"
 #include <iobits.h>
 
+/* definitions for SPM control */
+#define	SPMCR_REG	SPMCSR
+#asm
+     #define WR_SPMCR_REG_R22 out 0x37,r22
+#endasm
+
+#define _ENABLE_RWW_SECTION() __DataToR0ByteToSPMCR_SPM( 0x00, 0x11 )
+#define _WAIT_FOR_SPM() while( SPMCR_REG & (1<<SELFPRGEN) );
+void __DataToR0ByteToSPMCR_SPM(unsigned char data, unsigned char ctrl);
+
 // Declare your global variables here
 
 char hw_version = 0;
@@ -42,33 +52,42 @@ bool isUpgrade = true;
 
 void main(void)
 {
-   // Declare your local variables here
+    system_init();
    
-   system_init();
-   
-   // Global enable interrupts
-   #asm("sei")
-   while (1)
-   {
-      if(getCommand()){
-         process_request(); 
-         
-         #asm("cli")
-         rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
-         #asm("sei")   
-      }
-      
-      if(!isUpgrade){
-            // Jump to application
-            #asm("cli")
-            #asm
-            LDI     R31, 0x00
-            LDI     R30, 0x00
-            IJMP               ;Jump to address 0x0000
-            #endasm
-      }
+    // Global enable interrupts
+    #asm("sei")
+    while (1)
+    {
+        if(getCommand()){
+            process_request();
 
-   }
+            #asm("cli")
+            rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+            #asm("sei")
+        }
+      
+        if(!isUpgrade){
+            #asm("cli")
+
+            // Jump to application
+//            #asm
+//            LDI     R30, 0x00
+//            LDI     R31, 0x00
+//            IJMP               ;Jump to address 0x0000
+//            #endasm
+            #pragma optsize-
+            // will use the interrupt vectors from the application section
+            MCUCR=(1<<IVCE);
+            MCUCR=(0<<IVSEL) | (0<<IVCE);
+            #ifdef _OPTIMIZE_SIZE_
+            #pragma optsize+
+            #endif
+
+            // start execution from address 0
+            #asm("jmp 0")
+        }
+        delay_ms(5);
+    }
 }
 
 bool getCommand(){
@@ -77,7 +96,7 @@ bool getCommand(){
          if(getchar() == 0xFF){
             if(getchar() == 0x55){
                len = getchar();
-               if(len <= 135){
+               if(len <= 157){
                   get_status = GET_STATUS_GETTING;
 
                }
@@ -193,7 +212,7 @@ void send_respond(char * payload, unsigned short len){
     checksum = ~checksum + 1;
 
     c = (char*)&respond;
-    for(i = 0; i<respond.len + 2; i++){
+    for(i = 0; i<respond.len + 1; i++){
         putchar(c[i]);
     }
     putchar(checksum);
@@ -205,9 +224,6 @@ void process_upgrade_page()
     memcpy(&upgrade_page_request, request.payload, sizeof(upgrade_page_request));
 
     #asm("cli")
-
-    // Erase page
-    boot_page_erase(upgrade_page_request.page);
 
     // Write page
     WritePage(upgrade_page_request.page_data, upgrade_page_request.page);
@@ -224,6 +240,10 @@ void process_upgrade_finish()
     send_respond((char*)&status, sizeof(status));
 
     delay_ms(10);
+
+    _WAIT_FOR_SPM();
+    _ENABLE_RWW_SECTION();
+
     isUpgrade = false;
 }
 
@@ -300,5 +320,15 @@ void WritePage(unsigned char *PageData, unsigned char PageNum)
     }
     boot_page_write(PageNum);
     delay_ms(5);
+}
+
+void __DataToR0ByteToSPMCR_SPM(unsigned char data, unsigned char ctrl)
+{
+#asm
+     ldd  r0,y+1
+     ld   r22,y
+     WR_SPMCR_REG_R22
+     spm
+#endasm
 }
 

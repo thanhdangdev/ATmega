@@ -46,7 +46,7 @@
 ; 0001 000D    // Input/Output Ports initialization
 ; 0001 000E    // Port B initialization
 ; 0001 000F    // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=Out Bit0=In
-; 0001 0010    DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (1<<DDB1) | (0<<DDB0);
+; 0001 0010    DDRB=(0<<DDB7) | (0<<DDB6) | (1<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (1<<DDB1) | (0<<DDB0);
 ;PCODE: $00000013 VOL: 0
 ;PCODE: $00000014 VOL: 0
 ; 0001 0011    // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=0 Bit0=T

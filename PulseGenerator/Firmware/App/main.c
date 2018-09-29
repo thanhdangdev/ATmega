@@ -42,10 +42,11 @@ void main(void)
 {
    // Declare your local variables here
    
-   system_init();
+   system_init();  
    
    // Global enable interrupts
-   #asm("sei")
+   #asm("sei")  
+   
    while (1)
    {
       if(getCommand()){
@@ -55,9 +56,6 @@ void main(void)
          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
          #asm("sei")   
       }
-      
-      
-
    }
 }
 

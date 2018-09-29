@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "PrintDebug/printdebug.h"
+#include <unistd.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     port = new QSerialPort();
 
-    port->setPortName("COM1");
+    port->setPortName("COM9");
     port->setBaudRate(QSerialPort::Baud57600);
     port->setDataBits(QSerialPort::Data8);
     port->setStopBits(QSerialPort::OneStop);
@@ -302,6 +303,8 @@ void MainWindow::on_pushButtonUpgradeFirmware_clicked()
         return;
     }
 
+    sleep(3);
+
     // Gui file hex - gui tung page
     QByteArray request;
     uint16_t nPage = hexData.length() / 128 + (hexData.length() % 128 != 0);
@@ -314,6 +317,8 @@ void MainWindow::on_pushButtonUpgradeFirmware_clicked()
             return;
         }
     }
+
+    //sleep(1);
 
     // Gui lenh upgrade finish
     if(!upgrade_finish()){
@@ -381,4 +386,9 @@ bool MainWindow::upgrade_finish()
     }
 
     return false;
+}
+
+void MainWindow::on_pushButtonStartApp_clicked()
+{
+    upgrade_finish();
 }

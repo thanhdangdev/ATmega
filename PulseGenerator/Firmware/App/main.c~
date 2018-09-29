@@ -27,7 +27,7 @@ Data Stack size         : 512
 // Declare your global variables here
 
 char hw_version = 0;
-char fw_version[] = "1.0.0";
+char fw_version[] = "1.0.1";
 
 serial_command_t request;
 serial_command_t respond;
@@ -42,10 +42,11 @@ void main(void)
 {
    // Declare your local variables here
    
-   system_init();
+   system_init();  
    
    // Global enable interrupts
-   #asm("sei")
+   #asm("sei")  
+   
    while (1)
    {
       if(getCommand()){

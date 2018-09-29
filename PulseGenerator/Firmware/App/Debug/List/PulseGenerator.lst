@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.30  D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm Sat Sep 29 21:14:23 2018
+AVRASM ver. 2.1.30  D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm Sun Sep 30 01:58:47 2018
 
 D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1090): warning: Register r4 already defined by the .DEF directive
 D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1091): warning: Register r3 already defined by the .DEF directive
@@ -1322,40 +1322,38 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0000 002F    // Global enable interrupts
                  ; 0000 0030    #asm("sei")
 00007b 9478      	sei
-                 ; 0000 0031    while (1)
+                 ; 0000 0031 
+                 ; 0000 0032    while (1)
                  _0x4:
-                 ; 0000 0032    {
-                 ; 0000 0033       if(getCommand()){
+                 ; 0000 0033    {
+                 ; 0000 0034       if(getCommand()){
 00007c d009      	RCALL _getCommand
 00007d 30e0      	CPI  R30,0
 00007e f029      	BREQ _0x7
-                 ; 0000 0034          process_request();
+                 ; 0000 0035          process_request();
 00007f d046      	RCALL _process_request
-                 ; 0000 0035 
-                 ; 0000 0036          #asm("cli")
+                 ; 0000 0036 
+                 ; 0000 0037          #asm("cli")
 000080 94f8      	cli
-                 ; 0000 0037          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+                 ; 0000 0038          rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
 000081 940e 0345 	CALL SUBOPT_0x0
-                 ; 0000 0038          #asm("sei")
+                 ; 0000 0039          #asm("sei")
 000083 9478      	sei
-                 ; 0000 0039       }
-                 ; 0000 003A 
-                 ; 0000 003B 
-                 ; 0000 003C 
-                 ; 0000 003D    }
+                 ; 0000 003A       }
+                 ; 0000 003B    }
                  _0x7:
 000084 cff7      	RJMP _0x4
-                 ; 0000 003E }
+                 ; 0000 003C }
                  _0x8:
 000085 cfff      	RJMP _0x8
                  ; .FEND
                  ;
                  ;bool getCommand(){
-                 ; 0000 0040 _Bool getCommand(){
+                 ; 0000 003E _Bool getCommand(){
                  _getCommand:
                  ; .FSTART _getCommand
-                 ; 0000 0041      // Place your code here
-                 ; 0000 0042       if(get_status == GET_STATUS_COMPLETE && rx_counter0 >= 7){
+                 ; 0000 003F      // Place your code here
+                 ; 0000 0040       if(get_status == GET_STATUS_COMPLETE && rx_counter0 >= 7){
 000086 2033      	TST  R3
 000087 f421      	BRNE _0xA
 000088 91a0 0302 	LDS  R26,_rx_counter0
@@ -1364,57 +1362,57 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  _0xA:
 00008c c01a      	RJMP _0x9
                  _0xB:
-                 ; 0000 0043          if(getchar() == 0xFF){
+                 ; 0000 0041          if(getchar() == 0xFF){
 00008d 940e 02c8 	CALL _getchar
 00008f 3fef      	CPI  R30,LOW(0xFF)
 000090 f491      	BRNE _0xC
-                 ; 0000 0044             if(getchar() == 0x55){
+                 ; 0000 0042             if(getchar() == 0x55){
 000091 940e 02c8 	CALL _getchar
 000093 35e5      	CPI  R30,LOW(0x55)
 000094 f449      	BRNE _0xD
-                 ; 0000 0045                len = getchar();
+                 ; 0000 0043                len = getchar();
 000095 940e 02c8 	CALL _getchar
 000097 2e6e      	MOV  R6,R30
-                 ; 0000 0046                if(len <= 135){
+                 ; 0000 0044                if(len <= 135){
 000098 e8e7      	LDI  R30,LOW(135)
 000099 15e6      	CP   R30,R6
 00009a f010      	BRLO _0xE
-                 ; 0000 0047                   get_status = GET_STATUS_GETTING;
+                 ; 0000 0045                   get_status = GET_STATUS_GETTING;
 00009b e0e1      	LDI  R30,LOW(1)
 00009c 2e3e      	MOV  R3,R30
-                 ; 0000 0048 
-                 ; 0000 0049                }
-                 ; 0000 004A             }else{
+                 ; 0000 0046 
+                 ; 0000 0047                }
+                 ; 0000 0048             }else{
                  _0xE:
 00009d c004      	RJMP _0xF
                  _0xD:
-                 ; 0000 004B                #asm("cli")
+                 ; 0000 0049                #asm("cli")
 00009e 94f8      	cli
-                 ; 0000 004C                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+                 ; 0000 004A                 rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
 00009f 940e 0345 	CALL SUBOPT_0x0
-                 ; 0000 004D                #asm("sei")
+                 ; 0000 004B                #asm("sei")
 0000a1 9478      	sei
-                 ; 0000 004E             }
+                 ; 0000 004C             }
                  _0xF:
-                 ; 0000 004F          }else{
+                 ; 0000 004D          }else{
 0000a2 c004      	RJMP _0x10
                  _0xC:
-                 ; 0000 0050             #asm("cli")
+                 ; 0000 004E             #asm("cli")
 0000a3 94f8      	cli
-                 ; 0000 0051             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
+                 ; 0000 004F             rx_counter0 = rx_wr_index0 = rx_rd_index0 = 0 ;
 0000a4 940e 0345 	CALL SUBOPT_0x0
-                 ; 0000 0052             #asm("sei")
+                 ; 0000 0050             #asm("sei")
 0000a6 9478      	sei
-                 ; 0000 0053          }
+                 ; 0000 0051          }
                  _0x10:
-                 ; 0000 0054       }
-                 ; 0000 0055 
-                 ; 0000 0056       if(get_status == GET_STATUS_GETTING){
+                 ; 0000 0052       }
+                 ; 0000 0053 
+                 ; 0000 0054       if(get_status == GET_STATUS_GETTING){
                  _0x9:
 0000a7 e0e1      	LDI  R30,LOW(1)
 0000a8 15e3      	CP   R30,R3
 0000a9 f4d1      	BRNE _0x11
-                 ; 0000 0057          if(rx_counter0 >= len - 1){
+                 ; 0000 0055          if(rx_counter0 >= len - 1){
 0000aa 2de6      	MOV  R30,R6
 0000ab e0f0      	LDI  R31,0
 0000ac 9731      	SBIW R30,1
@@ -1423,7 +1421,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000b0 17ae      	CP   R26,R30
 0000b1 07bf      	CPC  R27,R31
 0000b2 f08c      	BRLT _0x12
-                 ; 0000 0058             memcpy(&request, &rx_buffer0, len + 2);
+                 ; 0000 0056             memcpy(&request, &rx_buffer0, len + 2);
 0000b3 e9ef      	LDI  R30,LOW(_request)
 0000b4 e0f3      	LDI  R31,HIGH(_request)
 0000b5 93fa      	ST   -Y,R31
@@ -1437,30 +1435,30 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000bd 9632      	ADIW R30,2
 0000be 01df      	MOVW R26,R30
 0000bf 940e 031e 	CALL _memcpy
-                 ; 0000 0059             get_status =  GET_STATUS_COMPLETE;
+                 ; 0000 0057             get_status =  GET_STATUS_COMPLETE;
 0000c1 2433      	CLR  R3
-                 ; 0000 005A 
-                 ; 0000 005B             return true;
+                 ; 0000 0058 
+                 ; 0000 0059             return true;
 0000c2 e0e1      	LDI  R30,LOW(1)
 0000c3 9508      	RET
-                 ; 0000 005C          }
-                 ; 0000 005D       }
+                 ; 0000 005A          }
+                 ; 0000 005B       }
                  _0x12:
-                 ; 0000 005E 
-                 ; 0000 005F       return false;
+                 ; 0000 005C 
+                 ; 0000 005D       return false;
                  _0x11:
 0000c4 e0e0      	LDI  R30,LOW(0)
 0000c5 9508      	RET
-                 ; 0000 0060 }
+                 ; 0000 005E }
                  ; .FEND
                  ;
                  ;void process_request(){
-                 ; 0000 0062 void process_request(){
+                 ; 0000 0060 void process_request(){
                  _process_request:
                  ; .FSTART _process_request
-                 ; 0000 0063    unsigned char len = request.len;
-                 ; 0000 0064 
-                 ; 0000 0065    if(checksum(&request.len, len) != 0){
+                 ; 0000 0061    unsigned char len = request.len;
+                 ; 0000 0062 
+                 ; 0000 0063    if(checksum(&request.len, len) != 0){
 0000c6 931a      	ST   -Y,R17
                  ;	len -> R17
                 +
@@ -1477,27 +1475,27 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000cf d007      	RCALL _checksum
 0000d0 30e0      	CPI  R30,0
 0000d1 f011      	BREQ _0x13
-                 ; 0000 0066       response_error_checksum();
+                 ; 0000 0064       response_error_checksum();
 0000d2 d01c      	RCALL _response_error_checksum
-                 ; 0000 0067    }else{
+                 ; 0000 0065    }else{
 0000d3 c001      	RJMP _0x14
                  _0x13:
-                 ; 0000 0068       execute_cmd();
+                 ; 0000 0066       execute_cmd();
 0000d4 d029      	RCALL _execute_cmd
-                 ; 0000 0069    }
+                 ; 0000 0067    }
                  _0x14:
-                 ; 0000 006A }
+                 ; 0000 0068 }
 0000d5 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;unsigned char checksum(unsigned char *dat, unsigned char len){
-                 ; 0000 006C unsigned char checksum(unsigned char *dat, unsigned char len){
+                 ; 0000 006A unsigned char checksum(unsigned char *dat, unsigned char len){
                  _checksum:
                  ; .FSTART _checksum
-                 ; 0000 006D    unsigned char ck  = 0;
-                 ; 0000 006E    unsigned char i = 0;
-                 ; 0000 006F 
-                 ; 0000 0070    for(i = 0; i<len; i++){
+                 ; 0000 006B    unsigned char ck  = 0;
+                 ; 0000 006C    unsigned char i = 0;
+                 ; 0000 006D 
+                 ; 0000 006E    for(i = 0; i<len; i++){
 0000d7 93aa      	ST   -Y,R26
 0000d8 931a      	ST   -Y,R17
 0000d9 930a      	ST   -Y,R16
@@ -1512,7 +1510,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000dd 81ea      	LDD  R30,Y+2
 0000de 170e      	CP   R16,R30
 0000df f450      	BRSH _0x17
-                 ; 0000 0071       ck += *(dat + i);
+                 ; 0000 006F       ck += *(dat + i);
 0000e0 2fe0      	MOV  R30,R16
 0000e1 e0f0      	LDI  R31,0
 0000e2 81ab      	LDD  R26,Y+3
@@ -1521,26 +1519,26 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000e5 1fbf      	ADC  R27,R31
 0000e6 91ec      	LD   R30,X
 0000e7 0f1e      	ADD  R17,R30
-                 ; 0000 0072    }
+                 ; 0000 0070    }
 0000e8 5f0f      	SUBI R16,-1
 0000e9 cff3      	RJMP _0x16
                  _0x17:
-                 ; 0000 0073 
-                 ; 0000 0074    return ck;
+                 ; 0000 0071 
+                 ; 0000 0072    return ck;
 0000ea 2fe1      	MOV  R30,R17
 0000eb 8119      	LDD  R17,Y+1
 0000ec 8108      	LDD  R16,Y+0
 0000ed 9625      	ADIW R28,5
 0000ee 9508      	RET
-                 ; 0000 0075 }
+                 ; 0000 0073 }
                  ; .FEND
                  ;
                  ;void response_error_checksum(){
-                 ; 0000 0077 void response_error_checksum(){
+                 ; 0000 0075 void response_error_checksum(){
                  _response_error_checksum:
                  ; .FSTART _response_error_checksum
-                 ; 0000 0078     unsigned char status = STATUS_ERROR_CHECKSUM;
-                 ; 0000 0079     send_respond((char *)&status, sizeof(status));
+                 ; 0000 0076     unsigned char status = STATUS_ERROR_CHECKSUM;
+                 ; 0000 0077     send_respond((char *)&status, sizeof(status));
 0000ef 931a      	ST   -Y,R17
                  ;	status -> R17
 0000f0 e012      	LDI  R17,2
@@ -1554,66 +1552,66 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0000f8 940e 034d 	CALL SUBOPT_0x1
 0000fa 911f      	POP  R17
 0000fb 912f      	POP  R18
-                 ; 0000 007A }
+                 ; 0000 0078 }
 0000fc 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void execute_cmd(){
-                 ; 0000 007C void execute_cmd(){
+                 ; 0000 007A void execute_cmd(){
                  _execute_cmd:
                  ; .FSTART _execute_cmd
-                 ; 0000 007D     unsigned char status;
-                 ; 0000 007E     switch(request.opcode){
+                 ; 0000 007B     unsigned char status;
+                 ; 0000 007C     switch(request.opcode){
 0000fe 931a      	ST   -Y,R17
                  ;	status -> R17
                 +
 0000ff 91e0 03a4+LDS R30 , _request + ( 5 )
                  	__GETB1MN _request,5
 000101 e0f0      	LDI  R31,0
-                 ; 0000 007F     case CMD_READ_VERSION:
+                 ; 0000 007D     case CMD_READ_VERSION:
 000102 30e1      	CPI  R30,LOW(0x1)
 000103 e0a0      	LDI  R26,HIGH(0x1)
 000104 07fa      	CPC  R31,R26
 000105 f411      	BRNE _0x1B
-                 ; 0000 0080         process_read_version();
+                 ; 0000 007E         process_read_version();
 000106 d06b      	RCALL _process_read_version
-                 ; 0000 0081         break;
+                 ; 0000 007F         break;
 000107 c01e      	RJMP _0x1A
-                 ; 0000 0082     case CMD_TEST_TRANSFER:
+                 ; 0000 0080     case CMD_TEST_TRANSFER:
                  _0x1B:
 000108 30e2      	CPI  R30,LOW(0x2)
 000109 e0a0      	LDI  R26,HIGH(0x2)
 00010a 07fa      	CPC  R31,R26
 00010b f411      	BRNE _0x1C
-                 ; 0000 0083         process_test_transfer();
+                 ; 0000 0081         process_test_transfer();
 00010c d01b      	RCALL _process_test_transfer
-                 ; 0000 0084         break;
+                 ; 0000 0082         break;
 00010d c018      	RJMP _0x1A
-                 ; 0000 0085     case CMD_WRITE_REGISTER:
+                 ; 0000 0083     case CMD_WRITE_REGISTER:
                  _0x1C:
 00010e 30e3      	CPI  R30,LOW(0x3)
 00010f e0a0      	LDI  R26,HIGH(0x3)
 000110 07fa      	CPC  R31,R26
 000111 f411      	BRNE _0x1D
-                 ; 0000 0086         process_write_register();
+                 ; 0000 0084         process_write_register();
 000112 d0a1      	RCALL _process_write_register
-                 ; 0000 0087         break;
+                 ; 0000 0085         break;
 000113 c012      	RJMP _0x1A
-                 ; 0000 0088     case CMD_UPGRADE_START:
+                 ; 0000 0086     case CMD_UPGRADE_START:
                  _0x1D:
 000114 30e4      	CPI  R30,LOW(0x4)
 000115 e0a0      	LDI  R26,HIGH(0x4)
 000116 07fa      	CPC  R31,R26
 000117 f411      	BRNE _0x1F
-                 ; 0000 0089         process_upgrade_start();
+                 ; 0000 0087         process_upgrade_start();
 000118 d042      	RCALL _process_upgrade_start
-                 ; 0000 008A         break;
+                 ; 0000 0088         break;
 000119 c00c      	RJMP _0x1A
-                 ; 0000 008B     default:
+                 ; 0000 0089     default:
                  _0x1F:
-                 ; 0000 008C         status = STATUS_UNSUPPORT;
+                 ; 0000 008A         status = STATUS_UNSUPPORT;
 00011a e013      	LDI  R17,LOW(3)
-                 ; 0000 008D         send_respond((char *)&status, sizeof(status));
+                 ; 0000 008B         send_respond((char *)&status, sizeof(status));
 00011b b7ed      	IN   R30,SPL
 00011c b7fe      	IN   R31,SPH
 00011d 9731      	SBIW R30,1
@@ -1624,20 +1622,20 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000122 940e 034d 	CALL SUBOPT_0x1
 000124 911f      	POP  R17
 000125 912f      	POP  R18
-                 ; 0000 008E         break;
-                 ; 0000 008F     }
+                 ; 0000 008C         break;
+                 ; 0000 008D     }
                  _0x1A:
-                 ; 0000 0090 }
+                 ; 0000 008E }
 000126 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void process_test_transfer(){
-                 ; 0000 0092 void process_test_transfer(){
+                 ; 0000 0090 void process_test_transfer(){
                  _process_test_transfer:
                  ; .FSTART _process_test_transfer
-                 ; 0000 0093     test_transfer_respond_t respond;
-                 ; 0000 0094 
-                 ; 0000 0095     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
+                 ; 0000 0091     test_transfer_respond_t respond;
+                 ; 0000 0092 
+                 ; 0000 0093     memcpy(&test_transfer_request, request.payload, sizeof(test_transfer_request));
 000128 97ef      	SBIW R28,63
 000129 97ef      	SBIW R28,63
 00012a 9724      	SBIW R28,4
@@ -1648,29 +1646,29 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 00012f e8a1      	LDI  R26,LOW(129)
 000130 e0b0      	LDI  R27,0
 000131 940e 031e 	CALL _memcpy
-                 ; 0000 0096     respond.status = STATUS_SUCCESS;
+                 ; 0000 0094     respond.status = STATUS_SUCCESS;
 000133 e0e0      	LDI  R30,LOW(0)
 000134 83e8      	ST   Y,R30
-                 ; 0000 0097     respond.len = test_transfer_request.len;
+                 ; 0000 0095     respond.len = test_transfer_request.len;
 000135 91e0 04dd 	LDS  R30,_test_transfer_request
 000137 83e9      	STD  Y+1,R30
-                 ; 0000 0098     if(respond.len > 128){
+                 ; 0000 0096     if(respond.len > 128){
 000138 81a9      	LDD  R26,Y+1
 000139 38a1      	CPI  R26,LOW(0x81)
 00013a f040      	BRLO _0x20
-                 ; 0000 0099         respond.status = STATUS_FAIL;
+                 ; 0000 0097         respond.status = STATUS_FAIL;
 00013b e0e1      	LDI  R30,LOW(1)
 00013c 83e8      	ST   Y,R30
-                 ; 0000 009A         send_respond((char*)&respond.status, sizeof(respond.status));
+                 ; 0000 0098         send_respond((char*)&respond.status, sizeof(respond.status));
 00013d 01fe      	MOVW R30,R28
 00013e 93fa      	ST   -Y,R31
 00013f 93ea      	ST   -Y,R30
 000140 e0a1      	LDI  R26,LOW(1)
 000141 e0b0      	LDI  R27,0
 000142 c013      	RJMP _0x28
-                 ; 0000 009B     }else{
+                 ; 0000 0099     }else{
                  _0x20:
-                 ; 0000 009C         memcpy(&respond.data, test_transfer_request.data, respond.len);
+                 ; 0000 009A         memcpy(&respond.data, test_transfer_request.data, respond.len);
 000143 01fe      	MOVW R30,R28
 000144 9632      	ADIW R30,2
 000145 93fa      	ST   -Y,R31
@@ -1684,7 +1682,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 00014b 81ad      	LDD  R26,Y+5
 00014c 27bb      	CLR  R27
 00014d 940e 031e 	CALL _memcpy
-                 ; 0000 009D         send_respond((char*)&respond, respond.len + 2);
+                 ; 0000 009B         send_respond((char*)&respond, respond.len + 2);
 00014f 01fe      	MOVW R30,R28
 000150 93fa      	ST   -Y,R31
 000151 93ea      	ST   -Y,R30
@@ -1694,8 +1692,8 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000155 01df      	MOVW R26,R30
                  _0x28:
 000156 d08c      	RCALL _send_respond
-                 ; 0000 009E     }
-                 ; 0000 009F }
+                 ; 0000 009C     }
+                 ; 0000 009D }
 000157 96ef      	ADIW R28,63
 000158 96ef      	ADIW R28,63
 000159 9624      	ADIW R28,4
@@ -1703,11 +1701,11 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; .FEND
                  ;
                  ;void process_upgrade_start(){
-                 ; 0000 00A1 void process_upgrade_start(){
+                 ; 0000 009F void process_upgrade_start(){
                  _process_upgrade_start:
                  ; .FSTART _process_upgrade_start
-                 ; 0000 00A2     unsigned char status = STATUS_SUCCESS;
-                 ; 0000 00A3     send_respond((char*)&status, sizeof(status));
+                 ; 0000 00A0     unsigned char status = STATUS_SUCCESS;
+                 ; 0000 00A1     send_respond((char*)&status, sizeof(status));
 00015b 931a      	ST   -Y,R17
                  ;	status -> R17
 00015c e010      	LDI  R17,0
@@ -1721,37 +1719,37 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000164 940e 034d 	CALL SUBOPT_0x1
 000166 911f      	POP  R17
 000167 912f      	POP  R18
-                 ; 0000 00A4 
-                 ; 0000 00A5     delay_ms(10);
+                 ; 0000 00A2 
+                 ; 0000 00A3     delay_ms(10);
 000168 e0aa      	LDI  R26,LOW(10)
 000169 e0b0      	LDI  R27,0
 00016a 940e 0358 	CALL _delay_ms
-                 ; 0000 00A6     #asm("cli")
+                 ; 0000 00A4     #asm("cli")
 00016c 94f8      	cli
-                 ; 0000 00A7     #asm
-                 ; 0000 00A8         LDI     R31, 0x38
+                 ; 0000 00A5     #asm
+                 ; 0000 00A6         LDI     R31, 0x38
 00016d e3f8              LDI     R31, 0x38
-                 ; 0000 00A9         LDI     R30, 0x00
+                 ; 0000 00A7         LDI     R30, 0x00
 00016e e0e0              LDI     R30, 0x00
-                 ; 0000 00AA         IJMP              ;Jump to address 0x3800
+                 ; 0000 00A8         IJMP              ;Jump to address 0x3800
 00016f 9409              IJMP              ;Jump to address 0x3800
-                 ; 0000 00AB     #endasm
-                 ; 0000 00AC }
+                 ; 0000 00A9     #endasm
+                 ; 0000 00AA }
 000170 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void process_read_version(){
-                 ; 0000 00AE void process_read_version(){
+                 ; 0000 00AC void process_read_version(){
                  _process_read_version:
                  ; .FSTART _process_read_version
-                 ; 0000 00AF     char *c;
-                 ; 0000 00B0     char str[] = "0.0.0";
-                 ; 0000 00B1     respond_read_version_t res;
-                 ; 0000 00B2     unsigned char hw0 = PIND.6;
-                 ; 0000 00B3     unsigned char hw1 = PIND.7;
-                 ; 0000 00B4     //hw_version = (hw1 << 1) | (hw0 << 0);
-                 ; 0000 00B5 
-                 ; 0000 00B6     res.status = STATUS_SUCCESS;
+                 ; 0000 00AD     char *c;
+                 ; 0000 00AE     char str[] = "0.0.0";
+                 ; 0000 00AF     respond_read_version_t res;
+                 ; 0000 00B0     unsigned char hw0 = PIND.6;
+                 ; 0000 00B1     unsigned char hw1 = PIND.7;
+                 ; 0000 00B2     //hw_version = (hw1 << 1) | (hw0 << 0);
+                 ; 0000 00B3 
+                 ; 0000 00B4     res.status = STATUS_SUCCESS;
 000172 9761      	SBIW R28,17
 000173 e3e0      	LDI  R30,LOW(48)
 000174 87eb      	STD  Y+11,R30
@@ -1781,13 +1779,13 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000188 2f2e      	MOV  R18,R30
 000189 e0e0      	LDI  R30,LOW(0)
 00018a 83ec      	STD  Y+4,R30
-                 ; 0000 00B7     hw_version = hw1 * 2 + hw0 + 1;
+                 ; 0000 00B5     hw_version = hw1 * 2 + hw0 + 1;
 00018b 2fe2      	MOV  R30,R18
 00018c 0fee      	LSL  R30
 00018d 0fe3      	ADD  R30,R19
 00018e 5fef      	SUBI R30,-LOW(1)
 00018f 2e4e      	MOV  R4,R30
-                 ; 0000 00B8     strncpy(res.hw_version, str, 5);
+                 ; 0000 00B6     strncpy(res.hw_version, str, 5);
 000190 01fe      	MOVW R30,R28
 000191 9635      	ADIW R30,5
 000192 93fa      	ST   -Y,R31
@@ -1798,11 +1796,11 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000197 93ea      	ST   -Y,R30
 000198 e0a5      	LDI  R26,LOW(5)
 000199 940e 0330 	CALL _strncpy
-                 ; 0000 00B9     res.hw_version[0] = hw_version + 0x30;
+                 ; 0000 00B7     res.hw_version[0] = hw_version + 0x30;
 00019b 2de4      	MOV  R30,R4
 00019c 5de0      	SUBI R30,-LOW(48)
 00019d 83ed      	STD  Y+5,R30
-                 ; 0000 00BA     strncpy(res.fw_version, fw_version, 5);
+                 ; 0000 00B8     strncpy(res.fw_version, fw_version, 5);
 00019e 01fe      	MOVW R30,R28
 00019f 963a      	ADIW R30,10
 0001a0 93fa      	ST   -Y,R31
@@ -1813,7 +1811,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0001a5 93ea      	ST   -Y,R30
 0001a6 e0a5      	LDI  R26,LOW(5)
 0001a7 940e 0330 	CALL _strncpy
-                 ; 0000 00BB     send_respond((char *)&res, sizeof(res));
+                 ; 0000 00B9     send_respond((char *)&res, sizeof(res));
 0001a9 01fe      	MOVW R30,R28
 0001aa 9634      	ADIW R30,4
 0001ab 93fa      	ST   -Y,R31
@@ -1821,18 +1819,18 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0001ad e0ab      	LDI  R26,LOW(11)
 0001ae e0b0      	LDI  R27,0
 0001af d033      	RCALL _send_respond
-                 ; 0000 00BC }
+                 ; 0000 00BA }
 0001b0 940e 0367 	CALL __LOADLOCR4
 0001b2 9665      	ADIW R28,21
 0001b3 9508      	RET
                  ; .FEND
                  ;
                  ;void process_write_register(){
-                 ; 0000 00BE void process_write_register(){
+                 ; 0000 00BC void process_write_register(){
                  _process_write_register:
                  ; .FSTART _process_write_register
-                 ; 0000 00BF     unsigned char status = STATUS_SUCCESS;
-                 ; 0000 00C0     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
+                 ; 0000 00BD     unsigned char status = STATUS_SUCCESS;
+                 ; 0000 00BE     memcpy(&pl_write_register, request.payload, sizeof(pl_write_register));
 0001b4 931a      	ST   -Y,R17
                  ;	status -> R17
 0001b5 e010      	LDI  R17,0
@@ -1842,37 +1840,37 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0001ba e0a6      	LDI  R26,LOW(6)
 0001bb e0b0      	LDI  R27,0
 0001bc 940e 031e 	CALL _memcpy
-                 ; 0000 00C1 
-                 ; 0000 00C2     TCCR1A = pl_write_register.reg_TCCR1A;
+                 ; 0000 00BF 
+                 ; 0000 00C0     TCCR1A = pl_write_register.reg_TCCR1A;
 0001be 91e0 04d7 	LDS  R30,_pl_write_register
 0001c0 93e0 0080 	STS  128,R30
-                 ; 0000 00C3     TCCR1B = pl_write_register.reg_TCCR1B;
+                 ; 0000 00C1     TCCR1B = pl_write_register.reg_TCCR1B;
                 +
 0001c2 91e0 04d8+LDS R30 , _pl_write_register + ( 1 )
                  	__GETB1MN _pl_write_register,1
 0001c4 93e0 0081 	STS  129,R30
-                 ; 0000 00C4     ICR1H = pl_write_register.reg_ICR1H;
+                 ; 0000 00C2     ICR1H = pl_write_register.reg_ICR1H;
                 +
 0001c6 91e0 04d9+LDS R30 , _pl_write_register + ( 2 )
                  	__GETB1MN _pl_write_register,2
 0001c8 93e0 0087 	STS  135,R30
-                 ; 0000 00C5     ICR1L = pl_write_register.reg_ICR1L;
+                 ; 0000 00C3     ICR1L = pl_write_register.reg_ICR1L;
                 +
 0001ca 91e0 04da+LDS R30 , _pl_write_register + ( 3 )
                  	__GETB1MN _pl_write_register,3
 0001cc 93e0 0086 	STS  134,R30
-                 ; 0000 00C6     OCR1AH= pl_write_register.reg_OCR1AH;
+                 ; 0000 00C4     OCR1AH= pl_write_register.reg_OCR1AH;
                 +
 0001ce 91e0 04db+LDS R30 , _pl_write_register + ( 4 )
                  	__GETB1MN _pl_write_register,4
 0001d0 93e0 0089 	STS  137,R30
-                 ; 0000 00C7     OCR1AL=pl_write_register.reg_OCR1AL;
+                 ; 0000 00C5     OCR1AL=pl_write_register.reg_OCR1AL;
                 +
 0001d2 91e0 04dc+LDS R30 , _pl_write_register + ( 5 )
                  	__GETB1MN _pl_write_register,5
 0001d4 93e0 0088 	STS  136,R30
-                 ; 0000 00C8 
-                 ; 0000 00C9     send_respond((char*)&status, sizeof(status));
+                 ; 0000 00C6 
+                 ; 0000 00C7     send_respond((char*)&status, sizeof(status));
 0001d6 b7ed      	IN   R30,SPL
 0001d7 b7fe      	IN   R31,SPH
 0001d8 9731      	SBIW R30,1
@@ -1883,18 +1881,18 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0001dd 940e 034d 	CALL SUBOPT_0x1
 0001df 911f      	POP  R17
 0001e0 912f      	POP  R18
-                 ; 0000 00CA }
+                 ; 0000 00C8 }
 0001e1 940c 02e6 	JMP  _0x2060001
                  ; .FEND
                  ;
                  ;void send_respond(char * payload, unsigned short len){
-                 ; 0000 00CC void send_respond(char * payload, unsigned short len){
+                 ; 0000 00CA void send_respond(char * payload, unsigned short len){
                  _send_respond:
                  ; .FSTART _send_respond
-                 ; 0000 00CD     unsigned char i;
-                 ; 0000 00CE     unsigned char checksum = 0;
-                 ; 0000 00CF     unsigned char *c;
-                 ; 0000 00D0     respond.header = 0x55FF;
+                 ; 0000 00CB     unsigned char i;
+                 ; 0000 00CC     unsigned char checksum = 0;
+                 ; 0000 00CD     unsigned char *c;
+                 ; 0000 00CE     respond.header = 0x55FF;
 0001e3 93ba      	ST   -Y,R27
 0001e4 93aa      	ST   -Y,R26
 0001e5 940e 0362 	CALL __SAVELOCR4
@@ -1908,33 +1906,33 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 0001e9 e5f5      	LDI  R31,HIGH(22015)
 0001ea 93e0 043b 	STS  _respond,R30
 0001ec 93f0 043c 	STS  _respond+1,R31
-                 ; 0000 00D1     respond.len = 5 + len;
+                 ; 0000 00CF     respond.len = 5 + len;
 0001ee 81ec      	LDD  R30,Y+4
 0001ef 5feb      	SUBI R30,-LOW(5)
                 +
 0001f0 93e0 043d+STS _respond + ( 2 ) , R30
                  	__PUTB1MN _respond,2
-                 ; 0000 00D2     respond.tranId = request.tranId;
+                 ; 0000 00D0     respond.tranId = request.tranId;
                 +
 0001f2 91e0 03a3+LDS R30 , _request + ( 4 )
                  	__GETB1MN _request,4
                 +
 0001f4 93e0 043f+STS _respond + ( 4 ) , R30
                  	__PUTB1MN _respond,4
-                 ; 0000 00D3     respond.opcode = request.opcode;
+                 ; 0000 00D1     respond.opcode = request.opcode;
                 +
 0001f6 91e0 03a4+LDS R30 , _request + ( 5 )
                  	__GETB1MN _request,5
                 +
 0001f8 93e0 0440+STS _respond + ( 5 ) , R30
                  	__PUTB1MN _respond,5
-                 ; 0000 00D4     respond.type = TYPE_RESPOND;
+                 ; 0000 00D2     respond.type = TYPE_RESPOND;
 0001fa e0e2      	LDI  R30,LOW(2)
                 +
 0001fb 93e0 043e+STS _respond + ( 3 ) , R30
                  	__PUTB1MN _respond,3
-                 ; 0000 00D5 
-                 ; 0000 00D6     memcpy(respond.payload, payload, len);
+                 ; 0000 00D3 
+                 ; 0000 00D4     memcpy(respond.payload, payload, len);
                 +
 0001fd e4e1     +LDI R30 , LOW ( _respond + ( 6 ) )
 0001fe e0f4     +LDI R31 , HIGH ( _respond + ( 6 ) )
@@ -1948,8 +1946,8 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000205 85a8      	LDD  R26,Y+8
 000206 85b9      	LDD  R27,Y+8+1
 000207 940e 031e 	CALL _memcpy
-                 ; 0000 00D7 
-                 ; 0000 00D8     for(i = 0; i< respond.len - 1; i++){
+                 ; 0000 00D5 
+                 ; 0000 00D6     for(i = 0; i< respond.len - 1; i++){
 000209 e010      	LDI  R17,LOW(0)
                  _0x23:
                 +
@@ -1962,7 +1960,7 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000210 17ae      	CP   R26,R30
 000211 07bf      	CPC  R27,R31
 000212 f44c      	BRGE _0x24
-                 ; 0000 00D9         checksum += *(&respond.len + i);
+                 ; 0000 00D7         checksum += *(&respond.len + i);
                 +
 000213 e3ad     +LDI R26 , LOW ( _respond + ( 2 ) )
 000214 e0b4     +LDI R27 , HIGH ( _respond + ( 2 ) )
@@ -1972,20 +1970,20 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000217 1fbe      	ADC  R27,R30
 000218 91ec      	LD   R30,X
 000219 0f0e      	ADD  R16,R30
-                 ; 0000 00DA     }
+                 ; 0000 00D8     }
 00021a 5f1f      	SUBI R17,-1
 00021b cfee      	RJMP _0x23
                  _0x24:
-                 ; 0000 00DB 
-                 ; 0000 00DC     checksum = ~checksum + 1;
+                 ; 0000 00D9 
+                 ; 0000 00DA     checksum = ~checksum + 1;
 00021c 9501      	NEG  R16
-                 ; 0000 00DD 
-                 ; 0000 00DE     c = (char*)&respond;
+                 ; 0000 00DB 
+                 ; 0000 00DC     c = (char*)&respond;
                 +
 00021d e32b     +LDI R18 , LOW ( _respond )
 00021e e034     +LDI R19 , HIGH ( _respond )
                  	__POINTWRM 18,19,_respond
-                 ; 0000 00DF     for(i = 0; i<respond.len + 2; i++){
+                 ; 0000 00DD     for(i = 0; i<respond.len + 2; i++){
 00021f e010      	LDI  R17,LOW(0)
                  _0x26:
                 +
@@ -1998,21 +1996,21 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
 000226 17ae      	CP   R26,R30
 000227 07bf      	CPC  R27,R31
 000228 f44c      	BRGE _0x27
-                 ; 0000 00E0         putchar(c[i]);
+                 ; 0000 00DE         putchar(c[i]);
 000229 01d9      	MOVW R26,R18
 00022a 27ee      	CLR  R30
 00022b 0fa1      	ADD  R26,R17
 00022c 1fbe      	ADC  R27,R30
 00022d 91ac      	LD   R26,X
 00022e 940e 0300 	CALL _putchar
-                 ; 0000 00E1     }
+                 ; 0000 00DF     }
 000230 5f1f      	SUBI R17,-1
 000231 cfee      	RJMP _0x26
                  _0x27:
-                 ; 0000 00E2     putchar(checksum);
+                 ; 0000 00E0     putchar(checksum);
 000232 2fa0      	MOV  R26,R16
 000233 940e 0300 	CALL _putchar
-                 ; 0000 00E3 }
+                 ; 0000 00E1 }
 000235 940e 0367 	CALL __LOADLOCR4
 000237 9628      	ADIW R28,8
 000238 9508      	RET
@@ -2043,8 +2041,8 @@ D:\GitHub\ATmega\PulseGenerator\Firmware\App\Debug\List\PulseGenerator.asm(1146)
                  ; 0001 000D    // Input/Output Ports initialization
                  ; 0001 000E    // Port B initialization
                  ; 0001 000F    // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=Out Bit0=In
-                 ; 0001 0010    DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (1<<DDB1) | (0<<DDB0);
-00023f e0e2      	LDI  R30,LOW(2)
+                 ; 0001 0010    DDRB=(0<<DDB7) | (0<<DDB6) | (1<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (1<<DDB1) | (0<<DDB0);
+00023f e2e2      	LDI  R30,LOW(34)
 000240 b9e4      	OUT  0x4,R30
                  ; 0001 0011    // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=0 Bit0=T
                  ; 0001 0012    PORTB=(0<<PORTB7) | (0<<PORTB6) | (0<<PORTB5) | (0<<PORTB4) | (0<<PORTB3) | (0<<PORTB2) | (0<<PORTB1) | (0<<PORTB0);
